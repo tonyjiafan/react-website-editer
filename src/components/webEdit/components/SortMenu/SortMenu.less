@@ -1,0 +1,170 @@
+.SortMenu{
+    // color: #444;
+}
+
+.web_module_warp {
+    padding: 0px;
+    margin: 0px;
+}
+
+.web_module_title {
+    padding: 0 16px;
+    background: #e2e9ec;
+    height: 36px;
+    line-height: 36px;
+    color: #545454;
+    font-size: 14px;
+    margin-bottom: 10px;
+
+    .close {
+        display: block;
+        color: #5e6061;
+        position: absolute;
+        top: 8px;
+        right: 16px;
+        margin: 0;
+        line-height: 1;
+        cursor: pointer;
+
+        &:hover {
+            color: #fc5144;
+        }
+    }
+}
+
+.tuo-zhuai-item-warp {
+    width: 90%;
+    height: 38px;
+    margin: 0 auto;
+    line-height: 36px;
+    position: relative;
+    background: #e2e9ec;
+    border-radius: 2px;
+    display: block;
+    cursor: move;
+    margin-bottom: 4px;
+
+    &:hover {
+        .seeting-box {
+            display: block;
+        }
+    }
+}
+
+.tuo-zhuai-tag {
+    position: absolute;
+    z-index: 1;
+    width: 30px;
+    height: 30px;
+    top: 4px;
+    left: 2px;
+    text-align: center;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a0a3a5;
+}
+
+.tuo-zhuai-text {
+    display: inline-block;
+    width: 164px;
+    vertical-align: middle;
+    word-wrap: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 35px;
+    color: #2a2a2b;
+    font-size: 13px;
+    margin-top: -1px;
+}
+
+.edit-box {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 2px;
+    right: 38px;
+    text-align: center;
+    line-height: 30px;
+    display: none;
+
+    .hover-icon {
+        display: inline-block;
+        vertical-align: -5px;
+        margin-left: 0px;
+        color: #2a2a2b;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    &:hover {
+        .hover-icon {
+            color: #3884eb;
+        }
+    }
+}
+
+.delete-box {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 2px;
+    right: 5px;
+    text-align: center;
+    line-height: 30px;
+    display: none;
+
+    .hover-icon {
+        display: inline-block;
+        vertical-align: -5px;
+        margin-left: -1px;
+        color: #2a2a2b;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    &:hover {
+        .hover-icon {
+            color: #fc5144;
+        }
+    }
+}
+
+.template-span {
+    width: 100%;
+    display: block;
+    border: 1px solid #eae9e9;
+    margin: 10px auto;
+    height: 120px;
+    line-height: 120px;
+    position: relative;
+    cursor: pointer;
+    transition: all .2s;
+    overflow: hidden;
+    padding: 2px;
+    border-radius: 2px;
+}
+
+.ghost2 {
+    display: inline-block;
+    outline: 2px dashed #2d8cf0 !important;
+    height: 60px;
+    line-height: 60px;
+    // opacity: 0.8;
+    background: #fff;
+
+    .tuo-zhuai-tag {
+        top: 14px;
+    }
+
+    .edit-box,
+    .delete-box {
+        top: 12px;
+    }
+}
+
+.flip-list-move {
+    transition: transform 0.2s;
+}
