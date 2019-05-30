@@ -2,7 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 
 import App from './components/app/App';
-import WebEditWarp from './components/webEdit/index';
+import WebEditWarp from './components/website/index';
 
 
 export default (

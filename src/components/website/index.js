@@ -1,7 +1,7 @@
 import React, {
 	Component
 } from 'react';
-import webEditData from './webData';
+import websiteData from './webData';
 import './index.less'
 
 // 组件
@@ -45,7 +45,7 @@ class WebEditWarp extends Component {
 			},
 
 			// 基本数据模型
-			WebData: webEditData,
+			WebData: websiteData,
 		}
 
 		this.vueOpenModalFn = this.vueOpenModalFn.bind(this)

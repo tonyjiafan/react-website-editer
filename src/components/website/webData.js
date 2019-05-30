@@ -1,4 +1,4 @@
-const webEditData = {
+const websiteData = {
   Meeting_Id: '6aa84dc6-c067-c777-7fc8-08d6c3e071c6',
   Temp_Path: 'http://192.168.11.29:86/template/11121/index.html',
   Temp_Code: '11121',
@@ -431,4 +431,4 @@ const webEditData = {
   Status: 1
 }
 
-export default webEditData
+export default websiteData
