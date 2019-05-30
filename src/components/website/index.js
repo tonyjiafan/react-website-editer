@@ -1,8 +1,6 @@
-import React, {
-	Component
-} from 'react';
+import React, { Component } from 'react';
 import websiteData from './webData';
-import './index.less'
+import './index.less';
 
 // 组件
 import SortMenu from './components/SortMenu/SortMenu'; //排序菜单
@@ -14,6 +12,29 @@ import { Icon } from 'antd'
 const MyIcon = Icon.createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_1219293_3pjl5z7tuio.js' // 在 iconfont.cn 上生成
 })
+
+/**
+ * jy-web-flag 用来判断当前的数据内容 是否被编辑过  1 未编辑  0 已编辑 
+ * */ 
+
+/**
+ * Show_Modal_Template 模板选择
+ * Show_Modal_Edit  模块编辑
+ * Show_Moda_Module  模块添加
+ * Show_Moda_Sort  模块排序
+ * */
+
+/** 
+ * Basic 1 基本信息
+ * Introduction 2 活动介绍
+ * Guest 3 嘉宾介绍
+ * Schedule 4 活动日程
+ * Partner 5 合作伙伴
+ * Reception 6 会务接待
+ * Guide 7 参会指南
+ * Custom 8 自定义栏目
+ * News 9 活动动态
+ * */ 
 
 class WebEditWarp extends Component {
 	constructor(props) {
@@ -52,7 +73,46 @@ class WebEditWarp extends Component {
 		this.goBackList = this.goBackList.bind(this)
 	}
 
-	// 事件
+	goBackList(ss) {
+		const _this = this
+		console.log(_this.props)
+		_this.props.history.push('/');
+	}
+
+	// 存储数据变化 到本地
+	saveDataToLocalStorage() {
+		const _this = this
+		const { WebData } = _this
+		window.localStorage.setItem(`jy-web-data-${_this.meetingId}`, JSON.stringify(WebData))
+	}
+
+	// 刷新页面
+	relooad() {
+		const _this = this
+		const { WebData } = _this
+		
+		let Child_Window = window.frames['prewWebsite'] //获得对应iframe的window对象
+		Child_Window.B_vue.updatedPageData(WebData)
+	}
+	
+	changeWarp(str) {
+		const _this = this
+		_this.Is_Pc_Warp = str == 'PC' ? true : false
+	}
+
+	/*****************  唤醒菜单栏方法  ***************************/
+	// 菜单拖拽排序
+	vueSort(params) {
+		const _this = this
+		_this.Preview_show = false
+		_this.vueOpenModalFn('Show_Moda_Sort')
+	}
+	// 关闭 [模块编辑] 弹出层
+	vueCancelForm() {
+		const _this = this
+		_this.Show_Modal_Edit = false
+	}
+	// 切换菜单显示
 	vueOpenModalFn(strName) {
 		const _this = this
 		const newState = _this.state
@@ -60,11 +120,7 @@ class WebEditWarp extends Component {
 
 		newState.Preview_show = false
 		str.forEach((e) => {
-			if (strName === e) {
-				newState[strName] = !newState[strName]
-			} else {
-				newState[e] = false
-			}
+			strName === e ? newState[strName] = !newState[strName] : newState[e] = false
 		})
 
 		if (strName === 'Show_Modal_Edit') {
@@ -72,17 +128,184 @@ class WebEditWarp extends Component {
 		} else if (strName === '' || strName === 'Show_Moda_Sort') {
 			newState.Mask_Edit_View_Change = true
 		}
+		_this.setState({ ...newState })
+	}
 
-		_this.setState({
-			...newState
+	//**************** 实际执行方法 *************************/ 
+
+	/** 
+	 * 彻底删除 自定义 模块
+	 * Moudels 已经删除后的完整的 Section_Data
+	 * */ 
+	vueDeleteFn(Moudels) {
+		const _this = this
+		_this.WebData.Section_Data = Moudels
+
+		// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
+		localStorage.setItem('jy-web-flag', '0')
+
+		_this.saveDataToLocalStorage()
+	}
+	/** 
+	 * 启用/停用 模块
+	 * 传递过来index 查找数据后修改
+	 * 该方法用于【iframe内】【排序菜单】【模块添加菜单】使用
+	 * */ 
+	vueEnabledFn(params) {
+		// log('vueEnabledFn', params)
+		const _this = this
+		const { typeName, index } = params
+		const { Section_Data } = _this.WebData
+
+		// 如果当前的编辑状态属于打开状态  移除不可操作
+		if (_this.Show_Modal_Edit) return _this.$Message.info('当前处于编辑状态，不能执行此操作！')
+
+		// 增加 loading 效果，为了解决 多个自定义连续删除时无效问题
+		_this.spinShow = true
+
+		if (typeName == 'module') {
+			// 模块添加菜单
+			_this.$set(Section_Data[index], 'Enabled', true)
+			_this.spin(500)
+
+		} else if (typeName == '') {
+			// 菜单管理
+			_this.$set(Section_Data[index], 'Enabled', false)
+			_this.spin(500)
+
+		} else if (typeName == 'Iframe' && index == null) {
+			// Iframe子页面
+			let { Current_Component, Current_RichId } = params
+			let params_Id = Current_Component + Current_RichId + ''
+
+			Section_Data.forEach((e, i) => {
+				let module_Id = e.Section_Code + e.Rich_Id + ''
+				if (module_Id == params_Id) {
+					e.Enabled = false
+				}
+			})
+			_this.spin(500)
+
+		}
+
+		// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
+		localStorage.setItem('jy-web-flag', '0')
+
+		_this.saveDataToLocalStorage()
+		_this.relooad()
+	}
+
+	/** 
+	 * 编辑模块内容
+	 * Current_Type 当前需要渲染的组件类型
+	 * Current_Component 当前需要渲染的组件名称
+	 * Current_RichId 富文本的Id 当组件是富文本组件时 才需要这个字段
+	 * */ 
+	vueEditFn(params) {
+		const _this = this
+		const {Current_Type, Current_Component, Current_RichId} = params
+
+		// 自定义模块的 视图组件 是复用的，存在多个自定义 在移动端编辑时 可以无缝唤醒 当前的自定义组件
+		// 如果 组件名字是同一个 就判断 Current_RichId 是否是同一个
+		if (_this.Current_Component == Current_Component && _this.Current_RichId != Current_RichId) {
+			// 先把组件置空 重新加载组件
+			_this.Current_Component = ''
+			setTimeout(() => {
+				_this.Current_Component = Current_Component
+				_this.Current_RichId = Current_RichId
+			}, 100)
+		} else {
+			_this.Current_Component = Current_Component
+			_this.Current_RichId = Current_RichId
+		}
+
+		if (!_this.Show_Modal_Edit) {
+			_this.vueOpenModalFn('Show_Modal_Edit')
+		}
+	}
+
+	// Modules 所有编辑后 回传的整个 数据模型
+	editModuleUpdate(Modules, isOpen = false, isChange = true) {
+		const _this = this
+		let flag = _this.isArrayFn(Modules)
+		
+		if (flag) {
+			// log('数组对象', Modules)
+			_this.WebData.Section_Data = Modules
+		} else {
+			// log('json对象', Modules)
+			_this.WebData.Basic = Modules
+		}
+
+		// isChange 为false 组件编辑后 如果是点击的 取消按钮 则不改变
+		if (isChange) {
+			// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
+			localStorage.setItem('jy-web-flag', '0')
+		}
+
+		_this.saveDataToLocalStorage()
+		_this.relooad()
+
+		// isOpen 更新模板列表中的 官网上展示报名人数 swith 时，不需要清除当前模态框
+		if (!isOpen) _this.vueOpenModalFn('')
+
+		// log(_this.WebData.Section_Data)
+	}
+
+	/**
+	 * 拖拽排序方法
+	 * Section_Data 传递过来的参数 已经是处理好的 直接赋值
+	 */ 
+	currentSortFn(Section_Data) {
+		const _this = this
+		_this.WebData.Section_Data = Section_Data
+
+		// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
+		localStorage.setItem('jy-web-flag', '0')
+
+		_this.saveDataToLocalStorage()
+		_this.relooad()
+	}
+
+	/**
+	 * 更新选中模板 
+	 * Temp_Path
+	 * Temp_Code
+	 * App_Temp_Path
+	 * App_Temp_Code
+	 * Tem_List 传递过来的参数 已经是处理好的 直接赋值
+	 */ 
+	updateTemplate(Tem_List, Click_Type = 1) {
+		const _this = this
+		Tem_List.forEach(e => {
+			if (e.Is_Checked && e.Template_Type == 1) {
+				_this.WebData.Temp_Path = e.Template_Path
+				_this.WebData.Temp_Code = e.Template_Code
+			} else if (e.Is_Checked && e.Template_Type == 2) {
+				_this.WebData.App_Temp_Path = e.Template_Path
+				_this.WebData.App_Temp_Code = e.Template_Code
+			}
 		})
 
+		// 根据模板点击 来判断是 PC 还是 移动
+		_this.Is_Pc_Warp = Click_Type == 1 ? true : false
+
+		_this.WebData.Template_List = Tem_List
+
+		// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
+		localStorage.setItem('jy-web-flag', '0')
+
+		_this.saveDataToLocalStorage()
+		
+		_this.$nextTick(function() {
+			_this.relooad()
+		})
+
+		_this.vueOpenModalFn('')
 	}
 
-	goBackList(ss) {
-		console.log(ss)
-	}
 
+	
 	// 在渲染前调用,在客户端也在服务端
 	componentWillMount() {
 		console.log('Component WILL MOUNT!')
@@ -105,39 +328,6 @@ class WebEditWarp extends Component {
 		console.log(_this)
 		console.log(window)
 	}
-
-	// 在第一次渲染后调用，只在客户端。之后组件已经生成了对应的DOM结构，
-	// 可以通过this.getDOMNode()来进行访问。 如果你想和其他JavaScript框架一起使用，
-	// 可以在这个方法中调用setTimeout, setInterval或者发送AJAX请求等操作(防止异步操作阻塞UI)
-	componentDidMount() {
-		console.log('Component DID MOUNT!')
-	}
-
-	// // 在组件接收到一个新的 prop (更新后)时被调用。这个方法在初始化render时不会被调用。
-	// componentWillReceiveProps(newProps) {
-	// 	console.log('Component WILL RECEIVE PROPS!')
-	// }
-
-	// // 返回一个布尔值。在组件接收到新的props或者state时被调用。
-	// // 在初始化时或者使用forceUpdate时不被调用。可以在你确认不需要更新组件时使用
-	// shouldComponentUpdate(newProps, newState) {
-	// 	return true
-	// }
-
-	// // 在组件接收到新的props或者state但还没有render时被调用。在初始化时不会被调用。
-	// componentWillUpdate(nextProps, nextState) {
-	// 	console.log('Component WILL UPDATE!')
-	// }
-
-	// // 在组件完成更新后立即调用。在初始化时不会被调用。
-	// componentDidUpdate(prevProps, prevState) {
-	// 	console.log('Component DID UPDATE!')
-	// }
-
-	// // 在组件从 DOM 中移除之前立刻被调用。
-	// componentWillUnmount() {
-	// 	console.log('Component WILL UNMOUNT!')
-	// }
 
 	render() {
 		const {
@@ -173,7 +363,7 @@ class WebEditWarp extends Component {
 							<span style={{ color: Show_Moda_Sort ? '#fff' : '' }}>菜单管理</span>
 						</div>
 						
-						<div className="left_item" onClick={ this.goBackList('hfihui') }>
+						<div className="left_item" onClick={ () => this.goBackList('点击返回') }>
 							<MyIcon style={{ fontSize: '34px', marginTop: '10px' }} type="icon-rollback" />
 							<br/>
 							<span>返回管理</span>
@@ -240,7 +430,6 @@ class WebEditWarp extends Component {
 						) : 
 						null
 					}
-					
 					
 				</div>
 			</div>

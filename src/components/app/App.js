@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { withRouter } from 'react-router-dom';
 
 import logo from './logo.svg';
 import './App.less';
@@ -17,4 +17,4 @@ function App() {
   )
 }
 
-export default App;
+export default withRouter(App);
