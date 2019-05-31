@@ -4,6 +4,8 @@ import './index.less';
 
 // 组件
 import SortMenu from './components/SortMenu/SortMenu'; //排序菜单
+// import Tuzhuai from './components/SortMenu/examples'; //排序菜单
+
 // import ModulesList from './conmponents/ModuleList'; //模块菜单
 // import TemplateList from './conmponents/TemplateList'; //模板菜单
 
@@ -71,6 +73,9 @@ class WebEditWarp extends Component {
 
 		this.vueOpenModalFn = this.vueOpenModalFn.bind(this)
 		this.goBackList = this.goBackList.bind(this)
+		this.currentSortFn = this.currentSortFn.bind(this)
+		this.relooad = this.relooad.bind(this)
+		this.saveDataToLocalStorage = this.saveDataToLocalStorage.bind(this)
 	}
 
 	goBackList(ss) {
@@ -82,16 +87,19 @@ class WebEditWarp extends Component {
 	// 存储数据变化 到本地
 	saveDataToLocalStorage() {
 		const _this = this
-		const { WebData } = _this
+		const { WebData } = _this.state
 		window.localStorage.setItem(`jy-web-data-${_this.meetingId}`, JSON.stringify(WebData))
 	}
 
 	// 刷新页面
 	relooad() {
+		console.log('reload8888888888')
 		const _this = this
-		const { WebData } = _this
+		const { WebData } = _this.state
+		console.log(WebData)
 		
 		let Child_Window = window.frames['prewWebsite'] //获得对应iframe的window对象
+		console.log(Child_Window)
 		Child_Window.B_vue.updatedPageData(WebData)
 	}
 	
@@ -258,13 +266,17 @@ class WebEditWarp extends Component {
 	 */ 
 	currentSortFn(Section_Data) {
 		const _this = this
-		_this.WebData.Section_Data = Section_Data
+		const newState = _this.state
 
-		// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
-		localStorage.setItem('jy-web-flag', '0')
-
-		_this.saveDataToLocalStorage()
-		_this.relooad()
+		newState.WebData.Section_Data = Section_Data
+		_this.setState({
+			...newState
+		}, () => {
+			// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
+			// localStorage.setItem('jy-web-flag', '0')
+			_this.saveDataToLocalStorage()
+			_this.relooad()
+		})
 	}
 
 	/**
@@ -424,7 +436,7 @@ class WebEditWarp extends Component {
 						Show_Moda_Sort ? (
 							<div className="modal-mask-sort">
 								<div className="modal-content">
-									<SortMenu Section_Data={ this.state.WebData.Section_Data }/>
+									<SortMenu currentSort={ this.currentSortFn } Section_Data={ this.state.WebData.Section_Data }/>
 								</div>
 							</div>
 						) : 
