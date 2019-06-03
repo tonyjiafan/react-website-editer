@@ -10,7 +10,7 @@ import SortMenu from './components/SortMenu/SortMenu'; //排序菜单
 // import TemplateList from './conmponents/TemplateList'; //模板菜单
 
 
-import { Icon } from 'antd'
+import { Icon, message, Button } from 'antd';
 const MyIcon = Icon.createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_1219293_3pjl5z7tuio.js' // 在 iconfont.cn 上生成
 })
@@ -76,11 +76,11 @@ class WebEditWarp extends Component {
 		this.currentSortFn = this.currentSortFn.bind(this)
 		this.relooad = this.relooad.bind(this)
 		this.saveDataToLocalStorage = this.saveDataToLocalStorage.bind(this)
+		this.vueEnabledFn = this.vueEnabledFn.bind(this)
 	}
 
 	goBackList(ss) {
 		const _this = this
-		console.log(_this.props)
 		_this.props.history.push('/');
 	}
 
@@ -93,12 +93,10 @@ class WebEditWarp extends Component {
 
 	// 刷新页面
 	relooad() {
-		console.log('reload8888888888')
+		console.log('======= reload =======')
 		const _this = this
 		const { WebData } = _this.state
-		console.log(WebData)
-		
-		let Child_Window = window.frames['prewWebsite'] //获得对应iframe的window对象
+		const Child_Window = window.frames['prewWebsite'] //获得对应iframe的window对象
 		console.log(Child_Window)
 		Child_Window.B_vue.updatedPageData(WebData)
 	}
@@ -163,44 +161,39 @@ class WebEditWarp extends Component {
 		// log('vueEnabledFn', params)
 		const _this = this
 		const { typeName, index } = params
-		const { Section_Data } = _this.WebData
-
+		let newState = _this.state
 		// 如果当前的编辑状态属于打开状态  移除不可操作
-		if (_this.Show_Modal_Edit) return _this.$Message.info('当前处于编辑状态，不能执行此操作！')
+		if (newState.Show_Modal_Edit) return message.warning('当前处于编辑状态，不能执行此操作！');
 
-		// 增加 loading 效果，为了解决 多个自定义连续删除时无效问题
-		_this.spinShow = true
-
-		if (typeName == 'module') {
+		if (typeName === 'module') {
 			// 模块添加菜单
-			_this.$set(Section_Data[index], 'Enabled', true)
-			_this.spin(500)
+			newState.WebData.Section_Data[index].Enabled = true
 
-		} else if (typeName == '') {
+		} else if (typeName === '') {
 			// 菜单管理
-			_this.$set(Section_Data[index], 'Enabled', false)
-			_this.spin(500)
+			newState.WebData.Section_Data[index].Enabled = false
 
-		} else if (typeName == 'Iframe' && index == null) {
+		} else if (typeName === 'Iframe' && index == null) {
 			// Iframe子页面
 			let { Current_Component, Current_RichId } = params
 			let params_Id = Current_Component + Current_RichId + ''
 
-			Section_Data.forEach((e, i) => {
+			newState.WebData.Section_Data.forEach((e, i) => {
 				let module_Id = e.Section_Code + e.Rich_Id + ''
-				if (module_Id == params_Id) {
+				if (module_Id === params_Id) {
 					e.Enabled = false
 				}
 			})
-			_this.spin(500)
-
 		}
 
-		// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
-		localStorage.setItem('jy-web-flag', '0')
-
-		_this.saveDataToLocalStorage()
-		_this.relooad()
+		_this.setState({
+			...newState
+		}, () => {
+			// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
+			// localStorage.setItem('jy-web-flag', '0')
+			_this.saveDataToLocalStorage()
+			_this.relooad()
+		})
 	}
 
 	/** 
@@ -212,22 +205,27 @@ class WebEditWarp extends Component {
 	vueEditFn(params) {
 		const _this = this
 		const {Current_Type, Current_Component, Current_RichId} = params
+		const newState = _this.state
 
 		// 自定义模块的 视图组件 是复用的，存在多个自定义 在移动端编辑时 可以无缝唤醒 当前的自定义组件
 		// 如果 组件名字是同一个 就判断 Current_RichId 是否是同一个
-		if (_this.Current_Component == Current_Component && _this.Current_RichId != Current_RichId) {
+		if (newState.Current_Component === Current_Component && newState.Current_RichId !== Current_RichId) {
 			// 先把组件置空 重新加载组件
-			_this.Current_Component = ''
+			newState.Current_Component = ''
 			setTimeout(() => {
-				_this.Current_Component = Current_Component
-				_this.Current_RichId = Current_RichId
+				_this.setState({
+					Current_Component,
+					Current_RichId,
+				})
 			}, 100)
 		} else {
-			_this.Current_Component = Current_Component
-			_this.Current_RichId = Current_RichId
+			_this.setState({
+				Current_Component,
+				Current_RichId,
+			})
 		}
 
-		if (!_this.Show_Modal_Edit) {
+		if (!newState.Show_Modal_Edit) {
 			_this.vueOpenModalFn('Show_Modal_Edit')
 		}
 	}
@@ -280,7 +278,7 @@ class WebEditWarp extends Component {
 	}
 
 	/**
-	 * 更新选中模板 
+	 * 更新选中模板
 	 * Temp_Path
 	 * Temp_Code
 	 * App_Temp_Path
@@ -322,7 +320,7 @@ class WebEditWarp extends Component {
 	componentWillMount() {
 		console.log('Component WILL MOUNT!')
 		const _this = this
-		_this.setState({	
+		_this.setState({
 				meetingId: 'af026266-3d0d-c6e9-e0a7-08d6cc87db4f'
 			},
 			function() {
@@ -342,6 +340,7 @@ class WebEditWarp extends Component {
 	}
 
 	render() {
+		const _this = this
 		const {
 			localStorageHasWebData,
 			Is_Pc_Warp,
@@ -351,31 +350,31 @@ class WebEditWarp extends Component {
 			Show_Modal_Edit,
 			Show_Moda_Module,
 			Show_Moda_Sort,
-		} = this.state
+		} = _this.state
 		return (
 			<div className="WebEditWarp">
 				<div className="web_nav_top" />
 				<div className="web_main_content">
 					<div className="left_menu">
-						<div className="left_item" onClick={ () => this.vueOpenModalFn('Show_Modal_Template') } style={{ background: Show_Modal_Template ? '#ff5200' : '' }}>
+						<div className="left_item" onClick={ () => _this.vueOpenModalFn('Show_Modal_Template') } style={{ background: Show_Modal_Template ? '#ff5200' : '' }}>
 							<MyIcon style={{fontSize: '34px', color: Show_Modal_Template ? '#fff' : '' , marginTop: '10px'}} type="icon-layout-line" ></MyIcon>
 							<br/>
 							<span style={{ color: Show_Modal_Template ? '#fff' : '' }}>网站模板</span>
 						</div>
 
-						<div className="left_item" onClick={ () => this.vueOpenModalFn('Show_Moda_Module') } style={{ background: Show_Moda_Module ? '#ff5200' : '' }}>
+						<div className="left_item" onClick={ () => _this.vueOpenModalFn('Show_Moda_Module') } style={{ background: Show_Moda_Module ? '#ff5200' : '' }}>
 							<MyIcon style={{ fontSize: '36px', color: Show_Moda_Module ? '#fff' : '' , marginTop: '10px'}} type="icon-apps" />
 							<br/>
 							<span style={{ color: Show_Moda_Module ? '#fff' : '' }}>模块添加</span>
 						</div>
 
-						<div className="left_item" onClick={ () => this.vueOpenModalFn('Show_Moda_Sort') } style={{ background: Show_Moda_Sort ? '#ff5200' : '' }}>
+						<div className="left_item" onClick={ () => _this.vueOpenModalFn('Show_Moda_Sort') } style={{ background: Show_Moda_Sort ? '#ff5200' : '' }}>
 							<MyIcon style={{ fontSize: '34px', color: Show_Moda_Sort ? '#fff' : '' , marginTop: '10px'}} type="icon-menu" />
 							<br/>
 							<span style={{ color: Show_Moda_Sort ? '#fff' : '' }}>菜单管理</span>
 						</div>
 						
-						<div className="left_item" onClick={ () => this.goBackList('点击返回') }>
+						<div className="left_item" onClick={ () => _this.goBackList('点击返回') }>
 							<MyIcon style={{ fontSize: '34px', marginTop: '10px' }} type="icon-rollback" />
 							<br/>
 							<span>返回管理</span>
@@ -386,7 +385,7 @@ class WebEditWarp extends Component {
 							<iframe
 								title="pc"
 								className="web_pc_iframe"
-								src={ `http://localhost:3000/tem1/index.html?${this.state.meetingId}` }
+								src={ `http://localhost:3000/tem1/index.html?${_this.state.meetingId}` }
 								name="prewWebsite"
 								id="prewWebsite"
 								frameBorder="0"
@@ -394,7 +393,7 @@ class WebEditWarp extends Component {
 							/>
 						) : (
 							<div className="none-content">
-								努力加载中...
+								加载中...
 							</div>
 						)}
 					</div>
@@ -411,12 +410,14 @@ class WebEditWarp extends Component {
 					}
 					{
 						Show_Modal_Edit ? (
-							<div className="modal-mask-edit" style={ !Mask_Edit_View_Change ? View_Change_Style : '' }>
+							<div className="modal-mask-edit" style={ !Mask_Edit_View_Change ? View_Change_Style : null }>
 								<div className="modal-content" style={{ width: Mask_Edit_View_Change ? '900px' : '100%' }}>
-									<label className="change-icon" onClick={ this.setState({ Mask_Edit_View_Change: !Mask_Edit_View_Change }) }>
+									<label className="change-icon" onClick={ () => _this.setState({ Mask_Edit_View_Change: !Mask_Edit_View_Change }) }>
 										切换视图
 									</label>
-									业务组件
+									<h1>  编辑 相关业务组件  </h1>
+
+									<Button className="ss" onClick={ () => _this.setState({ Show_Modal_Edit: !Show_Modal_Edit }) }> 退出编辑 </Button>
 								</div>
 							</div>
 						) : 
@@ -436,7 +437,10 @@ class WebEditWarp extends Component {
 						Show_Moda_Sort ? (
 							<div className="modal-mask-sort">
 								<div className="modal-content">
-									<SortMenu currentSort={ this.currentSortFn } Section_Data={ this.state.WebData.Section_Data }/>
+									<SortMenu 
+									vueEnabled={ _this.vueEnabledFn }
+									currentSort={ _this.currentSortFn } 
+									Section_Data={ _this.state.WebData.Section_Data } />
 								</div>
 							</div>
 						) : 

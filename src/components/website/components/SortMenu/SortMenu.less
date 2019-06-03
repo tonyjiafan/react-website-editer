@@ -34,10 +34,9 @@
 
 .tuo-zhuai-item-warp {
     width: 90%;
-    height: 38px;
+    min-height: 38px;
     margin: 4px auto;
     line-height: 36px;
-    position: relative;
     background: #e2e9ec;
     border-radius: 2px;
     display: block;
@@ -48,6 +47,11 @@
         .seeting-box {
             display: block;
         }
+    }
+    .tuo-zhuai-item{
+        width: 100%;
+        height: 38px;
+        position: relative;
     }
 }
 
@@ -141,14 +145,13 @@
     line-height: 120px;
     position: relative;
     cursor: pointer;
-    transition: all .2s;
     overflow: hidden;
     padding: 2px;
     border-radius: 2px;
 }
 
 .dargDiv {
-    cursor: move;
+    cursor: move !important;
 }
 
 .flip-list-move {

@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import './SortMenu.less';
 
-import { Icon } from 'antd';
+import { Icon, Button } from 'antd';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const MyIcon = Icon.createFromIconfontCN({
@@ -50,7 +50,6 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     outline: isDragging ? '2px dashed #2d8cf0' : '',
     margin: isDragging ? '12px auto' : '6px auto',
     borderRadius: isDragging ? '0px' : '2px',
-
     // 在draggables上应用的样式
     ...draggableStyle
 })
@@ -60,7 +59,6 @@ const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? 'rgba(0,0,0,0)' : 'rgba(0,0,0,0)',
 })
 
-
 class SortMenu extends Component {
 	constructor(props) {
 		super(props);
@@ -69,6 +67,10 @@ class SortMenu extends Component {
         }
 
         this.onDragEnd = this.onDragEnd.bind(this)
+        this.closeModuleWarp = this.closeModuleWarp.bind(this)
+        // this.vueEnabled = this.vueEnabled.bind(this)
+        // this.vueEdit = this.vueEdit.bind(this)
+        this.settingData = this.settingData.bind(this)
     }
 
     onDragEnd(result) {
@@ -87,21 +89,60 @@ class SortMenu extends Component {
         })
     }
 
-	componentWillMount() {
-        console.log(this.props)
+    // 关闭菜单
+    closeModuleWarp() {
+        const parentThis = window.A_vue
+        parentThis.setState({
+            Show_Moda_Sort: false
+        })
+    }
+    // 编辑当前模块
+    vueEdit(item) {
+        const parentThis = window.A_vue
+        const { Section_Code, Rich_Id, Section_Type } = item
+        let params = {
+                Current_Type: Section_Type,
+                Current_Component: Section_Code, 
+                Current_RichId: Rich_Id + '',
+            }
+        parentThis.vueEditFn(params)
+    }
+    // 移除模块
+    vueEnabled(index) {
+        const _this = this
+        // 调用父组件的 排序方法
+        _this.props.vueEnabled({ index: index, typeName: '' })
+    }
+    // 设置初始数据
+    settingData() {
         const _this = this
         const { Section_Data } = _this.props
         _this.setState({
             menus: Section_Data
         }, function() {
-            console.log(_this.state.menus)
+            console.dir('传递进来的菜单顺序 :')
+            console.dir(_this.state.menus)
         })
+    }
 
+    // 在渲染前调用,在客户端也在服务端
+	componentWillMount() {
+        const _this = this
+        console.log('传递进来的菜单 props')
+        console.log(_this.props)
+        
+        _this.settingData()
         // 处理默认事件
         document.body.ondrop = event => {
             event.preventDefault();
             event.stopPropagation();
         };
+    }
+
+    // 在组件接收到一个新的 prop (更新后)时被调用。这个方法在初始化render时不会被调用。
+    componentWillReceiveProps() {
+        const _this = this
+        _this.settingData()
     }
 
 	render() {
@@ -112,12 +153,12 @@ class SortMenu extends Component {
                 <div className="web_module_warp">
                     <div className="web_module_title">
                         菜单管理
-                        <label onClick={ () => _this.closeModuleWarp }>
+                        <label onClick={ _this.closeModuleWarp } >
                             <Icon className="close" style={{ fontSize: '20px'}} type="close" />
                         </label>
                     </div>
                     <div style={{ padding: "10px" }}>
-                        <DragDropContext onDragEnd={this.onDragEnd}>
+                        <DragDropContext onDragEnd={ _this.onDragEnd }>
                             <Droppable droppableId="droppable">
                             {(provided, snapshot) => (
                                 <div
@@ -125,41 +166,46 @@ class SortMenu extends Component {
                                     ref={provided.innerRef}
                                     style={getListStyle(snapshot.isDraggingOver)}>
 
-                                    {_this.state.menus.map((item, index) => (
-                                        <Draggable 
-                                        key={ `${item.Section_Code}-${item.Rich_Id}` } 
-                                        draggableId={ `${item.Section_Code}-${item.Rich_Id}` } 
-                                        index={index}>
+                                    {_this.state.menus.map((item, index) => ( 
+                                        item.Enabled ? 
+                                        (
+                                            <Draggable 
+                                            key={ `${item.Section_Code}-${item.Rich_Id}` } 
+                                            draggableId={ `${item.Section_Code}-${item.Rich_Id}` } 
+                                            index={index}
+                                            >
+                                            {(provided, snapshot) => (
+                                                <span className="tuo-zhuai-item-warp dargDiv"
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    style={getItemStyle(
+                                                        snapshot.isDragging,
+                                                        provided.draggableProps.style)}
+                                                    >
 
-                                        {(provided, snapshot) => (
-                                            <span className="tuo-zhuai-item-warp dargDiv"
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                style={getItemStyle(
-                                                    snapshot.isDragging,
-                                                    provided.draggableProps.style
-                                            )}>
+                                                    <div className="tuo-zhuai-item">
+                                                        <span className="tuo-zhuai-tag">
+                                                            <MyIcon style={{ fontSize: '20px', color: '#888'}} type="icon-align-justify" />
+                                                        </span>
+                                                        <span className="tuo-zhuai-text">{ item.Section_Name }</span>
 
-                                                <span className="tuo-zhuai-tag">
-                                                    <MyIcon style={{ fontSize: '20px', color: '#888'}} type="icon-align-justify" />
+                                                        <span className="edit-box seeting-box">
+                                                            <label onClick={ () => _this.vueEdit(item) }>
+                                                                <MyIcon className="hover-icon" style={{ fontSize: '19px'}} type="icon-tianxie" />
+                                                            </label>
+                                                        </span>
+                                                        <span className="delete-box seeting-box">
+                                                            <label onClick={ () => _this.vueEnabled(index) }>
+                                                                <MyIcon className="hover-icon" style={{ fontSize: '21px', marginTop: '5px'}} type="icon-trash-alt" />
+                                                            </label>
+                                                        </span>
+                                                    </div>
                                                 </span>
-                                                <span className="tuo-zhuai-text">{ item.Section_Name }</span>
-
-                                                <span className="edit-box seeting-box">
-                                                    <label onClick={ () => _this.vueEdit(item) }>
-                                                        <MyIcon className="hover-icon" style={{ fontSize: '19px'}} type="icon-tianxie" />
-                                                    </label>
-                                                </span>
-                                                <span className="delete-box seeting-box">
-                                                    <label onClick={ () => _this.vueEnabled(index) }>
-                                                        <MyIcon className="hover-icon" style={{ fontSize: '21px', marginTop: '5px'}} type="icon-trash-alt" />
-                                                    </label>
-                                                </span>
-                                            </span>
-
-                                        )}
+                                            )}
                                         </Draggable>
+                                        ) :
+                                        null
                                     ))}
                                     {provided.placeholder}
                                 </div>
