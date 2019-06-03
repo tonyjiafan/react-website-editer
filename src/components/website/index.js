@@ -5,8 +5,8 @@ import './index.less';
 // 组件
 import SortMenu from './components/SortMenu/SortMenu'; //排序菜单
 // import Tuzhuai from './components/SortMenu/examples'; //排序菜单
+import ModuleList from './components/ModuleList/ModuleList'; //模块菜单
 
-// import ModulesList from './conmponents/ModuleList'; //模块菜单
 // import TemplateList from './conmponents/TemplateList'; //模板菜单
 
 
@@ -77,6 +77,8 @@ class WebEditWarp extends Component {
 		this.relooad = this.relooad.bind(this)
 		this.saveDataToLocalStorage = this.saveDataToLocalStorage.bind(this)
 		this.vueEnabledFn = this.vueEnabledFn.bind(this)
+		this.vueDeleteFn = this.vueDeleteFn.bind(this)
+
 	}
 
 	goBackList(ss) {
@@ -428,7 +430,11 @@ class WebEditWarp extends Component {
 						Show_Moda_Module ? (
 							<div className="modal-mask-add-module">
 								<div className="modal-content">
-									模块添加
+									<ModuleList 
+										Module_List={ _this.state.WebData.Section_Data}
+										vueEnabled={ _this.vueEnabledFn }
+										vueDelete={ _this.vueDeleteFn }
+									/>
 								</div>
 							</div>
 						) : 
