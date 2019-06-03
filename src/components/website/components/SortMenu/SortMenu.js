@@ -45,18 +45,21 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     // 一些基本的样式，使项目看起来更好一点
     userSelect: 'none',
     // 拖动时更改背景颜色 当前的item元素
-    background: isDragging ? '#fff' : '#e2e9ec',
+    background: isDragging ? '#fff' : '#fff',
     display: isDragging ? 'inline-block' : '',
     outline: isDragging ? '2px dashed #2d8cf0' : '',
     margin: isDragging ? '12px auto' : '6px auto',
     borderRadius: isDragging ? '0px' : '2px',
+    boxShadow: isDragging ? 'none' : '0 1px 4px 0 rgba(0, 0, 0, 0.137)',
     // 在draggables上应用的样式
     ...draggableStyle
 })
 
 const getListStyle = isDraggingOver => ({
     // 拖拽时候 修改容器的样式
-    background: isDraggingOver ? 'rgba(0,0,0,0)' : 'rgba(0,0,0,0)',
+    background: isDraggingOver ? 'rgb(228, 240, 255)' : 'rgba(0,0,0,0)',
+    paddingTop: '10px',
+    minHeight: 'calc(100% - 50px)',
 })
 
 class SortMenu extends Component {
@@ -84,9 +87,14 @@ class SortMenu extends Component {
             result.destination.index
         )
 
-        _this.setState({ menus }, function () {
-            _this.props.currentSort(_this.state.menus)
-        })
+        _this.props.currentSort(menus)
+        
+        // _this.setState({
+        //     menus
+        // }, () => {
+        //     console.log(_this.state.menus)
+        //     _this.props.currentSort(_this.state.menus)
+        // })
     }
 
     // 关闭菜单
@@ -114,22 +122,24 @@ class SortMenu extends Component {
         _this.props.vueEnabled({ index: index, typeName: '' })
     }
     // 设置初始数据
-    settingData() {
+    settingData(data) {
         const _this = this
-        const { Section_Data } = _this.props
+        const newState = _this.state
+
+        newState.menus = data || _this.props.Section_Data
         _this.setState({
-            menus: Section_Data
+            ...newState
         }, function() {
-            console.dir('传递进来的菜单顺序 :')
-            console.dir(_this.state.menus)
+            // console.dir('传递进来的菜单顺序 :')
+            // console.dir(_this.state.menus)
         })
     }
 
     // 在渲染前调用,在客户端也在服务端
 	componentWillMount() {
         const _this = this
-        console.log('传递进来的菜单 props')
-        console.log(_this.props)
+        // console.log('传递进来的菜单 props')
+        // console.log(_this.props)
         
         _this.settingData()
         // 处理默认事件
@@ -140,13 +150,74 @@ class SortMenu extends Component {
     }
 
     // 在组件接收到一个新的 prop (更新后)时被调用。这个方法在初始化render时不会被调用。
-    componentWillReceiveProps() {
+    componentWillReceiveProps(nextProps) {
+        // console.log(nextProps)
         const _this = this
-        _this.settingData()
+        _this.settingData(nextProps.Section_Data)
     }
 
 	render() {
         const _this = this
+
+        function DragDropItems () {
+            return (
+                <DragDropContext onDragEnd={ _this.onDragEnd }>
+                    <Droppable droppableId="droppable">
+                    {(provided, snapshot) => (
+                        <div
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                            style={getListStyle(snapshot.isDraggingOver)}>
+
+                            {_this.state.menus.map((item, index) => ( 
+                                item.Enabled ? 
+                                (
+                                    <Draggable 
+                                    key={ `${item.Section_Code}-${item.Rich_Id}` } 
+                                    draggableId={ `${item.Section_Code}-${item.Rich_Id}` } 
+                                    index={index}
+                                    >
+                                    {(provided, snapshot) => (
+                                        <span className="tuo-zhuai-item-warp dargDiv"
+                                            ref={provided.innerRef}
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            style={getItemStyle(
+                                                snapshot.isDragging,
+                                                provided.draggableProps.style)}
+                                            >
+
+                                            <div className="tuo-zhuai-item">
+                                                <span className="tuo-zhuai-tag">
+                                                    <MyIcon style={{ fontSize: '20px', color: '#888'}} type="icon-align-justify" />
+                                                </span>
+                                                <span className="tuo-zhuai-text">{ item.Section_Name }</span>
+
+                                                <span className="edit-box seeting-box">
+                                                    <label onClick={ () => _this.vueEdit(item) }>
+                                                        <MyIcon className="hover-icon" style={{ fontSize: '19px'}} type="icon-tianxie" />
+                                                    </label>
+                                                </span>
+                                                <span className="delete-box seeting-box">
+                                                    <label onClick={ () => _this.vueEnabled(index) }>
+                                                        <MyIcon className="hover-icon" style={{ fontSize: '21px', marginTop: '5px'}} type="icon-trash-alt" />
+                                                    </label>
+                                                </span>
+                                            </div>
+                                        </span>
+                                    )}
+                                </Draggable>
+                                ) :
+                                null
+                            ))}
+                            {provided.placeholder}
+                        </div>
+                    )}
+                    </Droppable>
+                </DragDropContext>
+
+            )
+        }
 
 		return (
 			<div className="SortMenu">
@@ -157,62 +228,9 @@ class SortMenu extends Component {
                             <Icon className="close" style={{ fontSize: '20px'}} type="close" />
                         </label>
                     </div>
-                    <div style={{ padding: "10px" }}>
-                        <DragDropContext onDragEnd={ _this.onDragEnd }>
-                            <Droppable droppableId="droppable">
-                            {(provided, snapshot) => (
-                                <div
-                                    {...provided.droppableProps}
-                                    ref={provided.innerRef}
-                                    style={getListStyle(snapshot.isDraggingOver)}>
-
-                                    {_this.state.menus.map((item, index) => ( 
-                                        item.Enabled ? 
-                                        (
-                                            <Draggable 
-                                            key={ `${item.Section_Code}-${item.Rich_Id}` } 
-                                            draggableId={ `${item.Section_Code}-${item.Rich_Id}` } 
-                                            index={index}
-                                            >
-                                            {(provided, snapshot) => (
-                                                <span className="tuo-zhuai-item-warp dargDiv"
-                                                    ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                    style={getItemStyle(
-                                                        snapshot.isDragging,
-                                                        provided.draggableProps.style)}
-                                                    >
-
-                                                    <div className="tuo-zhuai-item">
-                                                        <span className="tuo-zhuai-tag">
-                                                            <MyIcon style={{ fontSize: '20px', color: '#888'}} type="icon-align-justify" />
-                                                        </span>
-                                                        <span className="tuo-zhuai-text">{ item.Section_Name }</span>
-
-                                                        <span className="edit-box seeting-box">
-                                                            <label onClick={ () => _this.vueEdit(item) }>
-                                                                <MyIcon className="hover-icon" style={{ fontSize: '19px'}} type="icon-tianxie" />
-                                                            </label>
-                                                        </span>
-                                                        <span className="delete-box seeting-box">
-                                                            <label onClick={ () => _this.vueEnabled(index) }>
-                                                                <MyIcon className="hover-icon" style={{ fontSize: '21px', marginTop: '5px'}} type="icon-trash-alt" />
-                                                            </label>
-                                                        </span>
-                                                    </div>
-                                                </span>
-                                            )}
-                                        </Draggable>
-                                        ) :
-                                        null
-                                    ))}
-                                    {provided.placeholder}
-                                </div>
-                            )}
-                            </Droppable>
-                        </DragDropContext>
-                        <p style={{ textAlign: "center", padding: "6px 0px 12px", marginTop: "20px" }}>
+                    <div style={{ height: "calc(100% - 40px)", width: "100%" }}>
+                        <DragDropItems />
+                        <p style={{ textAlign: "center", padding: "5px 0px" }}>
                             出现 <MyIcon type="icon-move1"  style={{ verticalAlign: "-2px", fontSize: "16px", color: "#2a2a2b" }} /> 按住拖动排序
                         </p>
                     </div>

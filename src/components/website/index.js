@@ -93,11 +93,11 @@ class WebEditWarp extends Component {
 
 	// 刷新页面
 	relooad() {
-		console.log('======= reload =======')
 		const _this = this
 		const { WebData } = _this.state
 		const Child_Window = window.frames['prewWebsite'] //获得对应iframe的window对象
-		console.log(Child_Window)
+		// console.log('======= reload =======')
+		// console.log(Child_Window)
 		Child_Window.B_vue.updatedPageData(WebData)
 	}
 	
@@ -262,9 +262,10 @@ class WebEditWarp extends Component {
 	 * 拖拽排序方法
 	 * Section_Data 传递过来的参数 已经是处理好的 直接赋值
 	 */ 
-	currentSortFn(Section_Data) {
+	currentSortFn(Back_Section_Data) {
 		const _this = this
 		const newState = _this.state
+		const Section_Data = Back_Section_Data.map(e => e)
 
 		newState.WebData.Section_Data = Section_Data
 		_this.setState({
