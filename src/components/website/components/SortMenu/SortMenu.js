@@ -45,9 +45,11 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     // 一些基本的样式，使项目看起来更好一点
     userSelect: 'none',
     // 拖动时更改背景颜色 当前的item元素
-    background: isDragging ? '#fff' : '#fff',
+    background: isDragging ? 'rgb(255, 135, 79)' : '#fff',
+    color: isDragging ? '#fff' : '#2a2a2b',
+    fontWeight: isDragging ? '600' : '400',
     display: isDragging ? 'inline-block' : '',
-    outline: isDragging ? '2px dashed #2d8cf0' : '',
+    outline: isDragging ? '2px dashed rgb(255, 135, 79)' : '',
     margin: isDragging ? '12px auto' : '6px auto',
     borderRadius: isDragging ? '0px' : '2px',
     boxShadow: isDragging ? 'none' : '0 1px 4px 0 rgba(0, 0, 0, 0.137)',
@@ -182,14 +184,11 @@ class SortMenu extends Component {
                                             ref={provided.innerRef}
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
-                                            style={getItemStyle(
-                                                snapshot.isDragging,
-                                                provided.draggableProps.style)}
-                                            >
+                                            style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}>
 
                                             <div className="tuo-zhuai-item">
                                                 <span className="tuo-zhuai-tag">
-                                                    <MyIcon style={{ fontSize: '20px', color: '#888'}} type="icon-align-justify" />
+                                                    <MyIcon style={{ fontSize: '20px' }} type="icon-align-justify" />
                                                 </span>
                                                 <span className="tuo-zhuai-text">{ item.Section_Name }</span>
 
