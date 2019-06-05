@@ -71,34 +71,25 @@ class SortMenu extends Component {
             menus: []
         }
 
+        this.settingData = this.settingData.bind(this)
         this.onDragEnd = this.onDragEnd.bind(this)
         this.closeModuleWarp = this.closeModuleWarp.bind(this)
         // this.vueEnabled = this.vueEnabled.bind(this)
         // this.vueEdit = this.vueEdit.bind(this)
-        this.settingData = this.settingData.bind(this)
     }
-
+    // 拖拽
     onDragEnd(result) {
         const _this = this
         // 掉到了名单之外
         if (!result.destination) return
-
         const menus = reorder(
             _this.state.menus,
             result.source.index,
             result.destination.index
         )
-
+        // 传递最新的列队 到父组件
         _this.props.currentSort(menus)
-        
-        // _this.setState({
-        //     menus
-        // }, () => {
-        //     console.log(_this.state.menus)
-        //     _this.props.currentSort(_this.state.menus)
-        // })
     }
-
     // 关闭菜单
     closeModuleWarp() {
         const parentThis = window.A_vue
@@ -136,21 +127,19 @@ class SortMenu extends Component {
             // console.dir(_this.state.menus)
         })
     }
-
+    
     // 在渲染前调用,在客户端也在服务端
 	componentWillMount() {
         const _this = this
-        // console.log('传递进来的菜单 props')
-        // console.log(_this.props)
-        
-        _this.settingData()
+        _this.settingData()   
+    }
+    componentDidMount() {
         // 处理默认事件
         document.body.ondrop = event => {
             event.preventDefault();
             event.stopPropagation();
         };
     }
-
     // 在组件接收到一个新的 prop (更新后)时被调用。这个方法在初始化render时不会被调用。
     componentWillReceiveProps(nextProps) {
         // console.log(nextProps)

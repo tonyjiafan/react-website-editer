@@ -6,7 +6,9 @@ import './ModuleList.less';
 
 import {
 	Icon,
-	Button
+	Modal,
+	Button,
+	message
 } from 'antd';
 
 class ModuleList extends Component {
@@ -17,6 +19,7 @@ class ModuleList extends Component {
 		}
 
 		this.settingData = this.settingData.bind(this) //初始设置
+		this.closeModuleWarp = this.closeModuleWarp.bind(this) //关闭菜单
 	}
 
 	// 设置初始数据
@@ -27,10 +30,58 @@ class ModuleList extends Component {
 		newState.moudels = data || _this.props.Module_List.map(e => e)
 		_this.setState({
 			...newState
-		}, function() {
+		}, () => {
 			// console.dir('传递进来的菜单顺序 :')
 			// console.dir(_this.state.menus)
 		})
+	}
+	// 关闭菜单
+    closeModuleWarp() {
+        const parentThis = window.A_vue
+        parentThis.setState({
+            Show_Moda_Sort: false
+        })
+    }
+	// 开启模块使用  module参数代表 来自哪个菜单的操作
+	changeEnabled(Enabled, index) {
+		const _this = this
+		// 模块没有开启才能添加
+		if (!Enabled) { 
+			_this.props.vueEnabled({ index: index, typeName: 'module' })
+		}
+	}
+	// 彻底删除 自定义 模块
+	vueDeleteModule(index, Rich_Id) {
+		const _this = this
+		const confirm = Modal.confirm
+		const moudels = _this.state.moudels.map(e => e)
+		confirm({
+			title: '删除',
+			content: '模块删除后无法恢复，确定要删除吗？',
+			okText: '确定',
+			okType: 'danger',
+			cancelText: '取消',
+			onOk() {
+				moudels.splice(index, 1)
+				_this.props.vueDelete(moudels)
+				message.success('删除成功！')
+			},
+			onCancel() {
+				message.info('取消操作了！')
+			}
+		})
+	}
+
+	// 唤醒菜单
+	changeCurrentView() {
+		const parentThis = window.A_vue
+		let params = {
+			Current_Type: 8,
+			Current_Component: 'Custom',
+			Current_RichId: 'NewRich',
+		}
+
+		parentThis.vueEditFn(params)
 	}
 
 	componentWillMount() {
@@ -38,6 +89,11 @@ class ModuleList extends Component {
 		console.log(_this.props)
 		_this.settingData()
 	}
+    componentWillReceiveProps(nextProps) {
+		console.log(nextProps)
+        const _this = this
+        _this.settingData(nextProps.Module_List)
+    }
 
 	render() {
 		const _this = this
@@ -98,7 +154,7 @@ class ModuleList extends Component {
 					添加自定义模块
 				</div>
 				<ul className="padd" style={{ padding: "10px" }}>
-					<li className="li li-nomar-hover" onClick={ () => _this.changeCurrentView }>
+					<li className="li li-nomar-hover" onClick={ _this.changeCurrentView }>
 						<Icon className="li-icon" type="container" style={{ fontSize: "32px" }}></Icon>
 						<div className="ti">文本编辑</div>
 					</li>
@@ -127,9 +183,6 @@ class ModuleList extends Component {
 					}
 					<div className="clear"></div>
 				</ul>
-
-				
-				
 			</div>
 		)
 	}

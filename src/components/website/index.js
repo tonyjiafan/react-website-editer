@@ -78,6 +78,7 @@ class WebEditWarp extends Component {
 		this.saveDataToLocalStorage = this.saveDataToLocalStorage.bind(this)
 		this.vueEnabledFn = this.vueEnabledFn.bind(this)
 		this.vueDeleteFn = this.vueDeleteFn.bind(this)
+		this.vueEditFn = this.vueEditFn.bind(this)
 
 	}
 
@@ -147,12 +148,15 @@ class WebEditWarp extends Component {
 	 * */ 
 	vueDeleteFn(Moudels) {
 		const _this = this
-		_this.WebData.Section_Data = Moudels
-
-		// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
-		localStorage.setItem('jy-web-flag', '0')
-
-		_this.saveDataToLocalStorage()
+		const newState = _this.state
+		newState.WebData.Section_Data = Moudels
+		_this.setState({
+			...newState
+		}, () => {
+			// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
+			localStorage.setItem('jy-web-flag', '0')
+			_this.saveDataToLocalStorage()
+		})
 	}
 	/** 
 	 * 启用/停用 模块
@@ -163,7 +167,7 @@ class WebEditWarp extends Component {
 		// log('vueEnabledFn', params)
 		const _this = this
 		const { typeName, index } = params
-		let newState = _this.state
+		const newState = _this.state
 		// 如果当前的编辑状态属于打开状态  移除不可操作
 		if (newState.Show_Modal_Edit) return message.warning('当前处于编辑状态，不能执行此操作！');
 
@@ -388,12 +392,11 @@ class WebEditWarp extends Component {
 							<iframe
 								title="pc"
 								className="web_pc_iframe"
-								src={ `http://localhost:3000/tem1/index.html?${_this.state.meetingId}` }
+								src={`http://localhost:3000/tem5/index.html?${_this.state.meetingId}`}
 								name="prewWebsite"
 								id="prewWebsite"
 								frameBorder="0"
-								scrolling="yes"
-							/>
+								scrolling="yes" />
 						) : (
 							<div className="none-content">
 								加载中...
@@ -433,8 +436,7 @@ class WebEditWarp extends Component {
 									<ModuleList 
 										Module_List={ _this.state.WebData.Section_Data}
 										vueEnabled={ _this.vueEnabledFn }
-										vueDelete={ _this.vueDeleteFn }
-									/>
+										vueDelete={ _this.vueDeleteFn } />
 								</div>
 							</div>
 						) : 

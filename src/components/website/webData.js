@@ -18,8 +18,8 @@ const websiteData = {
         PhoneNo: ''
       }
     ],
-    Meeting_Site_Head:
-      'https://kxpic.cn/whale/comm/defaultHeadImage/banner4.png',
+    Meeting_Site_Head: '',
+    // Meeting_Site_Head: 'https://kxpic.cn/whale/comm/defaultHeadImage/banner4.png',
     App_Site_Head: 'https://kxpic.cn/whale/comm/defaultHeadImage/banner3.png',
     Whether_To_Display_Basic: true,
     Show_Enroll_Count: false,
