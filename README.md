@@ -14,38 +14,19 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## 看图说话
 
-<img style="width:300px;" src="https://github.com/tonyjiafan/AngularJS--YOHO-/blob/master/introImg/11.png" />
+
+##### 网站模板选择
+
+<img style="width:300px;" src="https://github.com/tonyjiafan/react-website-editer/blob/master/view_img/template.jpg?raw=true" />
 
 
+##### 网站模块管理
+
+<img style="width:300px;" src="https://github.com/tonyjiafan/react-website-editer/blob/master/view_img/module.jpg?raw=true" />
 
 
+##### 网站菜单管理-支持拖拽排序实时更新编辑器网页模块顺序
 
-## Learn More
+<img style="width:300px;" src="https://github.com/tonyjiafan/react-website-editer/blob/master/view_img/menus.jpg?raw=true" />
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
