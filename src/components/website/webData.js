@@ -27,7 +27,7 @@ const websiteData = {
         "XY_Center": "{\"lng\":104.055783,\"lat\":30.694908}",
         "Allow_Setup_Logo": false,
         "Logo_Url": null,
-        "Default_Logo": "http://kxfile.oss-cn-hangzhou.aliyuncs.com/whale/comm/logo.png",
+        "Default_Logo": "https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg",
         "Open_Enroll_Face": false,
         "Enroll_Sms_Verify": false,
         "Need_Audit": false,

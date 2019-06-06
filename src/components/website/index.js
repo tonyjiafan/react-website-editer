@@ -352,7 +352,25 @@ class WebEditWarp extends Component {
 
 		return (
 			<div className="WebEditWarp">
-				<div className="web_nav_top" />
+				<div className="web_nav_top">
+					<span className="back-btn btn-1">
+						<img src={ `https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg` } alt="" />
+						<span> 网站在线设计系统 </span>
+					</span>
+					{!Show_Modal_Edit && !Show_Modal_Template ? 
+						(
+							<div className="icon-coat">
+								<span style={{ opacity: Is_Pc_Warp ? 1 : '.5', color: Is_Pc_Warp ? '#202020' : '' }} class="back-btn btn-2" onClick={ () => _this.changeWarp('PC') }>
+									<MyIcon style={{ marginTop: '10px', fontSize: '22px' }} type="icon-cl-icon-Computer"></MyIcon>
+								</span>
+								<span style={{ opacity: !Is_Pc_Warp ? 1 : '.5', color: !Is_Pc_Warp ? '#202020' : '' }} class="back-btn btn-3" onClick={ () => _this.changeWarp('Mobile') }>
+									<MyIcon style={{ marginTop: '10px', fontSize: '22px' }} type="icon-cl-icon-Mobile"></MyIcon>
+								</span>
+							</div>
+						) : null
+					}
+					<div class="btn-4-coat"></div>
+				</div>
 				<div className="web_main_content">
 					<div className="left_menu">
 						<div className="left_item" onClick={ () => _this.vueOpenModalFn('Show_Modal_Template') } style={{ background: Show_Modal_Template ? '#ff5200' : '' }}>

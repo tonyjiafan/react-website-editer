@@ -10,12 +10,13 @@
     overflow: hidden;
 }
 
+// 头部定位 导航
 .web_nav_top {
+    // min-width: 1280px;
     height: 50px;
     background: #fff;
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .137);
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.137);
     position: fixed;
-    z-index: 10;
     left: 0;
     top: 0;
     right: 0;
@@ -24,6 +25,97 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    .back-btn{
+        display: inline-block;
+        min-width: 40px;
+        height: 40px;
+        line-height: 40px;
+        color: #27282d;
+        text-align: center;
+        cursor: pointer;
+    }
+    .btn-1{
+        padding: 0px 6px;
+        width: 310px;
+        height: 50px;
+        line-height: 50px;
+        text-align: left;
+        img{
+            max-width: 35px;
+            min-width: 35px;
+            vertical-align: -20px;
+            position: relative;
+            top: -8px;
+        }
+        span{
+            font-size: 16px;
+            display: inline-block;
+            vertical-align: -1px;
+            color: #413d3e;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+    }
+    .icon-coat{
+        width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e8e8e8;
+        border-radius: 2px;
+        .btn-2{
+            color: #666;
+            opacity: .5;
+            &:hover{
+                color: #202020;
+                opacity: 1;
+            }
+        }
+        .btn-3{
+            border-left: 1px solid #e8e8e8;
+            color: #666;
+            opacity: .5;
+            &:hover{
+                color: #202020;
+                opacity: 1;
+            }
+        }
+    }
+
+    .btn-4-coat{
+        width: 310px;
+        text-align: right;
+        position: relative;
+        .preview-box{
+            padding: 10px;
+            position: absolute;
+            background: #fff;
+            bottom: -270px;
+            right: 78px;
+            width: 200px;
+            height: 260px;
+            box-shadow: 0 1px 8px 0 rgba(0,0,0,.2), 0 3px 4px 0 rgba(0,0,0,.14), 0 3px 3px -2px rgba(0,0,0,.12);
+            text-align: center;
+            p {
+                margin-left: 10px;
+            }
+        }
+    }
+    .btn-4{
+        height: 32px;
+        line-height: 30px;
+        color: #ff5303;
+        border: 1px solid #ff5303;
+        border-radius: 2px;
+        padding-left: 12px;
+        padding-right: 12px;
+        margin-right: 12px;
+        font-weight: 400;
+        &:hover{
+            color: #2d8cf0;
+            border: 1px solid #2d8cf0;
+        }
+    }
 }
 
 // 占满整个容器
