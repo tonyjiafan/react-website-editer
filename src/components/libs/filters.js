@@ -13,3 +13,13 @@ export function cloneObj(obj) {
     }
     return newobj;
 }
+
+
+// 判断参数 是不是数组
+export function isArrayFn(arr) {
+    if (typeof Array.isArray === 'function') {
+        return Array.isArray(arr);
+    } else {
+        return Object.prototype.toString.call(arr) === '[object Array]';
+    }
+}

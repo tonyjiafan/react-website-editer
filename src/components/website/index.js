@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
 import websiteData from './webData';
 import './index.less';
+import { Icon, message, Button } from 'antd';
+import { isArrayFn } from '../libs/filters'
 
 // 组件
 import SortMenu from './components/SortMenu/SortMenu'; //排序菜单
-// import Tuzhuai from './components/SortMenu/examples'; //排序菜单
 import ModuleList from './components/ModuleList/ModuleList'; //模块菜单
-
 // import TemplateList from './conmponents/TemplateList'; //模板菜单
 
 
-import { Icon, message, Button } from 'antd';
 const MyIcon = Icon.createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_1219293_3pjl5z7tuio.js' // 在 iconfont.cn 上生成
 })
 
-/**
- * jy-web-flag 用来判断当前的数据内容 是否被编辑过  1 未编辑  0 已编辑 
- * */ 
 
 /**
+ * jy-web-flag 用来判断当前的数据内容 是否被编辑过  1 未编辑  0 已编辑 
+ * 
  * Show_Modal_Template 模板选择
  * Show_Modal_Edit  模块编辑
  * Show_Moda_Module  模块添加
@@ -239,15 +237,9 @@ class WebEditWarp extends Component {
 	// Modules 所有编辑后 回传的整个 数据模型
 	editModuleUpdate(Modules, isOpen = false, isChange = true) {
 		const _this = this
-		let flag = _this.isArrayFn(Modules)
+		let flag = isArrayFn(Modules)
 		
-		if (flag) {
-			// log('数组对象', Modules)
-			_this.WebData.Section_Data = Modules
-		} else {
-			// log('json对象', Modules)
-			_this.WebData.Basic = Modules
-		}
+		flag ? _this.WebData.Section_Data = Modules : _this.WebData.Basic = Modules
 
 		// isChange 为false 组件编辑后 如果是点击的 取消按钮 则不改变
 		if (isChange) {
@@ -298,14 +290,14 @@ class WebEditWarp extends Component {
 			if (e.Is_Checked && e.Template_Type == 1) {
 				_this.WebData.Temp_Path = e.Template_Path
 				_this.WebData.Temp_Code = e.Template_Code
-			} else if (e.Is_Checked && e.Template_Type == 2) {
+			} else if (e.Is_Checked && e.Template_Type === 2) {
 				_this.WebData.App_Temp_Path = e.Template_Path
 				_this.WebData.App_Temp_Code = e.Template_Code
 			}
 		})
 
 		// 根据模板点击 来判断是 PC 还是 移动
-		_this.Is_Pc_Warp = Click_Type == 1 ? true : false
+		_this.Is_Pc_Warp = Click_Type === 1 ? true : false
 
 		_this.WebData.Template_List = Tem_List
 
@@ -322,7 +314,6 @@ class WebEditWarp extends Component {
 	}
 
 
-	
 	// 在渲染前调用,在客户端也在服务端
 	componentWillMount() {
 		console.log('Component WILL MOUNT!')
@@ -358,6 +349,7 @@ class WebEditWarp extends Component {
 			Show_Moda_Module,
 			Show_Moda_Sort,
 		} = _this.state
+
 		return (
 			<div className="WebEditWarp">
 				<div className="web_nav_top" />
@@ -368,19 +360,16 @@ class WebEditWarp extends Component {
 							<br/>
 							<span style={{ color: Show_Modal_Template ? '#fff' : '' }}>网站模板</span>
 						</div>
-
 						<div className="left_item" onClick={ () => _this.vueOpenModalFn('Show_Moda_Module') } style={{ background: Show_Moda_Module ? '#ff5200' : '' }}>
 							<MyIcon style={{ fontSize: '36px', color: Show_Moda_Module ? '#fff' : '' , marginTop: '10px'}} type="icon-apps" />
 							<br/>
 							<span style={{ color: Show_Moda_Module ? '#fff' : '' }}>模块添加</span>
 						</div>
-
 						<div className="left_item" onClick={ () => _this.vueOpenModalFn('Show_Moda_Sort') } style={{ background: Show_Moda_Sort ? '#ff5200' : '' }}>
 							<MyIcon style={{ fontSize: '34px', color: Show_Moda_Sort ? '#fff' : '' , marginTop: '10px'}} type="icon-menu" />
 							<br/>
 							<span style={{ color: Show_Moda_Sort ? '#fff' : '' }}>菜单管理</span>
 						</div>
-						
 						<div className="left_item" onClick={ () => _this.goBackList('点击返回') }>
 							<MyIcon style={{ fontSize: '34px', marginTop: '10px' }} type="icon-rollback" />
 							<br/>
@@ -404,8 +393,7 @@ class WebEditWarp extends Component {
 						)}
 					</div>
 					
-					{
-						Show_Modal_Template ? (
+					{Show_Modal_Template ? (
 							<div className="modal-mask-template">
 								<div className="modal-content-template" >
 									弹出层 选择网站模板
@@ -414,36 +402,32 @@ class WebEditWarp extends Component {
 						) : 
 						null
 					}
-					{
-						Show_Modal_Edit ? (
+					{Show_Modal_Edit ? (
 							<div className="modal-mask-edit" style={ !Mask_Edit_View_Change ? View_Change_Style : null }>
 								<div className="modal-content" style={{ width: Mask_Edit_View_Change ? '900px' : '100%' }}>
 									<label className="change-icon" onClick={ () => _this.setState({ Mask_Edit_View_Change: !Mask_Edit_View_Change }) }>
 										切换视图
 									</label>
 									<h1>  编辑 相关业务组件  </h1>
-
 									<Button className="ss" onClick={ () => _this.setState({ Show_Modal_Edit: !Show_Modal_Edit }) }> 退出编辑 </Button>
 								</div>
 							</div>
 						) : 
 						null
 					}
-					{
-						Show_Moda_Module ? (
+					{Show_Moda_Module ? (
 							<div className="modal-mask-add-module">
 								<div className="modal-content">
 									<ModuleList 
-										Module_List={ _this.state.WebData.Section_Data}
-										vueEnabled={ _this.vueEnabledFn }
-										vueDelete={ _this.vueDeleteFn } />
+									Module_List={ _this.state.WebData.Section_Data}
+									vueEnabled={ _this.vueEnabledFn }
+									vueDelete={ _this.vueDeleteFn } />
 								</div>
 							</div>
 						) : 
 						null
 					}
-					{
-						Show_Moda_Sort ? (
+					{Show_Moda_Sort ? (
 							<div className="modal-mask-sort">
 								<div className="modal-content">
 									<SortMenu 
@@ -455,7 +439,6 @@ class WebEditWarp extends Component {
 						) : 
 						null
 					}
-					
 				</div>
 			</div>
 		)

@@ -62,9 +62,12 @@ class ModuleList extends Component {
 			okType: 'danger',
 			cancelText: '取消',
 			onOk() {
-				moudels.splice(index, 1)
-				_this.props.vueDelete(moudels)
-				message.success('删除成功！')
+				message.loading('Action in progress..', 2)
+    			.then(() => {
+					moudels.splice(index, 1)
+					_this.props.vueDelete(moudels)
+					message.success('删除成功！', 1)
+				})
 			},
 			onCancel() {
 				message.info('取消操作了！')
