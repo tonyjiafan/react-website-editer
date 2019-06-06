@@ -17,16 +17,16 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ##### 网站模板选择
 
-<img style="width:300px;" src="https://github.com/tonyjiafan/react-website-editer/blob/master/view_img/template.jpg"/>
+<img style="width:300px;" src="https://github.com/tonyjiafan/react-website-editer/blob/master/view_img/template.jpg?raw=true"/>
 
 
 ##### 网站模块管理
 
-<img style="width:300px;" src="https://github.com/tonyjiafan/react-website-editer/blob/master/view_img/module.jpg"/>
+<img style="width:300px;" src="https://github.com/tonyjiafan/react-website-editer/blob/master/view_img/module.jpg?raw=true"/>
 
 
 ##### 网站菜单管理-支持拖拽排序实时更新编辑器网页模块顺序
 
-<img style="width:300px;" src="https://github.com/tonyjiafan/react-website-editer/blob/master/view_img/menus.jpg"/>
+<img style="width:300px;" src="https://github.com/tonyjiafan/react-website-editer/blob/master/view_img/menus.jpg?raw=true"/>
 
 
