@@ -116,7 +116,6 @@ class ModuleList extends Component {
 							key={ index }
 							onClick={ () => _this.changeEnabled(item.Enabled, index) }
 							className={ item.Enabled ? 'li disabled hover' : 'li li-nomar-hover' }>
-
 							{
 								item.Section_Code === 'Guest' ? 
 								<Icon className="li-icon" type="user" style={{ fontSize: "32px" }}></Icon> : (
@@ -144,7 +143,6 @@ class ModuleList extends Component {
 									)
 								)
 							}
-
 							<div className="ti">{ item.Section_Name }</div>
 							{ item.Enabled ? <div className="hover_block">该模块已存在</div> : null }
 						</li>
