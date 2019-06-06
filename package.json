@@ -48,12 +48,16 @@
     "postcss-normalize": "7.0.1",
     "postcss-preset-env": "6.6.0",
     "postcss-safe-parser": "4.0.1",
+    "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-app-polyfill": "^1.0.1",
     "react-beautiful-dnd": "^11.0.3",
     "react-dev-utils": "^9.0.1",
     "react-dom": "^16.8.6",
+    "react-redux": "^7.0.3",
     "react-router-dom": "^5.0.0",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
     "resolve": "1.10.0",
     "semver": "6.0.0",
     "style-loader": "0.23.1",
@@ -146,6 +150,8 @@
     ]
   },
   "devDependencies": {
-    "react-hot-loader": "^4.9.0"
+    "react-hot-loader": "^4.9.0",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-logger": "^3.0.6"
   }
 }

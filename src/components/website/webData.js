@@ -13,7 +13,7 @@ const websiteData = {
         "Organizations": [
             {
                 "Character": "主办方",
-                "Company": "不开心科技",
+                "Company": "不开心科技工作室",
                 "Contacts": "商店里能否",
                 "PhoneNo": "13398887777"
             }
