@@ -6,8 +6,9 @@ import { isArrayFn } from '../libs/filters'
 
 // 组件
 import SortMenu from './components/SortMenu/SortMenu'; //排序菜单
-import ModuleList from './components/ModuleList/ModuleList'; //模块菜单
-// import TemplateList from './conmponents/TemplateList'; //模板菜单
+import ModuleList from './components/ModuleList/ModuleList'; //模块管理
+import TemplateList from './components/TemplateList/TemplateList'; //模板选择
+
 
 
 const MyIcon = Icon.createFromIconfontCN({
@@ -69,18 +70,20 @@ class WebEditWarp extends Component {
 			WebData: websiteData,
 		}
 
-		this.vueOpenModalFn = this.vueOpenModalFn.bind(this)
-		this.goBackList = this.goBackList.bind(this)
-		this.currentSortFn = this.currentSortFn.bind(this)
-		this.relooad = this.relooad.bind(this)
-		this.saveDataToLocalStorage = this.saveDataToLocalStorage.bind(this)
-		this.vueEnabledFn = this.vueEnabledFn.bind(this)
-		this.vueDeleteFn = this.vueDeleteFn.bind(this)
-		this.vueEditFn = this.vueEditFn.bind(this)
+		this.vueOpenModalFn = this.vueOpenModalFn.bind(this) // 模块切换时 的操作界面切换
+		this.goBackList = this.goBackList.bind(this) // 返回
+		this.currentSortFn = this.currentSortFn.bind(this) // 菜单排序
+		this.relooad = this.relooad.bind(this) // 重新加载
+		this.saveDataToLocalStorage = this.saveDataToLocalStorage.bind(this) // 存储数据到本地
+		this.vueEnabledFn = this.vueEnabledFn.bind(this) // 是否开启模块
+		this.vueDeleteFn = this.vueDeleteFn.bind(this) // 删除模块
+		this.vueEditFn = this.vueEditFn.bind(this) // 编辑模块
+		this.updateTemplate = this.updateTemplate.bind(this) // 更新模板
+    	this.editModuleUpdate = this.editModuleUpdate.bind(this) // Modules 所有编辑后 回传的整个 数据模型
 
 	}
 
-	goBackList(ss) {
+	goBackList() {
 		const _this = this
 		_this.props.history.push('/');
 	}
@@ -252,8 +255,6 @@ class WebEditWarp extends Component {
 
 		// isOpen 更新模板列表中的 官网上展示报名人数 swith 时，不需要清除当前模态框
 		if (!isOpen) _this.vueOpenModalFn('')
-
-		// log(_this.WebData.Section_Data)
 	}
 
 	/**
@@ -287,7 +288,7 @@ class WebEditWarp extends Component {
 	updateTemplate(Tem_List, Click_Type = 1) {
 		const _this = this
 		Tem_List.forEach(e => {
-			if (e.Is_Checked && e.Template_Type == 1) {
+			if (e.Is_Checked && e.Template_Type === 1) {
 				_this.WebData.Temp_Path = e.Template_Path
 				_this.WebData.Temp_Code = e.Template_Code
 			} else if (e.Is_Checked && e.Template_Type === 2) {
@@ -297,9 +298,9 @@ class WebEditWarp extends Component {
 		})
 
 		// 根据模板点击 来判断是 PC 还是 移动
-		_this.Is_Pc_Warp = Click_Type === 1 ? true : false
+		_this.state.Is_Pc_Warp = Click_Type === 1 ? true : false
 
-		_this.WebData.Template_List = Tem_List
+		_this.state.WebData.Template_List = Tem_List
 
 		// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
 		localStorage.setItem('jy-web-flag', '0')
@@ -360,16 +361,16 @@ class WebEditWarp extends Component {
 					{!Show_Modal_Edit && !Show_Modal_Template ? 
 						(
 							<div className="icon-coat">
-								<span style={{ opacity: Is_Pc_Warp ? 1 : '.5', color: Is_Pc_Warp ? '#202020' : '' }} class="back-btn btn-2" onClick={ () => _this.changeWarp('PC') }>
+								<span style={{ opacity: Is_Pc_Warp ? 1 : '.5', color: Is_Pc_Warp ? '#202020' : '' }} className="back-btn btn-2" onClick={ () => _this.changeWarp('PC') }>
 									<MyIcon style={{ marginTop: '10px', fontSize: '22px' }} type="icon-cl-icon-Computer"></MyIcon>
 								</span>
-								<span style={{ opacity: !Is_Pc_Warp ? 1 : '.5', color: !Is_Pc_Warp ? '#202020' : '' }} class="back-btn btn-3" onClick={ () => _this.changeWarp('Mobile') }>
+								<span style={{ opacity: !Is_Pc_Warp ? 1 : '.5', color: !Is_Pc_Warp ? '#202020' : '' }} className="back-btn btn-3" onClick={ () => _this.changeWarp('Mobile') }>
 									<MyIcon style={{ marginTop: '10px', fontSize: '22px' }} type="icon-cl-icon-Mobile"></MyIcon>
 								</span>
 							</div>
 						) : null
 					}
-					<div class="btn-4-coat"></div>
+					<div className="btn-4-coat"></div>
 				</div>
 				<div className="web_main_content">
 					<div className="left_menu">
@@ -388,7 +389,7 @@ class WebEditWarp extends Component {
 							<br/>
 							<span style={{ color: Show_Moda_Sort ? '#fff' : '' }}>菜单管理</span>
 						</div>
-						<div className="left_item" onClick={ () => _this.goBackList('点击返回') }>
+						<div className="left_item" onClick={ () => _this.goBackList() }>
 							<MyIcon style={{ fontSize: '34px', marginTop: '10px' }} type="icon-rollback" />
 							<br/>
 							<span>返回管理</span>
@@ -414,7 +415,11 @@ class WebEditWarp extends Component {
 					{Show_Modal_Template ? (
 							<div className="modal-mask-template">
 								<div className="modal-content-template" >
-									弹出层 选择网站模板
+									<TemplateList
+									Template_List={ _this.state.WebData.Template_List }
+									Basic={ _this.state.WebData.Basic }
+									updateTemplate={ _this.updateTemplate }
+									editModuleUpdate={ _this.editModuleUpdate } />
 								</div>
 							</div>
 						) : 

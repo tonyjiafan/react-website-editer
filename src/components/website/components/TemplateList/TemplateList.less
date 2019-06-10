@@ -1,0 +1,232 @@
+.web_module_warp {
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+
+.template-settings {
+    width: 300px;
+    height: 100%;
+    position: relative;
+    float: left;
+
+    .swith-box {
+        font-size: 13px;
+
+        .swith_ls {
+            margin-left: 8px;
+            margin-top: 4px;
+            vertical-align: -7px;
+        }
+    }
+}
+
+.web_module_title_1 {
+    padding: 0 16px;
+    height: 36px;
+    line-height: 36px;
+    color: #545454;
+    font-size: 14px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.web_module_title {
+    padding: 0 16px;
+    background: #e2e9ec;
+    height: 36px;
+    line-height: 36px;
+    color: #545454;
+    font-size: 14px;
+    margin-bottom: 10px;
+
+    .close {
+        display: block;
+        color: #5e6061;
+        position: absolute;
+        top: -2px;
+        right: 16px;
+        margin: 0;
+        line-height: 1;
+        cursor: pointer;
+
+        &:hover {
+            color: #fc5144;
+        }
+    }
+}
+
+/* 模板类型选择 */
+.item_list {
+    overflow: hidden;
+    padding: 10px;
+
+    .li {
+        height: 36px;
+        line-height: 36px;
+        color: #898989;
+        border-radius: 2px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        display: inline-block;
+        padding: 0 16px;
+        cursor: pointer;
+        float: left;
+        margin-right: 8px;
+        margin-bottom: 4px;
+
+        .i {
+            margin-right: 4px;
+        }
+    }
+
+    .active {
+        color: #2d8cf0;
+    }
+}
+
+.tips {
+    width: 280px;
+    margin: 10px auto 23px;
+    color: #898989;
+}
+
+
+/* 模板展示区域 */
+.template-view {
+    width: calc(~"100% - 300px");
+    height: 100%;
+    float: right;
+    padding: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-left: 1px solid rgba(0, 0, 0, 0.12);
+
+    .tem_li_pc {
+        padding: 32px 24px;
+
+        .li {
+            display: inline-block;
+            margin: 16px;
+            position: relative;
+            width: 334px;
+            position: relative;
+            vertical-align: top;
+            cursor: pointer;
+        }
+    }
+
+    .active {
+        .over {
+            display: inline-block;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+            font-size: 14px;
+            text-align: center;
+
+            i {
+                font-size: 40px;
+                font-weight: 300;
+                display: block;
+                margin: 0;
+                margin-top: 62px;
+            }
+        }
+    }
+
+    .tem_w {
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+        position: relative;
+
+        &:hover {
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+        }
+
+        img {
+            border: 0;
+            vertical-align: middle;
+            // max-width: 100%;
+            height: 170px;
+            width: 100%;
+        }
+    }
+
+    .text_left {
+        margin-top: 10px;
+
+        a {
+            background: transparent;
+            color: #3c9e95;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all .3s;
+
+            &:hover {
+                color: #666666;
+            }
+        }
+
+        i {
+            font-size: 16px;
+            vertical-align: -1px;
+        }
+    }
+
+    /* Mobile */
+    .tem_li_phone {
+        padding: 32px 24px;
+
+        .li {
+            width: 234px;
+            display: inline-block;
+            margin: 16px;
+            position: relative;
+            vertical-align: top;
+            cursor: pointer;
+        }
+
+        .tem_p {
+            width: 234px;
+            height: 438px;
+            position: relative;
+            background: url('../../../../images/tem_phone_bg2n.png') no-repeat center;
+            background-size: 234px 438px;
+
+            .over {
+                left: 20px;
+                right: 22px;
+                top: 45px;
+                bottom: 53px;
+            }
+
+            .icon {
+                padding-top: 90px;
+                font-size: 40px;
+                display: block;
+                margin: 0;
+                margin-top: 32px;
+            }
+
+            .view {
+                width: 192px;
+                height: 338px;
+                margin-left: 20px;
+                margin-top: 45px;
+                vertical-align: middle;
+                max-width: 100%;
+                border: 1px solid #e2e4e6;
+                border-radius: 2px;
+            }
+        }
+
+    }
+}
