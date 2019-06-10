@@ -107,7 +107,7 @@ class WebEditWarp extends Component {
 	
 	changeWarp(str) {
 		const _this = this
-		_this.Is_Pc_Warp = str == 'PC' ? true : false
+		_this.Is_Pc_Warp = str === 'PC' ? true : false
 	}
 
 	/*****************  唤醒菜单栏方法  ***************************/
@@ -180,7 +180,7 @@ class WebEditWarp extends Component {
 			// 菜单管理
 			newState.WebData.Section_Data[index].Enabled = false
 
-		} else if (typeName === 'Iframe' && index == null) {
+		} else if (typeName === 'Iframe' && index === null) {
 			// Iframe子页面
 			let { Current_Component, Current_RichId } = params
 			let params_Id = Current_Component + Current_RichId + ''
@@ -240,21 +240,24 @@ class WebEditWarp extends Component {
 	// Modules 所有编辑后 回传的整个 数据模型
 	editModuleUpdate(Modules, isOpen = false, isChange = true) {
 		const _this = this
+		const newState = _this.state
 		let flag = isArrayFn(Modules)
 		
-		flag ? _this.WebData.Section_Data = Modules : _this.WebData.Basic = Modules
+		flag ? newState.WebData.Section_Data = Modules : newState.WebData.Basic = Modules
+		_this.setState({
+			...newState
+		}, () => {
+			// isChange 为false 组件编辑后 如果是点击的 取消按钮 则不改变
+			if (isChange) {
+				// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
+				localStorage.setItem('jy-web-flag', '0')
+			}
 
-		// isChange 为false 组件编辑后 如果是点击的 取消按钮 则不改变
-		if (isChange) {
-			// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
-			localStorage.setItem('jy-web-flag', '0')
-		}
-
-		_this.saveDataToLocalStorage()
-		_this.relooad()
-
-		// isOpen 更新模板列表中的 官网上展示报名人数 swith 时，不需要清除当前模态框
-		if (!isOpen) _this.vueOpenModalFn('')
+			_this.saveDataToLocalStorage()
+			_this.relooad()
+			// isOpen 更新模板列表中的 官网上展示报名人数 swith 时，不需要清除当前模态框
+			if (!isOpen) _this.vueOpenModalFn('')
+		})
 	}
 
 	/**
@@ -287,33 +290,30 @@ class WebEditWarp extends Component {
 	 */ 
 	updateTemplate(Tem_List, Click_Type = 1) {
 		const _this = this
+		const newState = _this.state
 		Tem_List.forEach(e => {
 			if (e.Is_Checked && e.Template_Type === 1) {
-				_this.WebData.Temp_Path = e.Template_Path
-				_this.WebData.Temp_Code = e.Template_Code
+				newState.WebData.Temp_Path = e.Template_Path
+				newState.WebData.Temp_Code = e.Template_Code
 			} else if (e.Is_Checked && e.Template_Type === 2) {
-				_this.WebData.App_Temp_Path = e.Template_Path
-				_this.WebData.App_Temp_Code = e.Template_Code
+				newState.WebData.App_Temp_Path = e.Template_Path
+				newState.WebData.App_Temp_Code = e.Template_Code
 			}
 		})
-
 		// 根据模板点击 来判断是 PC 还是 移动
-		_this.state.Is_Pc_Warp = Click_Type === 1 ? true : false
+		newState.Is_Pc_Warp = Click_Type === 1 ? true : false
+		newState.WebData.Template_List = Tem_List
 
-		_this.state.WebData.Template_List = Tem_List
-
-		// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
-		localStorage.setItem('jy-web-flag', '0')
-
-		_this.saveDataToLocalStorage()
-		
-		_this.$nextTick(function() {
+		_this.setState({
+			...newState
+		}, () => {
+			// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
+			localStorage.setItem('jy-web-flag', '0')
+			_this.saveDataToLocalStorage()
 			_this.relooad()
+			_this.vueOpenModalFn('')
 		})
-
-		_this.vueOpenModalFn('')
 	}
-
 
 	// 在渲染前调用,在客户端也在服务端
 	componentWillMount() {
@@ -362,10 +362,10 @@ class WebEditWarp extends Component {
 						(
 							<div className="icon-coat">
 								<span style={{ opacity: Is_Pc_Warp ? 1 : '.5', color: Is_Pc_Warp ? '#202020' : '' }} className="back-btn btn-2" onClick={ () => _this.changeWarp('PC') }>
-									<MyIcon style={{ marginTop: '10px', fontSize: '22px' }} type="icon-cl-icon-Computer"></MyIcon>
+									<MyIcon style={{ marginTop: '10px', fontSize: '22px' }} type="icon-cl-icon-Computer" />
 								</span>
 								<span style={{ opacity: !Is_Pc_Warp ? 1 : '.5', color: !Is_Pc_Warp ? '#202020' : '' }} className="back-btn btn-3" onClick={ () => _this.changeWarp('Mobile') }>
-									<MyIcon style={{ marginTop: '10px', fontSize: '22px' }} type="icon-cl-icon-Mobile"></MyIcon>
+									<MyIcon style={{ marginTop: '10px', fontSize: '22px' }} type="icon-cl-icon-Mobile" />
 								</span>
 							</div>
 						) : null
@@ -375,7 +375,7 @@ class WebEditWarp extends Component {
 				<div className="web_main_content">
 					<div className="left_menu">
 						<div className="left_item" onClick={ () => _this.vueOpenModalFn('Show_Modal_Template') } style={{ background: Show_Modal_Template ? '#ff5200' : '' }}>
-							<MyIcon style={{fontSize: '34px', color: Show_Modal_Template ? '#fff' : '' , marginTop: '10px'}} type="icon-layout-line" ></MyIcon>
+							<MyIcon style={{fontSize: '34px', color: Show_Modal_Template ? '#fff' : '' , marginTop: '10px'}} type="icon-layout-line" />
 							<br/>
 							<span style={{ color: Show_Modal_Template ? '#fff' : '' }}>网站模板</span>
 						</div>

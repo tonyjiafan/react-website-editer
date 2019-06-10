@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Switch, Icon } from 'antd';
+import { Switch, Icon, message } from 'antd'
 import { cloneObj } from '../../../libs/filters';
-
 import './TemplateList.less';
 
+const MyIcon = Icon.createFromIconfontCN({
+  scriptUrl: '//at.alicdn.com/t/font_1219293_3pjl5z7tuio.js' // 在 iconfont.cn 上生成
+});
 
 class TemplateList extends Component{ 
     constructor(props) {
@@ -18,6 +20,8 @@ class TemplateList extends Component{
             Current_Data: {}, // 拷贝后，提取的当前模块的模型
 			Old_Data: {}, // 拷贝后，提取的当前模块的模型(取消操作是使用)
         };
+
+
     }
 
     settingData(data) {
@@ -34,6 +38,60 @@ class TemplateList extends Component{
             console.log(_this.state)
         })
     }
+    // 更新模板选择
+    changeTemp(item) {
+        const _this = this
+        const Tem_List = _this.state.Tem_List.map(e => e)
+        const { Template_Type, Template_Code, Is_Checked } = item
+
+        if (Is_Checked) {
+            message.info('当前已选中，请勿重复选择！')
+        } else {
+            Tem_List.forEach(e => {
+                if (e.Template_Type === Template_Type && e.Template_Code === Template_Code) {
+                    e.Is_Checked = true
+                } else if (e.Template_Type === Template_Type && e.Template_Code !== Template_Code) {
+                    e.Is_Checked = false
+                }
+            })
+            _this.props.updateTemplate(Tem_List, item.Click_Type)
+        }
+    }
+    // PC 移动端  模板容器切换
+    tempChange(params, num) {
+        const _this = this
+        const newState = _this.state
+        let str = num === 1 ? ['TemplateWeb', 'TemplateMobile'] : ['TemplateModern', 'TemplateTraditional']
+        str.forEach((e) => {
+            if (e === params) {
+                newState[params] = true
+            } else {
+                newState[e] = false
+            }
+        })
+        _this.setState({
+            ...newState
+        })
+    }
+    // 关闭菜单
+    closeModuleWarp() {
+        const parentThis = window.A_vue
+        parentThis.setState({
+            Show_Moda_Sort: false
+        })
+    }
+    change(name, checked) {
+        const _this = this
+        const newState = _this.state
+        newState.Current_Data[name] = !checked
+        _this.setState({
+            ...newState
+        }, () => {
+            // 更新 父组件的 整个 Basic
+            _this.props.editModuleUpdate(_this.state.Current_Data, true)
+        })
+    }
+
 
     componentWillMount() {
         const _this = this
@@ -43,7 +101,6 @@ class TemplateList extends Component{
         const _this = this
         _this.settingData(nextProps)
     }
-
 
     render() {
         const _this = this
@@ -55,14 +112,13 @@ class TemplateList extends Component{
             TemplateModern,
         } = _this.state
 
-
         return (
             <div className="web_module_warp">
                 <div className="template-settings">
                     <div className="web_module_title">
                         模板适用范围
-                        <label onClick={ () => _this.closeModuleWarp }>
-                            <Icon className="close" type="ios-close-empty" size="40"></Icon>
+                        <label onClick={ () => _this.closeModuleWarp() }>
+                            <Icon className="close" type="close" size="40" />
                         </label>
                     </div>
                     <div className="item_list">
@@ -72,7 +128,7 @@ class TemplateList extends Component{
                                 borderColor: TemplateWeb ? '#2d8cf0' : '',
                                 background: TemplateWeb ? '#eff6ff' : '',
                             }}>
-                            <Icon style={{ verticalAlign: '-1px', size: '16px' }} type="monitor" ></Icon>
+                            <MyIcon style={{ verticalAlign: '-2px', size: '16px' }} type="icon-monitor" />
                             <span>网页端</span>
                         </div>
                         <div onClick={ () => _this.tempChange('TemplateMobile', 1) } 
@@ -81,45 +137,47 @@ class TemplateList extends Component{
                                 borderColor: TemplateMobile ? '#2d8cf0' : '',
                                 background: TemplateMobile ? '#eff6ff' : '',
                             }}>
-                            <Icon style={{ verticalAlign: '-1px', size: '16px' }} type="iphone" ></Icon>
+                            <MyIcon style={{ verticalAlign: '-2px', size: '16px' }} type="icon-mobile-android" />
                             <span>移动端</span>
                         </div>
                     </div>
                     <p className="tips">系统会默认选择一个网页端模版，移动端仅是针对网页端进行适配</p>
 
-                    <div v-if="TemplateMobile" style={{ marginBottom: '14px' }}>
-                        <div className="web_module_title_1">
-                            网站风格
-                        </div>
+                    {
+                        TemplateMobile ? (
+                            <div style={{ marginBottom: '14px' }}>
+                                <div className="web_module_title_1">
+                                    网站风格
+                                </div>
+                                <div className="item_list">
+                                    <div onClick={ () => _this.tempChange('TemplateTraditional', 2) } 
+                                        className={ TemplateTraditional ? 'li active' : 'li' } 
+                                        style={{
+                                            height: '30px',
+                                            lineHeight: '30px',
+                                            borderColor: TemplateTraditional ? '#2d8cf0' : '',
+                                            color: TemplateTraditional ? '#444' : '',
+                                        }}>
+                                        <MyIcon style={{ verticalAlign: '-2px', size: '18px', marginRight: '2px' }} type="icon-liebiao" />
+                                        <span>传统</span>
+                                    </div>
 
-                        <div className="item_list">
-                            <div onClick={ () => _this.tempChange('TemplateTraditional', 2) } 
-                                className={ TemplateTraditional ? 'li active' : 'li' } 
-                                style={{
-                                    height: '30px',
-                                    lineHeight: '30px',
-                                    borderColor: TemplateTraditional ? '#2d8cf0' : '',
-                                    color: TemplateTraditional ? '#444' : '',
-                                }}>
-                                <Icon style={{ verticalAlign: '-2px', size: '18px' }} type="social-twitch-outline" ></Icon>
-                                <span>传统</span>
+                                    <div onClick={ () => _this.tempChange('TemplateModern', 2) } 
+                                        className={ TemplateModern ? 'li active' : 'li' } 
+                                        style={{ 
+                                            height: '30px',
+                                            lineHeight: '30px',
+                                            borderColor: TemplateModern ? '#2d8cf0' : '',
+                                            color: TemplateModern ? '#444' : '',
+                                        }}>
+                                        <MyIcon style={{ verticalAlign: '-2px', size: '18px', marginRight: '2px' }} type="icon-apps" />
+                                        <span>现代</span>
+                                    </div>
+                                </div>
                             </div>
-
-                            <div onClick={ () => _this.tempChange('TemplateModern', 2) } 
-                                className={ TemplateModern ? 'li active' : 'li' } 
-                                style={{ 
-                                    height: '30px',
-                                    lineHeight: '30px',
-                                    borderColor: TemplateModern ? '#2d8cf0' : '',
-                                    color: TemplateModern ? '#444' : '',
-                                }}>
-                                <Icon style={{ verticalAlign: '-2px', size: '18px' }} type="social-pinterest-outline" ></Icon>
-                                <span>现代</span>
-                            </div>
-                        </div>
-                    </div>
-
-
+                        ) : null
+                    }
+                    
                     <div className="web_module_title">
                         其它设置
                     </div>
@@ -131,8 +189,8 @@ class TemplateList extends Component{
                             className="swith_ls"
                             checkedChildren="开" 
                             unCheckedChildren="关" 
-                            defaultChecked={ _this.state.Current_Data.Show_Enroll_Count }
-                            onChange={ () => _this.change('Open_Enroll_Face') }
+                            checked={ _this.state.Current_Data.Open_Enroll_Face }
+                            onChange={ () => _this.change('Open_Enroll_Face', _this.state.Current_Data.Open_Enroll_Face) }
                             />
                         </div>
                         <div style={{ paddingTop: '14px' }}>
@@ -142,8 +200,8 @@ class TemplateList extends Component{
                             className="swith_ls"
                             checkedChildren="开" 
                             unCheckedChildren="关" 
-                            defaultChecked={ _this.state.Current_Data.Whether_To_Display_Basic }
-                            onChange={ () => _this.change('Whether_To_Display_Basic') }
+                            checked={ _this.state.Current_Data.Whether_To_Display_Basic }
+                            onChange={ () => _this.change('Whether_To_Display_Basic', _this.state.Current_Data.Whether_To_Display_Basic) }
                             />
                         </div>
                         <div style={{ paddingTop: '14px' }}>
@@ -153,14 +211,13 @@ class TemplateList extends Component{
                             className="swith_ls"
                             checkedChildren="开" 
                             unCheckedChildren="关" 
-                            defaultChecked={ _this.state.Current_Data.Show_Ticket_Copyright }
-                            onChange={ () => _this.change('Show_Ticket_Copyright') }
+                            checked={ _this.state.Current_Data.Show_Ticket_Copyright }
+                            onChange={ () => _this.change('Show_Ticket_Copyright', _this.state.Current_Data.Show_Ticket_Copyright) }
                             />
                         </div>
                     </div>
                 </div>
                 <div className="template-view">
-
                     {
                         TemplateWeb ? (
                             <div className="tem_li_pc">
@@ -176,15 +233,15 @@ class TemplateList extends Component{
                                                     {item.Is_Checked ? 
                                                         (
                                                             <span className="over">
-                                                                <Icon className="icon" type="checkmark" />
+                                                                <Icon className="icon" type="check" />
                                                                 当前选择
                                                             </span>
                                                         ) : null }
                                                 </div>
                                                 <div className="text_left">
-                                                    <span style={{ dispaly: !item.Is_Checked ? 'block' : 'none' }}>
+                                                    <span className="span" style={{ dispaly: !item.Is_Checked ? 'block' : 'none' }}>
                                                         点击模版使用
-                                                        <Icon className="icon" type="android-arrow-dropright-circle"></Icon>
+                                                        <Icon className="icon" type="check-circle" />
                                                     </span>
                                                 </div>
                                             </div>
@@ -194,7 +251,6 @@ class TemplateList extends Component{
                             </div>
                         ) : null 
                     }
-
 
                     {
                         TemplateMobile && TemplateTraditional ? (
@@ -206,22 +262,22 @@ class TemplateList extends Component{
                                                 <div 
                                                     key={ item.Template_Code }
                                                     className={ item.Is_Checked ? 'li active' : 'li' }
-                                                    onClick="changeTemp(item)">
+                                                    onClick={ () => _this.changeTemp(item) }>
                                                     <div className="tem_p">
                                                         <img className="view" src={item.Template_Thumbnail} alt="" />
                                                         {
                                                             item.Is_Checked ? (
                                                                 <span className="over">
-                                                                    <Icon className="icon" type="checkmark"></Icon>
+                                                                    <Icon className="icon" type="check" />
                                                                     当前选择
                                                                 </span>
                                                             ) : null
                                                         }
                                                     </div>
                                                     <div className="text_left" style={{ textIndent: '10px' }}>
-                                                        <span style={{ dispaly: !item.Is_Checked ? 'block' : 'none' }}>
+                                                        <span className="span" style={{ dispaly: !item.Is_Checked ? 'block' : 'none' }}>
                                                             点击模版使用
-                                                            <Icon className="icon" type="android-arrow-dropright-circle"></Icon>
+                                                            <Icon className="icon" type="check-circle" />
                                                         </span>
                                                     </div>
                                                 </div>
@@ -249,16 +305,16 @@ class TemplateList extends Component{
                                                         {
                                                             item.Is_Checked ? (
                                                                 <span className="over">
-                                                                    <Icon className="icon" type="checkmark"></Icon>
+                                                                    <Icon className="icon" type="check" />
                                                                     当前选择
                                                                 </span>
                                                             ) : null
                                                         }
                                                     </div>
                                                     <div className="text_left" style={{ textIndent: '10px' }}>
-                                                        <span style={{ dispaly: !item.Is_Checked ? 'block' : 'none' }}>
+                                                        <span className="span" style={{ dispaly: !item.Is_Checked ? 'block' : 'none' }}>
                                                             点击模版使用
-                                                            <Icon className="icon" type="android-arrow-dropright-circle"></Icon>
+                                                            <Icon className="icon" type="check-circle" />
                                                         </span>
                                                     </div>
                                                 </div>
@@ -269,14 +325,11 @@ class TemplateList extends Component{
                             </div>
                         ) : null
                     }
-                
                 </div>
-
                 <div className="clear"></div>
             </div>
         )
     }
-
 }
 
 export default TemplateList;

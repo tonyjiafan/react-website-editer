@@ -7,7 +7,7 @@ import './ModuleList.less';
 import {
 	Icon,
 	Modal,
-	Button,
+	// Button,
 	message
 } from 'antd';
 
@@ -118,24 +118,24 @@ class ModuleList extends Component {
 							className={ item.Enabled ? 'li disabled hover' : 'li li-nomar-hover' }>
 							{
 								item.Section_Code === 'Guest' ? 
-								<Icon className="li-icon" type="user" style={{ fontSize: "32px" }}></Icon> : (
+								<Icon className="li-icon" type="user" style={{ fontSize: "32px" }} /> : (
 									item.Section_Code === 'Partner' ?
-									<Icon className="li-icon" type="usergroup-add" style={{ fontSize: "32px" }}></Icon> :
+									<Icon className="li-icon" type="usergroup-add" style={{ fontSize: "32px" }} /> :
 									(
 										item.Section_Code === 'Introduction' ?
-										<Icon className="li-icon" type="project" style={{ fontSize: "32px" }}></Icon> :
+										<Icon className="li-icon" type="project" style={{ fontSize: "32px" }} /> :
 										(
 											item.Section_Code === 'Schedule' ?
-											<Icon className="li-icon" type="dashboard" style={{ fontSize: "32px" }}></Icon> :
+											<Icon className="li-icon" type="dashboard" style={{ fontSize: "32px" }} /> :
 											(
 												item.Section_Code === 'Reception' ?
-												<Icon className="li-icon" type="wifi" style={{ fontSize: "32px" }}></Icon> : 
+												<Icon className="li-icon" type="wifi" style={{ fontSize: "32px" }} /> : 
 												(
 													item.Section_Code === 'Guide' ?
-													<Icon className="li-icon" type="build" style={{ fontSize: "32px" }}></Icon> :
+													<Icon className="li-icon" type="build" style={{ fontSize: "32px" }} /> :
 													(
 														item.Section_Code === 'News' ?
-														<Icon className="li-icon" type="link" style={{ fontSize: "32px" }}></Icon> : null
+														<Icon className="li-icon" type="link" style={{ fontSize: "32px" }} /> : null
 													)
 												)
 											)
@@ -156,7 +156,7 @@ class ModuleList extends Component {
 				</div>
 				<ul className="padd" style={{ padding: "10px" }}>
 					<li className="li li-nomar-hover" onClick={ _this.changeCurrentView }>
-						<Icon className="li-icon" type="container" style={{ fontSize: "32px" }}></Icon>
+						<Icon className="li-icon" type="container" style={{ fontSize: "32px" }} />
 						<div className="ti">文本编辑</div>
 					</li>
 					<div className="clear"></div>

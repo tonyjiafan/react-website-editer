@@ -137,7 +137,7 @@ module.exports = function(webpackEnv) {
       // 为热替换（HMR）打包好运行代码
       // only- 意味着只有成功更新运行代码才会执行热替换（HMR）
       'webpack/hot/only-dev-server',
-      
+
       // Include an alternative client for WebpackDevServer. A client's job is to
       // connect to WebpackDevServer by a socket and get notified about changes.
       // When you save a file, the client will either apply hot updates (in case
@@ -409,7 +409,9 @@ module.exports = function(webpackEnv) {
               exclude: cssModuleRegex,
               use: getStyleLoaders({
                 importLoaders: 1,
-                sourceMap: isEnvProduction && shouldUseSourceMap
+                sourceMap: isEnvProduction && shouldUseSourceMap,
+                // 是否开启 css modules
+                modules: false
               }),
               // Don't consider CSS imports dead code even if the
               // containing package claims to have no side effects.
