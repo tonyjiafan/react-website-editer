@@ -118,7 +118,7 @@ class TemplateList extends Component{
                     <div className="web_module_title">
                         模板适用范围
                         <label onClick={ () => _this.closeModuleWarp() }>
-                            <Icon className="close" type="close" size="40" />
+                            <Icon className="close" type="close" style={{fontSize: '20px'}} />
                         </label>
                     </div>
                     <div className="item_list">

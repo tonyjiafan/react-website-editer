@@ -98,16 +98,29 @@ class WebEditWarp extends Component {
 	// 刷新页面
 	relooad() {
 		const _this = this
-		const { WebData } = _this.state
-		const Child_Window = window.frames['prewWebsite'] //获得对应iframe的window对象
-		// console.log('======= reload =======')
-		// console.log(Child_Window)
-		Child_Window.B_vue.updatedPageData(WebData)
+		_this.setState({
+			localStorageHasWebData: false
+		})
+		setTimeout(() => {
+			const Child_Window = window.frames['prewWebsite'] //获得对应iframe的window对象
+			if (Child_Window && Child_Window.B_vue) {
+				const { WebData } = _this.state
+				Child_Window.B_vue.updatedPageData(WebData)
+				_this.setState({
+					localStorageHasWebData: true
+				})
+			}
+		}, 1000 * 1.5);
 	}
 	
 	changeWarp(str) {
 		const _this = this
-		_this.Is_Pc_Warp = str === 'PC' ? true : false
+		const newState = _this.state
+		newState.Is_Pc_Warp = str === 'PC' ? true : false
+
+		_this.setState({
+			...newState
+		})
 	}
 
 	/*****************  唤醒菜单栏方法  ***************************/
@@ -120,7 +133,10 @@ class WebEditWarp extends Component {
 	// 关闭 [模块编辑] 弹出层
 	vueCancelForm() {
 		const _this = this
-		_this.Show_Modal_Edit = false
+		_this.setState({
+			Show_Modal_Edit: false,
+			Mask_Edit_View_Change: true
+		})
 	}
 	// 切换菜单显示
 	vueOpenModalFn(strName) {
@@ -211,7 +227,7 @@ class WebEditWarp extends Component {
 	 * */ 
 	vueEditFn(params) {
 		const _this = this
-		const {Current_Type, Current_Component, Current_RichId} = params
+		const {Current_Component, Current_RichId} = params
 		const newState = _this.state
 
 		// 自定义模块的 视图组件 是复用的，存在多个自定义 在移动端编辑时 可以无缝唤醒 当前的自定义组件
@@ -334,8 +350,14 @@ class WebEditWarp extends Component {
 			}
 		)
 
-		console.log(_this)
-		console.log(window)
+		// console.log(_this)
+		// console.log(window)
+	}
+	componentWillReceiveProps(preProps, nextProps) {
+		console.log('prePropsprePropspreProps')
+		console.log(preProps)
+		console.log(nextProps)
+		console.log('nextPropsnextPropsnextProps')
 	}
 
 	render() {
@@ -404,12 +426,31 @@ class WebEditWarp extends Component {
 								name="prewWebsite"
 								id="prewWebsite"
 								frameBorder="0"
-								scrolling="yes" />
-						) : (
-							<div className="none-content">
-								加载中...
-							</div>
-						)}
+								scrolling="yes" />	
+						) : (localStorageHasWebData && !Is_Pc_Warp ? (
+								<div className="web-phone-warp" 
+									style={{ left: !Mask_Edit_View_Change ? '-25%' : '0px' }}>
+									<div className="web-phone-content">
+										<p className="phone_title">{ _this.state.WebData.Basic.Meeting_Name }</p>
+										<div className="conten-box">
+											<iframe
+												title="mobile"
+												src={ `http://localhost:3000/grid2/index.html?${_this.state.meetingId}` }
+												name="prewWebsite" 
+												id="prewWebsite"
+												frameBorder="0" 
+												scrolling="yes" 
+												style={{ width: '100%', height: '100%', background: '#fff' }} />
+										</div>
+									</div>
+									<img className="web-phone-bg" src="http://localhost:3000/tem_phone_bg.png" alt="" />  
+								</div>
+							) : (
+								<div className="none-content">
+									加载中...
+								</div>
+							))
+						}
 					</div>
 					
 					{Show_Modal_Template ? (
@@ -432,7 +473,7 @@ class WebEditWarp extends Component {
 										切换视图
 									</label>
 									<h1>  编辑 相关业务组件  </h1>
-									<Button className="ss" onClick={ () => _this.setState({ Show_Modal_Edit: !Show_Modal_Edit }) }> 退出编辑 </Button>
+									<Button className="ss" onClick={ () => _this.vueCancelForm() }> 退出编辑 </Button>
 								</div>
 							</div>
 						) : 

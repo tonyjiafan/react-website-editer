@@ -269,13 +269,10 @@
 }
 
 
-
-
-
 .right_content {
     width: calc(~"100% - 75px");
     height: 100%;
-    background: #fff;
+    background: #ecf1f4;
 
     .none-content {
         height: 100%;
@@ -293,8 +290,6 @@
         background: #fff;
     }
 }
-
-
 
 
 
@@ -345,4 +340,61 @@
     margin-left: 8px;
     padding: 6px 30px;
     border-radius: 3px;
+}
+
+
+
+// 移动端 背景设置
+.web-phone-warp {
+    width: 462px;
+    height: 847px;
+    margin: 40px auto;
+    position: relative;
+    left: -100px;
+}
+
+.web-phone-bg {
+    width: 462px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 1;
+}
+
+.web-phone-content {
+    background: url('../../images/web_phone_top_weichat.png') no-repeat top center #1a191e;
+    background-size: 380px;
+    width: 380px;
+    height: 672px;
+    position: absolute;
+    z-index: 2;
+    top: 80px;
+    left: 42px;
+    border-radius: 3px;
+
+    .phone_title {
+        color: #fff;
+        text-align: center;
+        font-size: 18px;
+        padding-top: 24px;
+        height: 65px;
+        line-height: 36px;
+        font-weight: 600;
+        width: 60%;
+        margin: 0 auto;
+
+        word-wrap: normal;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .conten-box {
+        width: 380px;
+        height: calc(~"100% - 66px");
+        overflow: hidden;
+        position: relative;
+        border-radius: 0 0 3px 3px;
+    }
+
 }
