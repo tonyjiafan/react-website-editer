@@ -19,7 +19,6 @@ class ModuleList extends Component {
 		}
 
 		this.settingData = this.settingData.bind(this) //初始设置
-		this.closeModuleWarp = this.closeModuleWarp.bind(this) //关闭菜单
 	}
 
 	// 设置初始数据
@@ -39,7 +38,7 @@ class ModuleList extends Component {
     closeModuleWarp() {
         const parentThis = window.A_vue
         parentThis.setState({
-            Show_Moda_Sort: false
+            Show_Moda_Module: false
         })
     }
 	// 开启模块使用  module参数代表 来自哪个菜单的操作
@@ -93,7 +92,6 @@ class ModuleList extends Component {
 		_this.settingData()
 	}
     componentWillReceiveProps(nextProps) {
-		console.log(nextProps)
         const _this = this
         _this.settingData(nextProps.Module_List)
     }
@@ -105,7 +103,7 @@ class ModuleList extends Component {
 			<div className="web_module_warp">
 				<div className="web_module_title">
 					系统模块
-					<label onClick={ _this.closeModuleWarp }>
+					<label onClick={ () => _this.closeModuleWarp() }>
 						<Icon className="close" style={{ fontSize: '20px'}} type="close" />
 					</label>
 				</div>

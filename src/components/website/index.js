@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import websiteData from './webData';
 import './index.less';
-import { Icon, message, Button } from 'antd';
+import { Icon, message, Button, Spin } from 'antd';
 import { isArrayFn } from '../libs/filters'
 
 // 组件
@@ -44,7 +44,8 @@ class WebEditWarp extends Component {
 			meetingId: '',
 			// qr_Code: qr_Code,
 			Preview_show: false,
-			spinShow: false,
+			Loading: false,
+			LoadingContent: true,
 			Is_Pc_Warp: true,
 			Show_Modal_Template: false,
 			Show_Modal_Edit: false,
@@ -73,7 +74,7 @@ class WebEditWarp extends Component {
 		this.vueOpenModalFn = this.vueOpenModalFn.bind(this) // 模块切换时 的操作界面切换
 		this.goBackList = this.goBackList.bind(this) // 返回
 		this.currentSortFn = this.currentSortFn.bind(this) // 菜单排序
-		this.relooad = this.relooad.bind(this) // 重新加载
+		this.reload = this.reload.bind(this) // 重新加载
 		this.saveDataToLocalStorage = this.saveDataToLocalStorage.bind(this) // 存储数据到本地
 		this.vueEnabledFn = this.vueEnabledFn.bind(this) // 是否开启模块
 		this.vueDeleteFn = this.vueDeleteFn.bind(this) // 删除模块
@@ -92,35 +93,40 @@ class WebEditWarp extends Component {
 	saveDataToLocalStorage() {
 		const _this = this
 		const { WebData } = _this.state
-		window.localStorage.setItem(`jy-web-data-${_this.meetingId}`, JSON.stringify(WebData))
+		window.localStorage.setItem(`jy-web-data-${_this.state.meetingId}`, JSON.stringify(WebData))
 	}
 
-	// 刷新页面
-	relooad() {
+	// 刷新数据
+	reload() {
 		const _this = this
-		_this.setState({
-			localStorageHasWebData: false
-		})
-		setTimeout(() => {
-			const Child_Window = window.frames['prewWebsite'] //获得对应iframe的window对象
-			if (Child_Window && Child_Window.B_vue) {
+		// 默认 结束 loading
+		_this.setState({ 
+			Loading: false 
+		}, () => {
+			let Child_Window = window.frames['prewWebsite'] //获得对应iframe的window对象
+			console.log(Child_Window)
+
+			if (Child_Window.B_vue) {
 				const { WebData } = _this.state
 				Child_Window.B_vue.updatedPageData(WebData)
-				_this.setState({
-					localStorageHasWebData: true
-				})
 			}
-		}, 1000 * 1.5);
+		})
 	}
 	
 	changeWarp(str) {
 		const _this = this
 		const newState = _this.state
-		newState.Is_Pc_Warp = str === 'PC' ? true : false
+		let Str_State = str === 'PC' ? true : false
 
-		_this.setState({
-			...newState
-		})
+		if (Str_State !== newState.Is_Pc_Warp) {
+			newState.Is_Pc_Warp = Str_State
+			_this.setState({ LoadingContent: true })
+			setTimeout(() => {
+				_this.setState({
+				...newState
+				})
+			}, 2000)
+		}
 	}
 
 	/*****************  唤醒菜单栏方法  ***************************/
@@ -181,10 +187,10 @@ class WebEditWarp extends Component {
 	 * 该方法用于【iframe内】【排序菜单】【模块添加菜单】使用
 	 * */ 
 	vueEnabledFn(params) {
-		// log('vueEnabledFn', params)
 		const _this = this
 		const { typeName, index } = params
 		const newState = _this.state
+
 		// 如果当前的编辑状态属于打开状态  移除不可操作
 		if (newState.Show_Modal_Edit) return message.warning('当前处于编辑状态，不能执行此操作！');
 
@@ -209,14 +215,18 @@ class WebEditWarp extends Component {
 			})
 		}
 
-		_this.setState({
-			...newState
-		}, () => {
-			// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
-			// localStorage.setItem('jy-web-flag', '0')
-			_this.saveDataToLocalStorage()
-			_this.relooad()
-		})
+		// 触发loading
+		_this.setState({ Loading: true })
+		setTimeout(() => {
+			_this.setState({
+				...newState
+			}, () => {
+				// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
+				// localStorage.setItem('jy-web-flag', '0')
+				_this.saveDataToLocalStorage()
+				_this.reload()
+			})	
+		}, 1000)
 	}
 
 	/** 
@@ -270,7 +280,7 @@ class WebEditWarp extends Component {
 			}
 
 			_this.saveDataToLocalStorage()
-			_this.relooad()
+			_this.reload()
 			// isOpen 更新模板列表中的 官网上展示报名人数 swith 时，不需要清除当前模态框
 			if (!isOpen) _this.vueOpenModalFn('')
 		})
@@ -292,7 +302,7 @@ class WebEditWarp extends Component {
 			// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
 			// localStorage.setItem('jy-web-flag', '0')
 			_this.saveDataToLocalStorage()
-			_this.relooad()
+			_this.reload()
 		})
 	}
 
@@ -324,10 +334,10 @@ class WebEditWarp extends Component {
 			...newState
 		}, () => {
 			// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
-			localStorage.setItem('jy-web-flag', '0')
+			// localStorage.setItem('jy-web-flag', '0')
 			_this.saveDataToLocalStorage()
-			_this.relooad()
 			_this.vueOpenModalFn('')
+			_this.reload()
 		})
 	}
 
@@ -337,14 +347,14 @@ class WebEditWarp extends Component {
 		const _this = this
 		_this.setState({
 				meetingId: 'af026266-3d0d-c6e9-e0a7-08d6cc87db4f'
-			},
-			function() {
+			}, () => {
 				window.A_vue = _this
 				window.A_WebData = _this.state.WebData
 				localStorage.setItem(`jy-web-data-${_this.state.meetingId}`, JSON.stringify(_this.state.WebData))
 				setTimeout(() => {
 					_this.setState({
-						localStorageHasWebData: true
+						localStorageHasWebData: true,
+						LoadingContent: false
 					})
 				}, 2000)
 			}
@@ -371,6 +381,7 @@ class WebEditWarp extends Component {
 			Show_Modal_Edit,
 			Show_Moda_Module,
 			Show_Moda_Sort,
+			Mask_Disabled,
 		} = _this.state
 
 		return (
@@ -416,6 +427,10 @@ class WebEditWarp extends Component {
 							<br/>
 							<span>返回管理</span>
 						</div>
+						{ Show_Modal_Edit || Mask_Disabled ? (
+							<div className="left-menu-mask"></div>
+						) :null }
+						
 					</div>
 					<div className="right_content">
 						{localStorageHasWebData && Is_Pc_Warp ? (
@@ -445,12 +460,15 @@ class WebEditWarp extends Component {
 									</div>
 									<img className="web-phone-bg" src="http://localhost:3000/tem_phone_bg.png" alt="" />  
 								</div>
-							) : (
-								<div className="none-content">
-									加载中...
-								</div>
-							))
+							) : null)
 						}
+						{_this.state.LoadingContent ? (
+							<div className="noneContent">
+								<div className="spinCoat">
+									<Spin wrapperClassName="noneContent" delay={ 500 } spinning={_this.state.LoadingContent} size="large" />
+								</div>
+							</div>
+						) : null}
 					</div>
 					
 					{Show_Modal_Template ? (
@@ -504,6 +522,13 @@ class WebEditWarp extends Component {
 						null
 					}
 				</div>
+				{_this.state.Loading ? (
+					<div className="spinWarp">
+						<div className="spinCoat">
+							<Spin wrapperClassName="spinWarp" delay={ 500 } spinning={_this.state.Loading} size="large" />
+						</div>
+					</div>
+				) : null}
 			</div>
 		)
 	}

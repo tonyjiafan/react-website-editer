@@ -91,7 +91,7 @@
 </div>
         </template>
         <template v-for="(module,idx) in moduleData" :key="idx">
-            <!-- 活动介绍/自定义 -->z
+            <!-- 活动介绍/自定义 -->
             <template v-if="(module.Section_Type === 2 || module.Section_Type === 8) && module.Enabled">
                 <div class="DOM-Hover box-coat jy-richtext" :class="[module.Section_Type === 2 ? 'jy-richtext-itc' : 'jy-richtext-custom']"  :data-name="module.Section_Name" :id="module.Section_Code + module.Rich_Id" :ElementType="module.Section_Type" :ElementName="module.Section_Code" :RichId="module.Rich_Id ? module.Rich_Id : 'null'">
   <div class="block-center">
@@ -180,7 +180,7 @@
     <h1>{{module.Section_Name}}</h1>
   </div>
   <div class="jy-partner-container">
-    <div class="jy-partner-item" v-for="(item,idx) in module.Section_Content" :key="idx">
+    <div class="jy-partner-item" style="background: rgba(0,0,0,0)" v-for="(item,idx) in module.Section_Content" :key="idx">
       <img :src="item.Partners_Logo" :alt="item.Partners_Name">
     </div>
   </div>
@@ -267,7 +267,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
+    <!-- <script src="../../visit.js"></script> -->
     <!-- delStart -->
     <script src="https://www.jingyuhuodong.com/template/jquery-1.8.3.min.js"></script>
     <script src="./js/website.js"></script>

@@ -20,8 +20,6 @@ class TemplateList extends Component{
             Current_Data: {}, // 拷贝后，提取的当前模块的模型
 			Old_Data: {}, // 拷贝后，提取的当前模块的模型(取消操作是使用)
         };
-
-
     }
 
     settingData(data) {
@@ -77,7 +75,7 @@ class TemplateList extends Component{
     closeModuleWarp() {
         const parentThis = window.A_vue
         parentThis.setState({
-            Show_Moda_Sort: false
+            Show_Modal_Template: false
         })
     }
     change(name, checked) {
@@ -104,7 +102,6 @@ class TemplateList extends Component{
 
     render() {
         const _this = this
-        console.log(_this.props)
         const { 
             TemplateWeb,
             TemplateTraditional,
@@ -158,7 +155,7 @@ class TemplateList extends Component{
                                             borderColor: TemplateTraditional ? '#2d8cf0' : '',
                                             color: TemplateTraditional ? '#444' : '',
                                         }}>
-                                        <MyIcon style={{ verticalAlign: '-2px', size: '18px', marginRight: '2px' }} type="icon-liebiao" />
+                                        <MyIcon style={{ verticalAlign: '-2px', size: '18px', marginRight: '2px', color: TemplateTraditional ? '#2d8cf0' : '#999' }} type="icon-liebiao" />
                                         <span>传统</span>
                                     </div>
 
@@ -170,7 +167,7 @@ class TemplateList extends Component{
                                             borderColor: TemplateModern ? '#2d8cf0' : '',
                                             color: TemplateModern ? '#444' : '',
                                         }}>
-                                        <MyIcon style={{ verticalAlign: '-2px', size: '18px', marginRight: '2px' }} type="icon-apps" />
+                                        <MyIcon style={{ verticalAlign: '-2px', size: '18px', marginRight: '2px', color: TemplateModern ? '#2d8cf0' : '#999' }} type="icon-apps" />
                                         <span>现代</span>
                                     </div>
                                 </div>

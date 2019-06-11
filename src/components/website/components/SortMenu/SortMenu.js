@@ -73,7 +73,6 @@ class SortMenu extends Component {
 
         this.settingData = this.settingData.bind(this)
         this.onDragEnd = this.onDragEnd.bind(this)
-        this.closeModuleWarp = this.closeModuleWarp.bind(this)
         // this.vueEnabled = this.vueEnabled.bind(this)
         // this.vueEdit = this.vueEdit.bind(this)
     }
@@ -212,7 +211,7 @@ class SortMenu extends Component {
                 <div className="web_module_warp">
                     <div className="web_module_title">
                         菜单管理
-                        <label onClick={ _this.closeModuleWarp } >
+                        <label onClick={ () => _this.closeModuleWarp() } >
                             <Icon className="close" style={{ fontSize: '20px'}} type="close" />
                         </label>
                     </div>
