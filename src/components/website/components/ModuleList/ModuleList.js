@@ -61,11 +61,13 @@ class ModuleList extends Component {
 			okType: 'danger',
 			cancelText: '取消',
 			onOk() {
-				message.loading('Action in progress..', 2)
+				message.loading('正在执行中...', 2)
     			.then(() => {
 					moudels.splice(index, 1)
-					_this.props.vueDelete(moudels)
 					message.success('删除成功！', 1)
+					setTimeout(() => {
+						_this.props.vueDelete(moudels)
+					}, 500)
 				})
 			},
 			onCancel() {
@@ -142,8 +144,8 @@ class ModuleList extends Component {
 								)
 							}
 							<div className="ti">{ item.Section_Name }</div>
-							{ item.Enabled ? <div className="hover_block">该模块已存在</div> : null }
-						</li>
+								{ item.Enabled ? <div className="hover_block">该模块已存在</div> : null }
+							</li>
 						) : null
 					)}
 					<div className="clear"></div>

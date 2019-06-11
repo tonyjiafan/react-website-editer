@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import websiteData from './webData';
 import './index.less';
-import { Icon, message, Button, Spin } from 'antd';
-import { isArrayFn } from '../libs/filters'
+import { Icon, message, Button, Spin, Tooltip } from 'antd';
+import { isArrayFn } from '../libs/filters';
+import phoneImg from '../../images/tem_phone_bg.png';
 
 // 组件
 import SortMenu from './components/SortMenu/SortMenu'; //排序菜单
@@ -394,12 +395,16 @@ class WebEditWarp extends Component {
 					{!Show_Modal_Edit && !Show_Modal_Template ? 
 						(
 							<div className="icon-coat">
-								<span style={{ opacity: Is_Pc_Warp ? 1 : '.5', color: Is_Pc_Warp ? '#202020' : '' }} className="back-btn btn-2" onClick={ () => _this.changeWarp('PC') }>
-									<MyIcon style={{ marginTop: '10px', fontSize: '22px' }} type="icon-cl-icon-Computer" />
-								</span>
-								<span style={{ opacity: !Is_Pc_Warp ? 1 : '.5', color: !Is_Pc_Warp ? '#202020' : '' }} className="back-btn btn-3" onClick={ () => _this.changeWarp('Mobile') }>
-									<MyIcon style={{ marginTop: '10px', fontSize: '22px' }} type="icon-cl-icon-Mobile" />
-								</span>
+								<Tooltip placement="bottom" title={`PC端`}>
+									<span style={{ opacity: Is_Pc_Warp ? 1 : '.5', color: Is_Pc_Warp ? '#202020' : '' }} className="back-btn btn-2" onClick={ () => _this.changeWarp('PC') }>
+										<MyIcon style={{ marginTop: '10px', fontSize: '22px' }} type="icon-cl-icon-Computer" />
+									</span>
+								</Tooltip>
+								<Tooltip placement="bottom" title={`移动端`}>
+									<span style={{ opacity: !Is_Pc_Warp ? 1 : '.5', color: !Is_Pc_Warp ? '#202020' : '' }} className="back-btn btn-3" onClick={ () => _this.changeWarp('Mobile') }>
+										<MyIcon style={{ marginTop: '10px', fontSize: '22px' }} type="icon-cl-icon-Mobile" />
+									</span>
+								</Tooltip>
 							</div>
 						) : null
 					}
@@ -458,7 +463,7 @@ class WebEditWarp extends Component {
 												style={{ width: '100%', height: '100%', background: '#fff' }} />
 										</div>
 									</div>
-									<img className="web-phone-bg" src="http://localhost:3000/tem_phone_bg.png" alt="" />  
+									<img className="web-phone-bg" src={ phoneImg } alt="" />  
 								</div>
 							) : null)
 						}

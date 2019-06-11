@@ -186,8 +186,8 @@ class TemplateList extends Component{
                             className="swith_ls"
                             checkedChildren="开" 
                             unCheckedChildren="关" 
-                            checked={ _this.state.Current_Data.Open_Enroll_Face }
-                            onChange={ () => _this.change('Open_Enroll_Face', _this.state.Current_Data.Open_Enroll_Face) }
+                            checked={ _this.state.Current_Data.Show_Enroll_Count }
+                            onChange={ () => _this.change('Show_Enroll_Count', _this.state.Current_Data.Show_Enroll_Count) }
                             />
                         </div>
                         <div style={{ paddingTop: '14px' }}>

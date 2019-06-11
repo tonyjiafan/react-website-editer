@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import './SortMenu.less';
 
-import { Icon, Button } from 'antd';
+import { Icon } from 'antd';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const MyIcon = Icon.createFromIconfontCN({

@@ -191,7 +191,7 @@ const websiteData = {
             "Section_Type": 8,
             "Section_Code": "Custom",
             "Section_Name": "React小书",
-            "Enabled": true,
+            "Enabled": false,
             "Is_Rich": true,
             "Is_Custom": true,
             "Rich_Id": "23dd4eab-d70c-cfcf-b4be-08d6ea881684",
