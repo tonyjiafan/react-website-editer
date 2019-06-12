@@ -173,7 +173,10 @@ class ModuleList extends Component {
 								(<li 
 									key={ item.Rich_Id }
 									className={ item.Enabled ? "li disabled hover" : "li" }
-									style={{ borderColor: item.Enabled ? "" : "#75777d" }}>
+									style={{ 
+										borderColor: item.Enabled ? "" : "#9E9E9E" ,
+										background: item.Enabled ? "" : "#fff" ,
+									}}>
 									<div className="ti">{ item.Section_Name }</div>
 									{ item.Enabled ? <div className="hover_block">该模块已存在</div> : <div className="del-btn" onClick={ () => _this.vueDeleteModule(index, item.Rich_Id) }>删除</div> }
 									{ !item.Enabled ? <div className="just-btn" onClick={ () => _this.changeEnabled(item.Enabled, index) }>使用模块</div> : null }
