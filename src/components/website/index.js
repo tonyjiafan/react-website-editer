@@ -543,7 +543,11 @@ class WebEditWarp extends Component {
 				</div>
 				{_this.state.Loading ? (
 					<div className="spinWarp">
-						<SpinComponent wrapperClassName={ `spinWarp` } spinning={ _this.state.Loading } />
+						<SpinComponent 
+							color={ `pink` } 
+							iconType={ `sync` } 
+							wrapperClassName={ `spinWarp` } 
+							spinning={ _this.state.Loading } />
 					</div>
 				) : null}
 			</div>

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Icon, Spin } from 'antd';
 
-const antIcon = <Icon type="loading" style={{ fontSize: 70, color: '#ff7225' }} spin />
-
 const styles = {
     spinCoat: {
         width: '100%',
@@ -14,14 +12,23 @@ const styles = {
 }
 
 class SpinComponent extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {}
-    }
+    // constructor(props) {
+    //     super(props)
+    //     this.state = {}
+    // }
 
     render() {
         const _this = this
-        const { wrapperClassName, size = 'large', spinning } = _this.props
+        const {
+          wrapperClassName,
+          size = 'large',
+          spinning,
+          color = '#ff7225',
+          iconType = 'loading'
+        } = _this.props
+        
+        const antIcon = <Icon type={ iconType } style={{ fontSize: 70, color: color }} spin />
+
         return (
             <div style={styles.spinCoat}>
                 <Spin
