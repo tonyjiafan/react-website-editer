@@ -1,23 +1,18 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## 网站编辑器
+### 网站编辑器
 
-### `npm run start`
+##### `npm run start`
 
 运行项目
 
-### `npm run build  `
+##### `npm run build  `
 
 打包
 
 
 
-## 看图说话
-
-
-##### 网站模板选择
-
-<img style="width:300px;" src="https://github.com/tonyjiafan/react-website-editer/blob/master/view_img/template.jpg?raw=true"/>
+### 看图说话
 
 
 ##### 网站模块管理
