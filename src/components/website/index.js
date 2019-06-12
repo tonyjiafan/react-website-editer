@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react'
 import websiteData from './webData';
 import './index.less';
 import { Icon, message, Button, Spin, Tooltip } from 'antd';
@@ -6,15 +6,18 @@ import { isArrayFn } from '../libs/filters';
 import phoneImg from '../../images/tem_phone_bg.png';
 
 // 组件
-import SortMenu from './components/SortMenu/SortMenu'; //排序菜单
-import ModuleList from './components/ModuleList/ModuleList'; //模块管理
-import TemplateList from './components/TemplateList/TemplateList'; //模板选择
+import SpinComponent from '../common/spin';
+const SortMenu = React.lazy(() => import('./components/SortMenu/SortMenu')); //排序菜单
+const ModuleList = React.lazy(() => import('./components/ModuleList/ModuleList')); //排序菜单
+const TemplateList = React.lazy(() => import('./components/TemplateList/TemplateList')); //排序菜单
 
-
+// import SortMenu from './components/SortMenu/SortMenu'; //排序菜单
+// import ModuleList from './components/ModuleList/ModuleList'; //模块管理
+// import TemplateList from './components/TemplateList/TemplateList'; //模板选择
 
 const MyIcon = Icon.createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_1219293_3pjl5z7tuio.js' // 在 iconfont.cn 上生成
-})
+});
 
 
 /**
@@ -124,7 +127,7 @@ class WebEditWarp extends Component {
 			_this.setState({ LoadingContent: true })
 			setTimeout(() => {
 				_this.setState({
-				...newState
+					...newState
 				})
 			}, 2000)
 		}
@@ -216,9 +219,7 @@ class WebEditWarp extends Component {
 			})
 		}
 
-		// 触发loading
-		_this.setState({ Loading: true })
-		setTimeout(() => {
+		function update() {
 			_this.setState({
 				...newState
 			}, () => {
@@ -227,7 +228,16 @@ class WebEditWarp extends Component {
 				_this.saveDataToLocalStorage()
 				_this.reload()
 			})	
-		}, 1000)
+		}
+
+		// 触发loading
+		_this.setState({ 
+			Loading: true 
+		}, () => {
+			setTimeout(() => {
+				update()
+			}, 1500)
+		})
 	}
 
 	/** 
@@ -469,9 +479,7 @@ class WebEditWarp extends Component {
 						}
 						{_this.state.LoadingContent ? (
 							<div className="noneContent">
-								<div className="spinCoat">
-									<Spin wrapperClassName="noneContent" delay={ 500 } spinning={_this.state.LoadingContent} size="large" />
-								</div>
+								<SpinComponent wrapperClassName={ `noneContent` } spinning={ _this.state.LoadingContent } />
 							</div>
 						) : null}
 					</div>
@@ -479,11 +487,13 @@ class WebEditWarp extends Component {
 					{Show_Modal_Template ? (
 							<div className="modal-mask-template">
 								<div className="modal-content-template" >
-									<TemplateList
-									Template_List={ _this.state.WebData.Template_List }
-									Basic={ _this.state.WebData.Basic }
-									updateTemplate={ _this.updateTemplate }
-									editModuleUpdate={ _this.editModuleUpdate } />
+									<Suspense fallback={<div>Loading...</div>}>
+										<TemplateList
+										Template_List={ _this.state.WebData.Template_List }
+										Basic={ _this.state.WebData.Basic }
+										updateTemplate={ _this.updateTemplate }
+										editModuleUpdate={ _this.editModuleUpdate } />
+									</Suspense>
 								</div>
 							</div>
 						) : 
@@ -505,10 +515,12 @@ class WebEditWarp extends Component {
 					{Show_Moda_Module ? (
 							<div className="modal-mask-add-module">
 								<div className="modal-content">
-									<ModuleList 
-									Module_List={ _this.state.WebData.Section_Data}
-									vueEnabled={ _this.vueEnabledFn }
-									vueDelete={ _this.vueDeleteFn } />
+									<Suspense fallback={<div>Loading...</div>}>
+										<ModuleList 
+										Module_List={ _this.state.WebData.Section_Data}
+										vueEnabled={ _this.vueEnabledFn }
+										vueDelete={ _this.vueDeleteFn } />
+									</Suspense>
 								</div>
 							</div>
 						) : 
@@ -517,10 +529,12 @@ class WebEditWarp extends Component {
 					{Show_Moda_Sort ? (
 							<div className="modal-mask-sort">
 								<div className="modal-content">
-									<SortMenu 
-									vueEnabled={ _this.vueEnabledFn }
-									currentSort={ _this.currentSortFn } 
-									Section_Data={ _this.state.WebData.Section_Data } />
+									<Suspense fallback={<div>Loading...</div>}>
+										<SortMenu 
+										vueEnabled={ _this.vueEnabledFn }
+										currentSort={ _this.currentSortFn } 
+										Section_Data={ _this.state.WebData.Section_Data } />
+									</Suspense>
 								</div>
 							</div>
 						) : 
@@ -529,9 +543,7 @@ class WebEditWarp extends Component {
 				</div>
 				{_this.state.Loading ? (
 					<div className="spinWarp">
-						<div className="spinCoat">
-							<Spin wrapperClassName="spinWarp" delay={ 500 } spinning={_this.state.Loading} size="large" />
-						</div>
+						<SpinComponent wrapperClassName={ `spinWarp` } spinning={ _this.state.Loading } />
 					</div>
 				) : null}
 			</div>
