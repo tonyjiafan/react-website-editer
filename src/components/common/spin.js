@@ -24,10 +24,11 @@ class SpinComponent extends Component {
           size = 'large',
           spinning,
           color = '#ff7225',
-          iconType = 'loading'
+          iconType = 'loading',
+          fontSize = 70,
         } = _this.props
         
-        const antIcon = <Icon type={ iconType } style={{ fontSize: 70, color: color }} spin />
+        const antIcon = <Icon type={ iconType } style={{ fontSize: fontSize, color: color }} spin />
 
         return (
             <div style={styles.spinCoat}>
