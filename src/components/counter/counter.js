@@ -4,7 +4,7 @@ import React, {
 import { Button } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addNumber } from '../../actions/commonActions';
+import { addNumber, cutNumber } from '../../actions/counterActions';
 
 class NumberInput extends Component {
 	static propTypes = {
@@ -16,8 +16,9 @@ class NumberInput extends Component {
 		console.log(this.props)
 		return (
 			<div style={{ marginBottom: 20 }}>
+				<Button type="ghost" onClick={ () => this.props.cutNumber(1) } > - </Button>
 				<Button type="ghost">{ this.props.number }</Button>
-				<Button type="ghost" onClick={ () => this.props.addNumber(1) } >+</Button>
+				<Button type="ghost" onClick={ () => this.props.addNumber(1) } > + </Button>
 			</div>
 		)
 	}
@@ -30,5 +31,6 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, {
-	addNumber
+	addNumber,
+	cutNumber
 })(NumberInput);

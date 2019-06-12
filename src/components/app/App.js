@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.less';
 
-import NumberInput from '../common/number';
+import NumberInput from '../counter/counter';
 
 function App() {
   return (
