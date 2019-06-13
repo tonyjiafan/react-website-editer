@@ -107,8 +107,7 @@ class WebEditWarp extends Component {
 			Loading: false 
 		}, () => {
 			let Child_Window = window.frames['prewWebsite'] //获得对应iframe的window对象
-			console.log(Child_Window)
-
+			// console.log(Child_Window)
 			if (Child_Window.B_vue) {
 				const { WebData } = _this.state
 				Child_Window.B_vue.updatedPageData(WebData)
@@ -278,10 +277,10 @@ class WebEditWarp extends Component {
 	}
 	// Modules 所有编辑后 回传的整个 数据模型
 	editModuleUpdate(Modules, isOpen = false, isChange = true) {
+		console.log(Modules)
 		const _this = this
 		const newState = _this.state
 		let flag = isArrayFn(Modules)
-		
 		flag ? newState.WebData.Section_Data = Modules : newState.WebData.Basic = Modules
 		_this.setState({
 			...newState
@@ -291,7 +290,6 @@ class WebEditWarp extends Component {
 				// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
 				localStorage.setItem('jy-web-flag', '0')
 			}
-
 			_this.saveDataToLocalStorage()
 			_this.reload()
 			// isOpen 更新模板列表中的 官网上展示报名人数 swith 时，不需要清除当前模态框
@@ -504,7 +502,7 @@ class WebEditWarp extends Component {
 						{_this.state.LoadingContent ? (
 							<div className="noneContent">
 								<SpinComponent 
-									color={ `#eb2f96` } 
+									color={ `#0d6cff` } 
 									iconType={ `ellipsis` } 
 									wrapperClassName={ `noneContent` } 
 									spinning={ _this.state.LoadingContent } />
@@ -585,7 +583,7 @@ class WebEditWarp extends Component {
 				{_this.state.Loading ? (
 					<div className="spinWarp">
 						<SpinComponent 
-							color={ `#eb2f96` } 
+							color={ `#0d6cff` } 
 							iconType={ `more` } 
 							wrapperClassName={ `spinWarp` } 
 							spinning={ _this.state.Loading } />

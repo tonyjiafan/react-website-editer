@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import E from 'wangeditor';
+import './common.less';
 // import { message } from 'antd';
 
 class Editer extends Component{
@@ -13,38 +14,25 @@ class Editer extends Component{
 
     componentDidMount() {
         const _this = this 
-        console.log('initEditorinitEditorinitEditorinitEditor')
-        console.log(this.props)
-        console.log('initEditorinitEditorinitEditorinitEditor')
         const { Section_Content } = _this.props
-        _this.setState({ content: Section_Content }, () => {
-            _this.initEditor()
-        })
+        _this.initEditor(Section_Content)
     }
 
-    initEditor() {
-        const elem = this.refs.editorElem; //获取editorElem盒子
-        // const submit = this.refs.submit; //获取提交按钮
+    initEditor(Section_Content) {
+        const _this = this
+        const elem = _this.refs.editorElem; //获取editorElem盒子
         const editor = new E(elem)  //new 一个 editorElem富文本
-        editor.create() //创建
-
-        editor.txt.html(this.state.content)  //设置富文本默认内容
-        // submit.addEventListener('click', function () {  //监听点击提交按钮
-        //     // 读取 html
-        //     this.setState({
-        //         content: editor.txt.html()  //获取富文本内容
-        //     })
-        // }, false)
-        
-        // 上传图片
-        // editor.customConfig.uploadFileName = 'upfile' //置上传接口的文本流字段
-        // editor.customConfig.uploadImgServer = 'https://dev.xiaomon.com/api/treeroot/v1/xxx/upload/uploadImage'//服务器接口地址
-        // editor.customConfig.uploadImgHooks = {
-        //     customInsert: function (insertImg, result, editor) {
-        //         var url = result.url  //监听图片上传成功更新页面
-        //         insertImg(url)
-        //     }
-        // }
+        // onChange
+        editor.customConfig.onchange = function (content) {
+            // content 即变化之后的内容
+            // console.log(content)
+            _this.setState({
+                content  //获取富文本内容
+            }, () => {
+                _this.props.updateContent(_this.state.content)
+            })
+        }
+        editor.customConfig.onchangeTimeout = 200
 
         editor.customConfig.menus = [
             'head', // 标题
@@ -90,13 +78,26 @@ class Editer extends Component{
             '上传': 'Upload',
             '创建': 'init'
         }
+
+        // 上传图片
+        // editor.customConfig.uploadFileName = 'upfile' //置上传接口的文本流字段
+        // editor.customConfig.uploadImgServer = 'https://dev.xiaomon.com/api/treeroot/v1/xxx/upload/uploadImage'//服务器接口地址
+        // editor.customConfig.uploadImgHooks = {
+        //     customInsert: function (insertImg, result, editor) {
+        //         var url = result.url  //监听图片上传成功更新页面
+        //         insertImg(url)
+        //     }
+        // }
+
+        editor.create() //创建
+        editor.txt.html(Section_Content)  //设置富文本默认内容
     }
 
     render() {
         return (
-            <div>
+            <div className="edit-component-warp">
                 <div ref='editorElem' style={{ textAlign: 'left', minHeight: 400 }} />
-                { /* <div ref="submit">提交</div> */ }
+                { /*  */ }
             </div>
         )
     }
