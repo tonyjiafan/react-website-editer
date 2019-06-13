@@ -23,3 +23,17 @@ export function isArrayFn(arr) {
         return Object.prototype.toString.call(arr) === '[object Array]';
     }
 }
+
+// 去除字符串两边的空白
+function trimFn(str) {
+    if (str === '' || str == null) return
+    return str.replace(/(^\s*)|(\s*$)/g, "");
+}
+// 截取富文本内容
+export function replaceEditorContent(Content) {
+    if (Content === '' || Content == null) return
+    let Editor = Content.replace("<!DOCTYPE html>", "").replace("<html>", "").replace("<head>", "").replace("</head>", "")
+            .replace("<body>", "").replace("</body>", "").replace("</html>", "");
+    let str = trimFn(Editor)
+    return str;
+}

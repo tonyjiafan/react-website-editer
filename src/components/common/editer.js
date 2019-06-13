@@ -5,50 +5,46 @@ import E from 'wangeditor';
 class Editer extends Component{
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+            content: ``
+        }
         this.initEditor = this.initEditor.bind(this)
     }
 
     componentDidMount() {
-        this.initEditor()
+        const _this = this 
+        console.log('initEditorinitEditorinitEditorinitEditor')
+        console.log(this.props)
+        console.log('initEditorinitEditorinitEditorinitEditor')
+        const { Section_Content } = _this.props
+        _this.setState({ content: Section_Content }, () => {
+            _this.initEditor()
+        })
     }
 
     initEditor() {
-        const elem = this.refs.editorElem
-        const editor = new E(elem)
+        const elem = this.refs.editorElem; //获取editorElem盒子
+        // const submit = this.refs.submit; //获取提交按钮
+        const editor = new E(elem)  //new 一个 editorElem富文本
+        editor.create() //创建
 
-        this.editor = editor
-
+        editor.txt.html(this.state.content)  //设置富文本默认内容
+        // submit.addEventListener('click', function () {  //监听点击提交按钮
+        //     // 读取 html
+        //     this.setState({
+        //         content: editor.txt.html()  //获取富文本内容
+        //     })
+        // }, false)
+        
         // 上传图片
-        // editor.customConfig.zIndex = 100
-        // editor.customConfig.uploadImgServer = utils.url + '/fileclient-management/api/uploadpic'
-        // // 限制一次最多上传 1 张图片
-        // editor.customConfig.uploadImgMaxLength = 1
-        // editor.customConfig.customUploadImg = function (files, insert) {
-        //     // files 是 input 中选中的文件列表
-        //     console.log(files)
-        //     if (files[0]) {
-        //         const formData = new window.FormData()
-        //         formData.append('file', files[0], 'cover.jpg')
-        //         fetch(utils.url + '/fileclient-management/api/uploadpic', {
-        //             method: 'POST',
-        //             body: formData
-        //         }).then((res) => {
-        //             return res.json()
-        //         }).then((res) => {
-        //             const data = res.resultData
-        //             if (data) {
-        //                 // 上传代码返回结果之后，将图片插入到编辑器中
-        //                 insert(data.resourceUrl)
-        //             } else {
-        //                 console.log(data.msg)
-        //             }
-        //         })
-        //     } else {
-        //         message.info('請選擇要上傳的圖片')
+        // editor.customConfig.uploadFileName = 'upfile' //置上传接口的文本流字段
+        // editor.customConfig.uploadImgServer = 'https://dev.xiaomon.com/api/treeroot/v1/xxx/upload/uploadImage'//服务器接口地址
+        // editor.customConfig.uploadImgHooks = {
+        //     customInsert: function (insertImg, result, editor) {
+        //         var url = result.url  //监听图片上传成功更新页面
+        //         insertImg(url)
         //     }
         // }
-
 
         editor.customConfig.menus = [
             'head', // 标题
@@ -94,12 +90,14 @@ class Editer extends Component{
             '上传': 'Upload',
             '创建': 'init'
         }
-        editor.create()
     }
 
     render() {
         return (
-            <div ref='editorElem' style={{ textAlign: 'left' }} />
+            <div>
+                <div ref='editorElem' style={{ textAlign: 'left', minHeight: 400 }} />
+                { /* <div ref="submit">提交</div> */ }
+            </div>
         )
     }
 }
