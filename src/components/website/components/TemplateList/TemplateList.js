@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { Switch, Icon, message } from 'antd'
+import { Switch, Icon, message } from 'antd';
+import MyIcon from '../../../common/myIcon';
 import { cloneObj } from '../../../libs/filters';
 import './TemplateList.less';
-
-const MyIcon = Icon.createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/font_1219293_3pjl5z7tuio.js' // 在 iconfont.cn 上生成
-});
 
 class TemplateList extends Component{ 
     constructor(props) {

@@ -1,15 +1,3 @@
-import React, {
-	Component
-} from 'react';
-import './SortMenu.less';
-
-import { Icon } from 'antd';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-
-const MyIcon = Icon.createFromIconfontCN({
-	scriptUrl: '//at.alicdn.com/t/font_1219293_3pjl5z7tuio.js' // 在 iconfont.cn 上生成
-});
-
 /**
  * Show_Modal_Template 模板选择
  * Show_Modal_Edit  模块编辑
@@ -29,15 +17,19 @@ const MyIcon = Icon.createFromIconfontCN({
  * News 9 活动动态
  * */
 
+import React, { Component } from 'react';
+import './SortMenu.less';
+import { Icon } from 'antd';
+import MyIcon from '../../../common/myIcon';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 // import { cloneObj } from '../../../libs/filters.js';
 
 
-// 一个小功能，以帮助我们重新排序结果
+// 重新排序结果
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list)
     const [removed] = result.splice(startIndex, 1)
     result.splice(endIndex, 0, removed)
-
     return result
 }
 

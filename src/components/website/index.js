@@ -1,35 +1,9 @@
-import React, { Component, Suspense } from 'react'
-import websiteData from './webData';
-import './index.less';
-import { Icon, message, Button, Spin, Tooltip } from 'antd';
-import { isArrayFn } from '../libs/filters';
-import phoneImg from '../../images/tem_phone_bg.png';
-
-// 组件
-import SpinComponent from '../common/spin';
-const SortMenu = React.lazy(() => import('./components/SortMenu/SortMenu')); //排序菜单
-const ModuleList = React.lazy(() => import('./components/ModuleList/ModuleList')); //排序菜单
-const TemplateList = React.lazy(() => import('./components/TemplateList/TemplateList')); //排序菜单
-
-// import SortMenu from './components/SortMenu/SortMenu'; //排序菜单
-// import ModuleList from './components/ModuleList/ModuleList'; //模块管理
-// import TemplateList from './components/TemplateList/TemplateList'; //模板选择
-
-const MyIcon = Icon.createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/font_1219293_3pjl5z7tuio.js' // 在 iconfont.cn 上生成
-});
-
-
 /**
  * jy-web-flag 用来判断当前的数据内容 是否被编辑过  1 未编辑  0 已编辑 
- * 
  * Show_Modal_Template 模板选择
  * Show_Modal_Edit  模块编辑
  * Show_Moda_Module  模块添加
  * Show_Moda_Sort  模块排序
- * */
-
-/** 
  * Basic 1 基本信息
  * Introduction 2 活动介绍
  * Guest 3 嘉宾介绍
@@ -39,7 +13,29 @@ const MyIcon = Icon.createFromIconfontCN({
  * Guide 7 参会指南
  * Custom 8 自定义栏目
  * News 9 活动动态
- * */ 
+ * */
+
+import React, { Component, Suspense } from 'react'
+import websiteData from './webData';
+import richList from './richList';
+import './index.less';
+import { message, Button, Tooltip } from 'antd';
+import MyIcon from '../common/myIcon';
+import { isArrayFn } from '../libs/filters';
+import phoneImg from '../../images/tem_phone_bg.png';
+
+// 组件
+import SpinComponent from '../common/spin';
+import LazySpin from '../common/lazySpin';
+
+const SortMenu = React.lazy(() => import('./components/SortMenu/SortMenu')); //排序菜单
+const ModuleList = React.lazy(() => import('./components/ModuleList/ModuleList')); //排序菜单
+const TemplateList = React.lazy(() => import('./components/TemplateList/TemplateList')); //排序菜单
+const Custom = React.lazy(() => import('./components/Custom/Custom')); //自定模块
+
+// import SortMenu from './components/SortMenu/SortMenu'; //排序菜单
+// import ModuleList from './components/ModuleList/ModuleList'; //模块管理
+// import TemplateList from './components/TemplateList/TemplateList'; //模板选择
 
 class WebEditWarp extends Component {
 	constructor(props) {
@@ -59,7 +55,7 @@ class WebEditWarp extends Component {
 			Current_Component: '',
 			Current_RichId: '', // 当前组件的RichId,富文本组件需要获取内容
 			localStorageHasWebData: false,
-			Rich_List: [], // 富文本列表
+			Rich_List: richList || [], // 富文本列表
 			include_viewList: [],
 			Mask_Edit_View_Change: true, // 切换编辑时的全屏、半屏
 			View_Change_Style: {
@@ -70,7 +66,6 @@ class WebEditWarp extends Component {
 				right: '0px',
 				left: '50%'
 			},
-
 			// 基本数据模型
 			WebData: websiteData,
 		}
@@ -85,21 +80,25 @@ class WebEditWarp extends Component {
 		this.vueEditFn = this.vueEditFn.bind(this) // 编辑模块
 		this.updateTemplate = this.updateTemplate.bind(this) // 更新模板
     	this.editModuleUpdate = this.editModuleUpdate.bind(this) // Modules 所有编辑后 回传的整个 数据模型
+    	this.richListUpdate = this.richListUpdate.bind(this) // 富文本编辑后 更新
 
 	}
 
 	goBackList() {
 		const _this = this
-		_this.props.history.push('/');
+		window.localStorage.removeItem('jy-web-flag')
+		window.localStorage.removeItem(`jy-web-data-${_this.state.meetingId}`)
+		window.localStorage.removeItem('jy-web-richList')
+		setTimeout(() => {
+			_this.props.history.push('/')
+		}, 500);
 	}
-
 	// 存储数据变化 到本地
 	saveDataToLocalStorage() {
 		const _this = this
 		const { WebData } = _this.state
 		window.localStorage.setItem(`jy-web-data-${_this.state.meetingId}`, JSON.stringify(WebData))
 	}
-
 	// 刷新数据
 	reload() {
 		const _this = this
@@ -116,7 +115,7 @@ class WebEditWarp extends Component {
 			}
 		})
 	}
-	
+	// pc 移动 切换
 	changeWarp(str) {
 		const _this = this
 		const newState = _this.state
@@ -131,6 +130,16 @@ class WebEditWarp extends Component {
 				})
 			}, 2000)
 		}
+	}
+	// 富文本 编辑后 更新整个富文本列表
+	richListUpdate(Rich_List) {
+		const _this = this
+		_this.setState({
+			Rich_List
+		}, () => {
+			localStorage.setItem('jy-web-richList', JSON.stringify(_this.state.Rich_List))
+			_this.reload()
+		})
 	}
 
 	/*****************  唤醒菜单栏方法  ***************************/
@@ -168,7 +177,6 @@ class WebEditWarp extends Component {
 	}
 
 	//**************** 实际执行方法 *************************/ 
-
 	/** 
 	 * 彻底删除 自定义 模块
 	 * Moudels 已经删除后的完整的 Section_Data
@@ -219,27 +227,22 @@ class WebEditWarp extends Component {
 			})
 		}
 
-		function update() {
-			_this.setState({
-				...newState
-			}, () => {
-				// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
-				// localStorage.setItem('jy-web-flag', '0')
-				_this.saveDataToLocalStorage()
-				_this.reload()
-			})	
-		}
-
 		// 触发loading
 		_this.setState({ 
 			Loading: true 
 		}, () => {
 			setTimeout(() => {
-				update()
+				_this.setState({
+					...newState
+				}, () => {
+					// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
+					// localStorage.setItem('jy-web-flag', '0')
+					_this.saveDataToLocalStorage()
+					_this.reload()
+				})
 			}, 1500)
 		})
 	}
-
 	/** 
 	 * 编辑模块内容
 	 * Current_Type 当前需要渲染的组件类型
@@ -273,7 +276,6 @@ class WebEditWarp extends Component {
 			_this.vueOpenModalFn('Show_Modal_Edit')
 		}
 	}
-
 	// Modules 所有编辑后 回传的整个 数据模型
 	editModuleUpdate(Modules, isOpen = false, isChange = true) {
 		const _this = this
@@ -296,7 +298,6 @@ class WebEditWarp extends Component {
 			if (!isOpen) _this.vueOpenModalFn('')
 		})
 	}
-
 	/**
 	 * 拖拽排序方法
 	 * Section_Data 传递过来的参数 已经是处理好的 直接赋值
@@ -316,7 +317,6 @@ class WebEditWarp extends Component {
 			_this.reload()
 		})
 	}
-
 	/**
 	 * 更新选中模板
 	 * Temp_Path
@@ -352,6 +352,26 @@ class WebEditWarp extends Component {
 		})
 	}
 
+	// 装载富文本内容
+	inSertEdit() {
+		const _this = this
+		const newState = _this.state
+		newState.Rich_List.forEach(item1 => {
+			newState.WebData.Section_Data.forEach(item2 => {
+				if (item1.Rich_Id === item2.Rich_Id) {
+					item2.Section_Content = item1.Rich_Content
+				}
+			})
+		})
+
+		_this.setState({
+			...newState
+		}, () => {
+			// 富文本内容赋值后
+			_this.saveDataToLocalStorage()
+		})
+	}
+
 	// 在渲染前调用,在客户端也在服务端
 	componentWillMount() {
 		console.log('Component WILL MOUNT!')
@@ -361,6 +381,7 @@ class WebEditWarp extends Component {
 			}, () => {
 				window.A_vue = _this
 				window.A_WebData = _this.state.WebData
+				localStorage.setItem('jy-web-richList', JSON.stringify(_this.state.Rich_List))
 				localStorage.setItem(`jy-web-data-${_this.state.meetingId}`, JSON.stringify(_this.state.WebData))
 				setTimeout(() => {
 					_this.setState({
@@ -370,7 +391,6 @@ class WebEditWarp extends Component {
 				}, 2000)
 			}
 		)
-
 		// console.log(_this)
 		// console.log(window)
 	}
@@ -393,6 +413,10 @@ class WebEditWarp extends Component {
 			Show_Moda_Module,
 			Show_Moda_Sort,
 			Mask_Disabled,
+			Current_RichId,
+			Current_Component,
+			Rich_List,
+			WebData,
 		} = _this.state
 
 		return (
@@ -461,7 +485,7 @@ class WebEditWarp extends Component {
 								<div className="web-phone-warp" 
 									style={{ left: !Mask_Edit_View_Change ? '-25%' : '0px' }}>
 									<div className="web-phone-content">
-										<p className="phone_title">{ _this.state.WebData.Basic.Meeting_Name }</p>
+										<p className="phone_title">{ WebData.Basic.Meeting_Name }</p>
 										<div className="conten-box">
 											<iframe
 												title="mobile"
@@ -491,10 +515,10 @@ class WebEditWarp extends Component {
 					{Show_Modal_Template ? (
 							<div className="modal-mask-template">
 								<div className="modal-content-template" >
-									<Suspense fallback={<div>Loading...</div>}>
+									<Suspense fallback={<LazySpin />}>
 										<TemplateList
-										Template_List={ _this.state.WebData.Template_List }
-										Basic={ _this.state.WebData.Basic }
+										Template_List={ WebData.Template_List }
+										Basic={ WebData.Basic }
 										updateTemplate={ _this.updateTemplate }
 										editModuleUpdate={ _this.editModuleUpdate } />
 									</Suspense>
@@ -509,8 +533,21 @@ class WebEditWarp extends Component {
 									<label className="change-icon" onClick={ () => _this.setState({ Mask_Edit_View_Change: !Mask_Edit_View_Change }) }>
 										切换视图
 									</label>
-									<h1>  编辑 相关业务组件  </h1>
-									<Button className="ss" onClick={ () => _this.vueCancelForm() }> 退出编辑 </Button>
+									<h1>  编辑 {Current_Component} 业务组件   </h1>
+									
+									<Suspense fallback={<LazySpin />}>
+										<Custom
+											Is_Pc_Warp={ Is_Pc_Warp }
+											Section_Data={ WebData.Section_Data } 
+											Basic={ WebData.Basic }
+											Current_RichId={ Current_RichId }
+											Current_Component={ Current_Component }
+											Rich_List={ Rich_List }
+											editModuleUpdate={ _this.editModuleUpdate }
+											richListUpdate={ _this.richListUpdate } />
+									</Suspense>
+
+									<Button onClick={ () => _this.vueCancelForm() }> 退出编辑 </Button>
 								</div>
 							</div>
 						) : 
@@ -519,9 +556,9 @@ class WebEditWarp extends Component {
 					{Show_Moda_Module ? (
 							<div className="modal-mask-add-module">
 								<div className="modal-content">
-									<Suspense fallback={<div>Loading...</div>}>
+									<Suspense fallback={<LazySpin />}>
 										<ModuleList 
-										Module_List={ _this.state.WebData.Section_Data}
+										Module_List={ WebData.Section_Data}
 										vueEnabled={ _this.vueEnabledFn }
 										vueDelete={ _this.vueDeleteFn } />
 									</Suspense>
@@ -533,11 +570,11 @@ class WebEditWarp extends Component {
 					{Show_Moda_Sort ? (
 							<div className="modal-mask-sort">
 								<div className="modal-content">
-									<Suspense fallback={<div>Loading...</div>}>
+									<Suspense fallback={<LazySpin />}>
 										<SortMenu 
 										vueEnabled={ _this.vueEnabledFn }
 										currentSort={ _this.currentSortFn } 
-										Section_Data={ _this.state.WebData.Section_Data } />
+										Section_Data={ WebData.Section_Data } />
 									</Suspense>
 								</div>
 							</div>
