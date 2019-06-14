@@ -56,7 +56,7 @@ const websiteData = {
             "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/11127.png",
             "Is_Checked": true,
             "Dev_Url": "http://localhost:3000/tem7/index.html",
-            "Prd_Url": "https://www.jyhd.com/template/11127/index.html",
+            "Prd_Url": "https://tonyjiafan-react-editer-app.netlify.com/template/tem7/index.html",
             "Click_Type": 1
         },
         {
@@ -69,7 +69,7 @@ const websiteData = {
             "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/11128.png",
             "Is_Checked": false,
             "Dev_Url": "http://localhost:3000/tem8/index.html",
-            "Prd_Url": "https://www.jyhd.com/template/11128/index.html",
+            "Prd_Url": "https://tonyjiafan-react-editer-app.netlify.com/template/tem8/index.html",
             "Click_Type": 1
         },
         {
@@ -82,7 +82,7 @@ const websiteData = {
             "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/21127.png",
             "Is_Checked": true,
             "Dev_Url": "http://localhost:3000/m007/index.html",
-            "Prd_Url": "https://www.jyhd.com/template/21127/index.html",
+            "Prd_Url": "https://tonyjiafan-react-editer-app.netlify.com/template/m007/index.html",
             "Click_Type": 2
         },
         {
@@ -95,7 +95,7 @@ const websiteData = {
             "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/21128.png",
             "Is_Checked": false,
             "Dev_Url": "http://localhost:3000/m008/index.html",
-            "Prd_Url": "https://www.jyhd.com/template/21128/index.html",
+            "Prd_Url": "https://tonyjiafan-react-editer-app.netlify.com/template/m008/index.html",
             "Click_Type": 2
         },
         {
@@ -108,7 +108,7 @@ const websiteData = {
             "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/W1122.png",
             "Is_Checked": false,
             "Dev_Url": "http://localhost:3000/grid2/index.html",
-            "Prd_Url": "https://www.jyhd.com/template/W1122/index.html",
+            "Prd_Url": "https://tonyjiafan-react-editer-app.netlify.com/template/grid2/index.html",
             "Click_Type": 2
         },
     ],

@@ -48,7 +48,7 @@ class TemplateList extends Component{
                 if (e.Template_Type === Template_Type && e.Template_Code === Template_Code) {
                     e.Is_Checked = true
                     if (process.env.NODE_ENV === 'production') {
-                        e.Template_Type === 1 ? tempSrcPc = e.Dev_Url : tempSrcMobile = e.Dev_Url
+                        e.Template_Type === 1 ? tempSrcPc = e.Prd_Url : tempSrcMobile = e.Prd_Url
                     } else {
                         e.Template_Type === 1 ? tempSrcPc = e.Dev_Url : tempSrcMobile = e.Dev_Url
                     }

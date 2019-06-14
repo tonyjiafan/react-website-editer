@@ -129,14 +129,15 @@ module.exports = function(webpackEnv) {
     // These are the "entry points" to our application.
     // This means they will be the "root" imports that are included in JS bundle.
     entry: [
-      // 开启react代码的模块热替换（HMR）
-      'react-hot-loader/patch',
-      // 为webpack-dev-server的环境打包好运行代码
-      // 然后连接到指定服务器域名与端口, 这里的端口为自己项目的端口
-      'webpack-dev-server/client?http://localhost:3000/',
-      // 为热替换（HMR）打包好运行代码
-      // only- 意味着只有成功更新运行代码才会执行热替换（HMR）
-      'webpack/hot/only-dev-server',
+
+      // // 开启react代码的模块热替换（HMR）
+      // 'react-hot-loader/patch',
+      // // 为webpack-dev-server的环境打包好运行代码
+      // // 然后连接到指定服务器域名与端口, 这里的端口为自己项目的端口
+      // 'webpack-dev-server/client?http://localhost:3000/',
+      // // 为热替换（HMR）打包好运行代码
+      // // only- 意味着只有成功更新运行代码才会执行热替换（HMR）
+      // 'webpack/hot/only-dev-server',
 
       // Include an alternative client for WebpackDevServer. A client's job is to
       // connect to WebpackDevServer by a socket and get notified about changes.

@@ -45,8 +45,8 @@ class WebEditWarp extends Component {
 			meetingId: `af026266-3d0d-c6e9-e0a7-08d6cc87db4f`,
 			tempSrcPc: `http://localhost:3000/tem7/index.html`,
 			tempSrcMobile: `http://localhost:3000/m007/index.html`,
-			// tempSrcPc: `https://www.jyhd.com/template/11127/index.html`,
-			// tempSrcMobile: `https://www.jyhd.com/template/21127/index.html`,
+			// tempSrcPc: `https://tonyjiafan-react-editer-app.netlify.com/template/tem7/index.html`,
+			// tempSrcMobile: `https://tonyjiafan-react-editer-app.netlify.com/template/m007/index.html`,
 			Preview_show: false,
 			Loading: false,
 			LoadingContent: true,
@@ -254,7 +254,8 @@ class WebEditWarp extends Component {
 	 * */ 
 	vueEditFn(params) {
 		const _this = this
-		const {Current_Component, Current_RichId} = params
+		// console.log(params)
+		const { Current_Component, Current_RichId } = params
 		const newState = _this.state
 
 		// 自定义模块的 视图组件 是复用的，存在多个自定义 在移动端编辑时 可以无缝唤醒 当前的自定义组件
@@ -264,15 +265,17 @@ class WebEditWarp extends Component {
 			newState.Current_Component = ''
 			setTimeout(() => {
 				_this.setState({
-					Current_Component,
-					Current_RichId,
+					Current_Component: Current_Component,
+					Current_RichId: Current_RichId,
 				})
-			}, 100)
+			}, 0)
 		} else {
-			_this.setState({
-				Current_Component,
-				Current_RichId,
-			})
+			setTimeout(() => {
+				_this.setState({
+					Current_Component: Current_Component,
+					Current_RichId: Current_RichId,
+				})
+			}, 0)
 		}
 
 		if (!newState.Show_Modal_Edit) {
@@ -384,8 +387,8 @@ class WebEditWarp extends Component {
 		if (process.env.NODE_ENV === 'production') {
 			_this.setState({
 					meetingId: 'af026266-3d0d-c6e9-e0a7-08d6cc87db4f',
-					tempSrcPc: `https://www.jyhd.com/template/11127/index.html`,
-					tempSrcMobile: `https://www.jyhd.com/template/21127/index.html`,
+					tempSrcPc: `https://tonyjiafan-react-editer-app.netlify.com/template/tem7/index.html`,
+					tempSrcMobile: `https://tonyjiafan-react-editer-app.netlify.com/template/m007/index.html`,
 			}, () => {
 					window.A_vue = _this
 					window.A_WebData = _this.state.WebData

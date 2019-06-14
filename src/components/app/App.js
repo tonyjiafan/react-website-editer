@@ -15,7 +15,7 @@ function App() {
       <div>
         <NumberInput />
         <Link to="webEdit">
-          <span className="a-button">网页设计 Go</span>
+          <span className="a-button">网页设计</span>
         </Link>
       </div>
       

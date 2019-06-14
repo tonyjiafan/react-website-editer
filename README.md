@@ -2,14 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### 网站编辑器
 
-##### `npm run start`
-
-运行项目
-
-##### `npm run build  `
-
-打包
-
+### [预览地址](https://tonyjiafan-react-editer-app.netlify.com)
 
 
 ### 预览.png
@@ -17,5 +10,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ##### 网站菜单管理-支持拖拽排序实时更新编辑器网页模块顺序
 
 <img style="width:300px;" src="https://github.com/tonyjiafan/react-website-editer/blob/master/view_img/menus.jpg?raw=true"/>
+
+
+##### `npm run start`
+
+运行项目
+
+##### `npm run build  `
+
+打包
 
 
