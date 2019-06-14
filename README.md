@@ -12,13 +12,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 
 
-### 看图说话
-
-
-##### 网站模块管理
-
-<img style="width:300px;" src="https://github.com/tonyjiafan/react-website-editer/blob/master/view_img/module.jpg?raw=true"/>
-
+### 预览.png
 
 ##### 网站菜单管理-支持拖拽排序实时更新编辑器网页模块顺序
 

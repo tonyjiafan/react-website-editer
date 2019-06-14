@@ -19,8 +19,10 @@ const websiteData = {
             }
         ],
         // "Meeting_Site_Head": "https://kxpic.cn/test/jy/meeting/af0262663d0dc6e9e0a708d6cc87db4f/aef0bb2a65db4cd0b2209086170786ca.jpg",
-        "Meeting_Site_Head": "http://cdn.huodongxing.com/file/20141217/110A44776D41F671EBBD98E62B87E4E5CA/30783399668029316.jpg",
-        "App_Site_Head": "https://kxpic.cn/test/jy/meeting/af0262663d0dc6e9e0a708d6cc87db4f/f528e18defd149cd9f6b6bd13190968f.jpg",
+        // "Meeting_Site_Head": "http://cdn.huodongxing.com/file/20141217/110A44776D41F671EBBD98E62B87E4E5CA/30783399668029316.jpg",
+        "Meeting_Site_Head": "",
+        // "App_Site_Head": "https://kxpic.cn/test/jy/meeting/af0262663d0dc6e9e0a708d6cc87db4f/f528e18defd149cd9f6b6bd13190968f.jpg",
+        "App_Site_Head": "",
         "Whether_To_Display_Basic": true,
         "Show_Enroll_Count": true,
         "Enroll_Count": 0,
@@ -47,102 +49,54 @@ const websiteData = {
         {
             "Template_Type": 1,
             "Template_Type_Name": "PC",
-            "Template_Code": "11121",
+            "Template_Code": "11127",
             "App_Temp_Type": 0,
-            "Template_Path": "http://192.168.11.29:86/template/11121/index.html",
-            "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/11121.png",
-            "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/11121.png",
-            "Is_Checked": true
+            "Template_Path": "http://192.168.11.29:86/template/11127/index.html",
+            "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/11127.png",
+            "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/11127.png",
+            "Is_Checked": true,
+            "Dev_Url": "http://localhost:3000/tem7/index.html",
+            "Prd_Url": "",
+            "Click_Type": 1
         },
         {
             "Template_Type": 1,
             "Template_Type_Name": "PC",
-            "Template_Code": "11122",
+            "Template_Code": "11128",
             "App_Temp_Type": 0,
-            "Template_Path": "http://192.168.11.29:86/template/11122/index.html",
-            "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/11122.png",
-            "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/11122.png",
-            "Is_Checked": false
-        },
-        {
-            "Template_Type": 1,
-            "Template_Type_Name": "PC",
-            "Template_Code": "11125",
-            "App_Temp_Type": 0,
-            "Template_Path": "http://192.168.11.29:86/template/11125/index.html",
-            "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/11125.png",
-            "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/11125.png",
-            "Is_Checked": false
-        },
-        {
-            "Template_Type": 1,
-            "Template_Type_Name": "PC",
-            "Template_Code": "11123",
-            "App_Temp_Type": 0,
-            "Template_Path": "http://192.168.11.29:86/template/11123/index.html",
-            "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/11123.png",
-            "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/11123.png",
-            "Is_Checked": false
-        },
-        {
-            "Template_Type": 1,
-            "Template_Type_Name": "PC",
-            "Template_Code": "11124",
-            "App_Temp_Type": 0,
-            "Template_Path": "http://192.168.11.29:86/template/11124/index.html",
-            "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/11124.png",
-            "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/11124.png",
-            "Is_Checked": false
+            "Template_Path": "http://192.168.11.29:86/template/11128/index.html",
+            "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/11128.png",
+            "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/11128.png",
+            "Is_Checked": false,
+            "Dev_Url": "http://localhost:3000/tem8/index.html",
+            "Prd_Url": "",
+            "Click_Type": 1
         },
         {
             "Template_Type": 2,
             "Template_Type_Name": "APP",
-            "Template_Code": "21121",
+            "Template_Code": "21127",
             "App_Temp_Type": 1,
-            "Template_Path": "http://192.168.11.29:86/template/21121/index.html",
-            "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/21121.png",
-            "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/21121.png",
-            "Is_Checked": false
+            "Template_Path": "http://192.168.11.29:86/template/21127/index.html",
+            "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/21127.png",
+            "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/21127.png",
+            "Is_Checked": true,
+            "Dev_Url": "http://localhost:3000/m007/index.html",
+            "Prd_Url": "",
+            "Click_Type": 2
         },
         {
             "Template_Type": 2,
             "Template_Type_Name": "APP",
-            "Template_Code": "21125",
+            "Template_Code": "21128",
             "App_Temp_Type": 1,
-            "Template_Path": "http://192.168.11.29:86/template/21125/index.html",
-            "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/21125.png",
-            "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/21125.png",
-            "Is_Checked": false
-        },
-        {
-            "Template_Type": 2,
-            "Template_Type_Name": "APP",
-            "Template_Code": "21122",
-            "App_Temp_Type": 1,
-            "Template_Path": "http://192.168.11.29:86/template/21122/index.html",
-            "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/21122.png",
-            "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/21122.png",
-            "Is_Checked": false
-        },
-        {
-            "Template_Type": 2,
-            "Template_Type_Name": "APP",
-            "Template_Code": "21124",
-            "App_Temp_Type": 1,
-            "Template_Path": "http://192.168.11.29:86/template/21124/index.html",
-            "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/21124.png",
-            "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/21124.png",
-            "Is_Checked": false
-        },
-        {
-            "Template_Type": 2,
-            "Template_Type_Name": "APP",
-            "Template_Code": "W1121",
-            "App_Temp_Type": 2,
-            "Template_Path": "http://192.168.11.29:86/template/W1121/index.html",
-            "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/W1121.png",
-            "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/W1121.png",
-            "Is_Checked": false
+            "Template_Path": "http://192.168.11.29:86/template/21128/index.html",
+            "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/21128.png",
+            "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/21128.png",
+            "Is_Checked": false,
+            "Dev_Url": "http://localhost:3000/m008/index.html",
+            "Prd_Url": "",
+            "Click_Type": 2
         },
         {
             "Template_Type": 2,
@@ -152,30 +106,24 @@ const websiteData = {
             "Template_Path": "http://192.168.11.29:86/template/W1122/index.html",
             "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/W1122.png",
             "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/W1122.png",
-            "Is_Checked": true
+            "Is_Checked": false,
+            "Dev_Url": "http://localhost:3000/grid2/index.html",
+            "Prd_Url": "",
+            "Click_Type": 2
         },
-        {
-            "Template_Type": 2,
-            "Template_Type_Name": "APP",
-            "Template_Code": "W1123",
-            "App_Temp_Type": 2,
-            "Template_Path": "http://192.168.11.29:86/template/W1123/index.html",
-            "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/W1123.png",
-            "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/W1123.png",
-            "Is_Checked": false
-        },
-        {
-            "Template_Type": 2,
-            "Template_Type_Name": "APP",
-            "Template_Code": "21123",
-            "App_Temp_Type": 1,
-            "Template_Path": "http://192.168.11.29:86/template/21123/index.html",
-            "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/21123.png",
-            "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/21123.png",
-            "Is_Checked": false
-        }
     ],
     "Section_Data": [
+        {
+            "Section_Type": 2,
+            "Section_Code": "Introduction",
+            "Section_Name": "活动介绍",
+            "Enabled": true,
+            "Is_Rich": true,
+            "Is_Custom": false,
+            "Rich_Id": "6e40651f-c581-4dfe-886a-fb0fefc9b423",
+            "Section_Content": "<h2 align='center'>活动温馨提示</h2><p>一、签到：5月4日下午16:00开始签到</p><p>二、领取卡片小礼物：完成签到后派发生日会卡片小礼物</p><p>三、签名、留言、盖章：到场的粉丝在海贼旗上签名留言做为纪念</p><p>四、大屏幕播放视频：集体观看路飞庆生视频</p><p>五、有奖活动开始：进行海贼王知识问答有奖竞答</p><p>六、吃蛋糕庆生、合影：集体切分蛋糕合唱生日歌，合影留念</p><p align='left'>&nbsp;</p><div id='event_desc_page' align='center'><p><img title='超大展览面积.JPG' src='http://cdn.huodongxing.com/file/20141217/110A44776D41F671EBBD98E62B87E4E5CA/30893399573995505.jpg' alt='超大展览面积.JPG' width='100%' /><img title='等比例复原场景【局部】.jpg' src='http://cdn.huodongxing.com/file/20141217/110A44776D41F671EBBD98E62B87E4E5CA/30913399574055513.jpg' alt='等比例复原场景【局部】.jpg' width='100%' /><img title='复原场景.JPG' src='http://cdn.huodongxing.com/file/20141217/110A44776D41F671EBBD98E62B87E4E5CA/30923399574105517.jpg' alt='复原场景.JPG' width='100%' /><img title='观众2.JPG' src='http://cdn.huodongxing.com/file/20141217/110A44776D41F671EBBD98E62B87E4E5CA/30363399574175522.jpg' alt='观众2.JPG' width='100%' /></p><p><img title='861548667654_.pic_hd.jpg' src='http://cdn.huodongxing.com/file/20141217/110A44776D41F671EBBD98E62B87E4E5CA/30783399668029316.jpg' alt='861548667654_.pic_hd.jpg' width='100%' /></p></div><div align='center'>&nbsp;</div><div align='center'>&nbsp;</div>",
+            "Date_List": null
+        },
         {
             "Section_Type": 8,
             "Section_Code": "Custom",
@@ -377,7 +325,7 @@ const websiteData = {
             "Section_Type": 6,
             "Section_Code": "Reception",
             "Section_Name": "会务接待",
-            "Enabled": true,
+            "Enabled": false,
             "Is_Rich": false,
             "Is_Custom": false,
             "Rich_Id": null,
@@ -462,17 +410,6 @@ const websiteData = {
                     "Create_Date": 1559802640705
                 }
             ],
-            "Date_List": null
-        },
-        {
-            "Section_Type": 2,
-            "Section_Code": "Introduction",
-            "Section_Name": "活动介绍",
-            "Enabled": true,
-            "Is_Rich": true,
-            "Is_Custom": false,
-            "Rich_Id": "6e40651f-c581-4dfe-886a-fb0fefc9b423",
-            "Section_Content": "<h2 align='center'>活动温馨提示</h2><p>一、签到：5月4日下午16:00开始签到</p><p>二、领取卡片小礼物：完成签到后派发生日会卡片小礼物</p><p>三、签名、留言、盖章：到场的粉丝在海贼旗上签名留言做为纪念</p><p>四、大屏幕播放视频：集体观看路飞庆生视频</p><p>五、有奖活动开始：进行海贼王知识问答有奖竞答</p><p>六、吃蛋糕庆生、合影：集体切分蛋糕合唱生日歌，合影留念</p><p align='left'>&nbsp;</p><div id='event_desc_page' align='center'><p><img title='超大展览面积.JPG' src='http://cdn.huodongxing.com/file/20141217/110A44776D41F671EBBD98E62B87E4E5CA/30893399573995505.jpg' alt='超大展览面积.JPG' width='100%' /><img title='等比例复原场景【局部】.jpg' src='http://cdn.huodongxing.com/file/20141217/110A44776D41F671EBBD98E62B87E4E5CA/30913399574055513.jpg' alt='等比例复原场景【局部】.jpg' width='100%' /><img title='复原场景.JPG' src='http://cdn.huodongxing.com/file/20141217/110A44776D41F671EBBD98E62B87E4E5CA/30923399574105517.jpg' alt='复原场景.JPG' width='100%' /><img title='观众2.JPG' src='http://cdn.huodongxing.com/file/20141217/110A44776D41F671EBBD98E62B87E4E5CA/30363399574175522.jpg' alt='观众2.JPG' width='100%' /></p><p><img title='861548667654_.pic_hd.jpg' src='http://cdn.huodongxing.com/file/20141217/110A44776D41F671EBBD98E62B87E4E5CA/30783399668029316.jpg' alt='861548667654_.pic_hd.jpg' width='100%' /></p></div><div align='center'>&nbsp;</div><div align='center'>&nbsp;</div>",
             "Date_List": null
         },
         {

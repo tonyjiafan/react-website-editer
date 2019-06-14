@@ -42,14 +42,17 @@ class TemplateList extends Component{
         if (Is_Checked) {
             message.info('当前已选中，请勿重复选择！')
         } else {
+            let tempSrcPc = ''
+            let tempSrcMobile = ''
             Tem_List.forEach(e => {
                 if (e.Template_Type === Template_Type && e.Template_Code === Template_Code) {
                     e.Is_Checked = true
+                    e.Template_Type === 1 ? tempSrcPc = e.Dev_Url : tempSrcMobile = e.Dev_Url
                 } else if (e.Template_Type === Template_Type && e.Template_Code !== Template_Code) {
                     e.Is_Checked = false
                 }
             })
-            _this.props.updateTemplate(Tem_List, item.Click_Type)
+            _this.props.updateTemplate(Tem_List, item.Click_Type, tempSrcPc, tempSrcMobile)
         }
     }
     // PC 移动端  模板容器切换
@@ -177,7 +180,7 @@ class TemplateList extends Component{
                     </div>
                     <div className="swith-box">
                         <div style={{ paddingTop: '10px' }}>
-                            <span style={{ marginLeft: '10px' }}>官网上展示报名人数:</span>
+                            <span style={{ marginLeft: '10px' }}>网站上展示报名人数:</span>
                             <Switch 
                             size="default"
                             className="swith_ls"
@@ -188,7 +191,7 @@ class TemplateList extends Component{
                             />
                         </div>
                         <div style={{ paddingTop: '14px' }}>
-                            <span style={{ marginLeft: '10px' }}>头图上展示基本信息:</span>
+                            <span style={{ marginLeft: '10px' }}>横幅上展示基本信息:</span>
                             <Switch 
                             size="default"
                             className="swith_ls"
@@ -199,12 +202,13 @@ class TemplateList extends Component{
                             />
                         </div>
                         <div style={{ paddingTop: '14px' }}>
-                            <span style={{ marginLeft: '10px' }}>电子票展示版权信息:</span>
+                            <span style={{ marginLeft: '10px' }}>页面上展示版权信息:</span>
                             <Switch 
                             size="default"
                             className="swith_ls"
                             checkedChildren="开" 
                             unCheckedChildren="关" 
+                            disabled={true}
                             checked={ _this.state.Current_Data.Show_Ticket_Copyright }
                             onChange={ () => _this.change('Show_Ticket_Copyright', _this.state.Current_Data.Show_Ticket_Copyright) }
                             />

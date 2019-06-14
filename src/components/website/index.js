@@ -32,6 +32,7 @@ const SortMenu = React.lazy(() => import('./components/SortMenu/SortMenu')); //�
 const ModuleList = React.lazy(() => import('./components/ModuleList/ModuleList')); //排序菜单
 const TemplateList = React.lazy(() => import('./components/TemplateList/TemplateList')); //排序菜单
 const Custom = React.lazy(() => import('./components/Custom/Custom')); //自定模块
+const Introduction = React.lazy(() => import('./components/Introduction/Introduction')); //活动介绍
 
 // import SortMenu from './components/SortMenu/SortMenu'; //排序菜单
 // import ModuleList from './components/ModuleList/ModuleList'; //模块管理
@@ -41,8 +42,9 @@ class WebEditWarp extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			meetingId: '',
-			// qr_Code: qr_Code,
+			meetingId: `af026266-3d0d-c6e9-e0a7-08d6cc87db4f`,
+			tempSrcPc: `http://localhost:3000/tem7/index.html`,
+			tempSrcMobile: `http://localhost:3000/m007/index.html`,
 			Preview_show: false,
 			Loading: false,
 			LoadingContent: true,
@@ -323,25 +325,25 @@ class WebEditWarp extends Component {
 	 * App_Temp_Code
 	 * Tem_List 传递过来的参数 已经是处理好的 直接赋值
 	 */ 
-	updateTemplate(Tem_List, Click_Type = 1) {
+	updateTemplate(Tem_List, Click_Type = 1, tempSrcPc, tempSrcMobile) {
 		const _this = this
 		const newState = _this.state
 		Tem_List.forEach(e => {
 			if (e.Is_Checked && e.Template_Type === 1) {
 				newState.WebData.Temp_Path = e.Template_Path
 				newState.WebData.Temp_Code = e.Template_Code
+				newState.tempSrcPc = tempSrcPc
 			} else if (e.Is_Checked && e.Template_Type === 2) {
 				newState.WebData.App_Temp_Path = e.Template_Path
 				newState.WebData.App_Temp_Code = e.Template_Code
+				newState.tempSrcMobile = tempSrcMobile
 			}
 		})
 		// 根据模板点击 来判断是 PC 还是 移动
 		newState.Is_Pc_Warp = Click_Type === 1 ? true : false
 		newState.WebData.Template_List = Tem_List
-
-		_this.setState({
-			...newState
-		}, () => {
+		newState.LoadingContent = false
+		_this.setState({ ...newState }, () => {
 			// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
 			// localStorage.setItem('jy-web-flag', '0')
 			_this.saveDataToLocalStorage()
@@ -381,16 +383,18 @@ class WebEditWarp extends Component {
 				window.A_WebData = _this.state.WebData
 				localStorage.setItem('jy-web-richList', JSON.stringify(_this.state.Rich_List))
 				localStorage.setItem(`jy-web-data-${_this.state.meetingId}`, JSON.stringify(_this.state.WebData))
-				setTimeout(() => {
-					_this.setState({
-						localStorageHasWebData: true,
-						LoadingContent: false
-					})
-				}, 2000)
 			}
 		)
 		// console.log(_this)
 		// console.log(window)
+	}
+	componentDidMount() {
+		const _this = this
+		_this.setState({
+			localStorageHasWebData: true,
+			LoadingContent: false
+		}, () => {console.log('Component WILL MOUNT!')})
+		
 	}
 	componentWillReceiveProps(preProps, nextProps) {
 		console.log('prePropsprePropspreProps')
@@ -402,6 +406,8 @@ class WebEditWarp extends Component {
 	render() {
 		const _this = this
 		const {
+			tempSrcPc,
+			tempSrcMobile,
 			localStorageHasWebData,
 			Is_Pc_Warp,
 			Mask_Edit_View_Change,
@@ -416,6 +422,7 @@ class WebEditWarp extends Component {
 			Rich_List,
 			WebData,
 		} = _this.state
+		
 
 		return (
 			<div className="WebEditWarp">
@@ -474,11 +481,11 @@ class WebEditWarp extends Component {
 							<iframe
 								title="pc"
 								className="web_pc_iframe"
-								src={`http://localhost:3000/tem5/index.html?${_this.state.meetingId}`}
+								src={ `${tempSrcPc}?${_this.state.meetingId}` }
 								name="prewWebsite"
 								id="prewWebsite"
 								frameBorder="0"
-								scrolling="yes" />	
+								scrolling="yes" />
 						) : (localStorageHasWebData && !Is_Pc_Warp ? (
 								<div className="web-phone-warp" 
 									style={{ left: !Mask_Edit_View_Change ? '-25%' : '0px' }}>
@@ -487,7 +494,7 @@ class WebEditWarp extends Component {
 										<div className="conten-box">
 											<iframe
 												title="mobile"
-												src={ `http://localhost:3000/grid2/index.html?${_this.state.meetingId}` }
+												src={ `${tempSrcMobile}?${_this.state.meetingId}` }
 												name="prewWebsite" 
 												id="prewWebsite"
 												frameBorder="0" 
@@ -533,16 +540,33 @@ class WebEditWarp extends Component {
 									</label>
 									<h1>  编辑 {Current_Component} 业务组件   </h1>
 									
-									<Suspense fallback={<LazySpin />}>
-										<Custom
-											Is_Pc_Warp={ Is_Pc_Warp }
-											Section_Data={ WebData.Section_Data } 
-											Basic={ WebData.Basic }
-											Current_RichId={ Current_RichId }
-											Current_Component={ Current_Component }
-											Rich_List={ Rich_List }
-											editModuleUpdate={ _this.editModuleUpdate }
-											richListUpdate={ _this.richListUpdate } />
+									<Suspense fallback={ <LazySpin /> }>
+										{/* 自定义 */}
+										{Current_Component === 'Custom' ? (
+											<Custom
+												Is_Pc_Warp={ Is_Pc_Warp }
+												Section_Data={ WebData.Section_Data } 
+												Basic={ WebData.Basic }
+												Current_RichId={ Current_RichId }
+												Current_Component={ Current_Component }
+												Rich_List={ Rich_List }
+												editModuleUpdate={ _this.editModuleUpdate }
+												richListUpdate={ _this.richListUpdate } />
+											) : null
+										}
+										{/* 活动介绍 */}
+										{Current_Component === 'Introduction' ? (
+											<Introduction
+												Is_Pc_Warp={ Is_Pc_Warp }
+												Section_Data={ WebData.Section_Data } 
+												Basic={ WebData.Basic }
+												Current_RichId={ Current_RichId }
+												Current_Component={ Current_Component }
+												Rich_List={ Rich_List }
+												editModuleUpdate={ _this.editModuleUpdate }
+												richListUpdate={ _this.richListUpdate } />
+											) : null
+										}
 									</Suspense>
 
 									<Button onClick={ () => _this.vueCancelForm() }> 退出编辑 </Button>

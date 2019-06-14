@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import E from 'wangeditor';
 import './common.less';
+
+// import filterXSS from 'xss';
 // import { message } from 'antd';
 
 class Editer extends Component{
@@ -23,17 +25,38 @@ class Editer extends Component{
         const elem = _this.refs.editorElem; //获取editorElem盒子
         const editor = new E(elem)  //new 一个 editorElem富文本
         // onChange
-        editor.customConfig.onchange = function (content) {
-            // content 即变化之后的内容
-            // console.log(content)
+        editor.customConfig.onchangeTimeout = 10
+        editor.customConfig.onchange = (content) => {
             _this.setState({
-                content  //获取富文本内容
+                // 此处进行 xss 攻击过滤
+                // content: filterXSS(content)
+                content
             }, () => {
                 _this.props.updateContent(_this.state.content)
             })
         }
-        editor.customConfig.onchangeTimeout = 200
+        // // onblur
+        // editor.customConfig.onblur = (content) => {
+        //     _this.setState({
+        //         content
+        //     }, () => {
+        //         _this.props.updateContent(_this.state.content)
+        //     })
+        // }
 
+        // 自定义配置颜色（字体颜色、背景色）
+        editor.customConfig.colors = [
+            '#000000',
+            '#eeece0',
+            '#1c487f',
+            '#4d80bf',
+            '#c24f4a',
+            '#8baa4a',
+            '#7b5ba1',
+            '#46acc8',
+            '#f9963b',
+            '#ffffff'
+        ]
         editor.customConfig.menus = [
             'head', // 标题
             'bold', // 粗体
@@ -44,17 +67,17 @@ class Editer extends Component{
             'strikeThrough', // 删除线
             'foreColor', // 文字颜色
             'backColor', // 背景颜色
-            'link', // 插入链接
             'list', // 列表
             'justify', // 对齐方式
             'quote', // 引用
             'emoticon', // 表情
-            'image', // 插入图片
             'table', // 表格
-            'video', // 插入视频
-            'code', // 插入代码
+            'link', // 插入链接
+            // 'video', // 插入视频
+            // 'code', // 插入代码
+            'image', // 插入图片
             'undo', // 撤销
-            'redo' // 重复
+            'redo', // 重复
         ]
         editor.customConfig.lang = {
             '设置标题': 'Title',
@@ -79,16 +102,10 @@ class Editer extends Component{
             '创建': 'init'
         }
 
-        // 上传图片
-        // editor.customConfig.uploadFileName = 'upfile' //置上传接口的文本流字段
-        // editor.customConfig.uploadImgServer = 'https://dev.xiaomon.com/api/treeroot/v1/xxx/upload/uploadImage'//服务器接口地址
-        // editor.customConfig.uploadImgHooks = {
-        //     customInsert: function (insertImg, result, editor) {
-        //         var url = result.url  //监听图片上传成功更新页面
-        //         insertImg(url)
-        //     }
-        // }
-
+        // 隐藏“网络图片”tab
+        editor.customConfig.showLinkImg = false
+        // 上传图片 Base64
+        editor.customConfig.uploadImgShowBase64 = true
         editor.create() //创建
         editor.txt.html(Section_Content)  //设置富文本默认内容
     }
