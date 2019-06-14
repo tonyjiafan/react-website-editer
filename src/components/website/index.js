@@ -45,6 +45,8 @@ class WebEditWarp extends Component {
 			meetingId: `af026266-3d0d-c6e9-e0a7-08d6cc87db4f`,
 			tempSrcPc: `http://localhost:3000/tem7/index.html`,
 			tempSrcMobile: `http://localhost:3000/m007/index.html`,
+			// tempSrcPc: `https://www.jyhd.com/template/11127/index.html`,
+			// tempSrcMobile: `https://www.jyhd.com/template/21127/index.html`,
 			Preview_show: false,
 			Loading: false,
 			LoadingContent: true,
@@ -376,15 +378,30 @@ class WebEditWarp extends Component {
 	componentWillMount() {
 		console.log('Component WILL MOUNT!')
 		const _this = this
-		_this.setState({
-				meetingId: 'af026266-3d0d-c6e9-e0a7-08d6cc87db4f'
+
+		// https://relaxed-villani-190348.netlify.com/tem7/index.html
+
+		if (process.env.NODE_ENV === 'production') {
+			_this.setState({
+					meetingId: 'af026266-3d0d-c6e9-e0a7-08d6cc87db4f',
+					tempSrcPc: `https://www.jyhd.com/template/11127/index.html`,
+					tempSrcMobile: `https://www.jyhd.com/template/21127/index.html`,
 			}, () => {
-				window.A_vue = _this
-				window.A_WebData = _this.state.WebData
-				localStorage.setItem('jy-web-richList', JSON.stringify(_this.state.Rich_List))
-				localStorage.setItem(`jy-web-data-${_this.state.meetingId}`, JSON.stringify(_this.state.WebData))
-			}
-		)
+					window.A_vue = _this
+					window.A_WebData = _this.state.WebData
+					localStorage.setItem('jy-web-richList', JSON.stringify(_this.state.Rich_List))
+					localStorage.setItem(`jy-web-data-${_this.state.meetingId}`, JSON.stringify(_this.state.WebData))
+				}
+			)
+		} else {
+			_this.setState({ meetingId: 'af026266-3d0d-c6e9-e0a7-08d6cc87db4f' }, () => {
+					window.A_vue = _this
+					window.A_WebData = _this.state.WebData
+					localStorage.setItem('jy-web-richList', JSON.stringify(_this.state.Rich_List))
+					localStorage.setItem(`jy-web-data-${_this.state.meetingId}`, JSON.stringify(_this.state.WebData))
+				}
+			)
+		}		
 		// console.log(_this)
 		// console.log(window)
 	}

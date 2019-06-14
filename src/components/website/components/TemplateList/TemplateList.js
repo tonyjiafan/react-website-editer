@@ -47,7 +47,12 @@ class TemplateList extends Component{
             Tem_List.forEach(e => {
                 if (e.Template_Type === Template_Type && e.Template_Code === Template_Code) {
                     e.Is_Checked = true
-                    e.Template_Type === 1 ? tempSrcPc = e.Dev_Url : tempSrcMobile = e.Dev_Url
+                    if (process.env.NODE_ENV === 'production') {
+                        e.Template_Type === 1 ? tempSrcPc = e.Dev_Url : tempSrcMobile = e.Dev_Url
+                    } else {
+                        e.Template_Type === 1 ? tempSrcPc = e.Dev_Url : tempSrcMobile = e.Dev_Url
+                    }
+                    
                 } else if (e.Template_Type === Template_Type && e.Template_Code !== Template_Code) {
                     e.Is_Checked = false
                 }
