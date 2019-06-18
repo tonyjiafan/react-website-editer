@@ -21,7 +21,7 @@ import richList from './richList';
 import './index.less';
 import { message, Button, Tooltip } from 'antd';
 import MyIcon from '../common/myIcon';
-import { isArrayFn } from '../libs/filters';
+import { isArrayFn } from '../../libs/filters';
 import phoneImg from '../../images/tem_phone_bg.png';
 
 // 组件
@@ -381,9 +381,6 @@ class WebEditWarp extends Component {
 	componentWillMount() {
 		console.log('Component WILL MOUNT!')
 		const _this = this
-
-		// https://relaxed-villani-190348.netlify.com/tem7/index.html
-
 		if (process.env.NODE_ENV === 'production') {
 			_this.setState({
 					meetingId: 'af026266-3d0d-c6e9-e0a7-08d6cc87db4f',

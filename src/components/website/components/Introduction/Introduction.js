@@ -1,7 +1,7 @@
 import React, { Component, Suspense } from 'react';
 import { message, Form, Input, Button } from 'antd';
 import LazySpin from '../../../common/lazySpin';
-import { cloneObj, replaceEditorContent } from '../../../libs/filters';
+import { cloneObj, replaceEditorContent } from '../../../../libs/filters';
 import './Introduction.less';
 
 const Editer = React.lazy(() => import('../../../common/editer'));

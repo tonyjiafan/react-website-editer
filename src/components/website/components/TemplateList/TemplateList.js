@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Icon, message } from 'antd';
 import MyIcon from '../../../common/myIcon';
-import { cloneObj } from '../../../libs/filters';
+import { cloneObj } from '../../../../libs/filters';
 import './TemplateList.less';
 
 class TemplateList extends Component{ 

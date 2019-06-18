@@ -1,29 +1,44 @@
 import React, { Component, Suspense } from 'react';
-import { message, Form, Input, Button } from 'antd';
+import {
+    message,
+    Form,
+    Input,
+    Button
+} from 'antd';
 import LazySpin from '../../../common/lazySpin';
-import { cloneObj, replaceEditorContent } from '../../../libs/filters';
+import { cloneObj, replaceEditorContent} from '../../../../libs/filters';
 import './Custom.less';
 
-const Editer = React.lazy(() => import('../../../common/editer'));
+const Editer = React.lazy(() =>
+    import ('../../../common/editer'));
 
 const formItemLayout = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 21 }
+    labelCol: {
+        span: 3
+    },
+    wrapperCol: {
+        span: 21
+    }
 }
 const formTailLayout = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 4, offset: 18}
+    labelCol: {
+        span: 3
+    },
+    wrapperCol: {
+        span: 4,
+        offset: 18
+    }
 }
 
-class CustomForm extends Component{
+class CustomForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
-			Modules_Data: [], // 拷贝的模型
-			Old_Modules_Data: [], // 拷贝的模型
-			Current_Data: {}, // 拷贝后，提取的当前模块的模型
-			Current_Rich_List: [], // 拷贝的 富文本列表
-			Old_Rich_List: [], // 拷贝的 富文本列表
+            Modules_Data: [], // 拷贝的模型
+            Old_Modules_Data: [], // 拷贝的模型
+            Current_Data: {}, // 拷贝后，提取的当前模块的模型
+            Current_Rich_List: [], // 拷贝的 富文本列表
+            Old_Rich_List: [], // 拷贝的 富文本列表
         }
         this.updateContent = this.updateContent.bind(this)
     }
@@ -42,17 +57,23 @@ class CustomForm extends Component{
     // 处理数据模型
     settingData(data) {
         const _this = this
-        const newCloneObj = _this.state 
-        const { Section_Data, Current_Component, Current_RichId, Rich_List } = data || _this.props
+        const newCloneObj = _this.state
+        const {
+            Section_Data,
+            Current_Component,
+            Current_RichId,
+            Rich_List
+        } = data || _this.props
         newCloneObj.Modules_Data = cloneObj(Section_Data)
         newCloneObj.Old_Modules_Data = cloneObj(Section_Data)
         newCloneObj.Current_Rich_List = cloneObj(Rich_List)
         newCloneObj.Old_Rich_List = cloneObj(Rich_List)
 
-        _this.setState({ ...newCloneObj }, () => {
+        _this.setState({ ...newCloneObj
+        }, () => {
             const newState = _this.state
             // 新增自定义
-            if (Current_RichId === 'NewRich') { 
+            if (Current_RichId === 'NewRich') {
                 newState.Current_Data = {
                     Enabled: false,
                     Is_Custom: true,
@@ -71,7 +92,8 @@ class CustomForm extends Component{
                     }
                 })
             }
-            _this.setState({ ...newState }, () => {
+            _this.setState({ ...newState
+            }, () => {
                 // 获取当前的富文本内容
                 _this.getContent()
             })
@@ -88,13 +110,16 @@ class CustomForm extends Component{
                 }
             })
         }
-        _this.setState({ ...newState })
+        _this.setState({ ...newState
+        })
     }
     // 往当前的 Modules_Data 中插入新增的 富文本
     editorInModules(Rich_Content, Rich_Id, Section_Name) {
-        const _this = this 
+        const _this = this
         const newState = _this.state
-        const { Current_Data } = newState
+        const {
+            Current_Data
+        } = newState
 
         newState.Current_Data.Enabled = true
         newState.Current_Data.Section_Name = Section_Name
@@ -102,13 +127,17 @@ class CustomForm extends Component{
         newState.Modules_Data.concat([Current_Data])
         // 将编辑的富文本 整理好
         newState.Current_Rich_List.concat(
-            [{Rich_Content, Rich_Id}]
+            [{
+                Rich_Content,
+                Rich_Id
+            }]
         )
-        _this.setState({ ...newState }, () => {
+        _this.setState({ ...newState
+        }, () => {
             // 更新 父组件的 整个 Section_Data 和 父组件的 Rich_List 
             _this.props.editModuleUpdate(_this.state.Modules_Data)
             _this.props.richListUpdate(_this.state.Current_Rich_List)
-        }) 
+        })
     }
     // 修改当前富文本列表中的内容
     editorUpdate(Rich_Content, Rich_Id, Section_Name) {
@@ -125,7 +154,8 @@ class CustomForm extends Component{
                 e.Section_Name = Section_Name
             }
         })
-        _this.setState({ ...newState }, () => {
+        _this.setState({ ...newState
+        }, () => {
             // 更新 父组件的 整个 Section_Data 和 父组件的 Rich_List 
             _this.props.editModuleUpdate(_this.state.Modules_Data)
             _this.props.richListUpdate(_this.state.Current_Rich_List)
@@ -134,13 +164,17 @@ class CustomForm extends Component{
     updateContent(Content) {
         const newState = this.state
         newState.Current_Data.Section_Content = Content
-        this.setState({ ...newState })
+        this.setState({ ...newState
+        })
     }
     // 取消编辑
     cancelForm = () => {
         const _this = this
         const parentThis = window.A_vue
-        const { Old_Modules_Data, Old_Rich_List } = _this.state
+        const {
+            Old_Modules_Data,
+            Old_Rich_List
+        } = _this.state
 
         // 更新 父组件的 整个 Section_Data 和 父组件的 Rich_List 
         _this.props.editModuleUpdate(Old_Modules_Data, false, false)
@@ -163,17 +197,21 @@ class CustomForm extends Component{
                 if (editorStr === '' || editorStr == null) {
                     message.info('请先编辑点什么吧!')
                 } else {
-                    const { Rich_Id } = newState.Current_Data
+                    const {
+                        Rich_Id
+                    } = newState.Current_Data
                     newState.Current_Data.Section_Content = editorStr
                     // 判断是修改 还是 新增-false 修改-true
-                    if (!Rich_Id) { 
+                    if (!Rich_Id) {
                         // 给当前模块对象 赋值
                         newState.Current_Data.Rich_Id = `Rich_Id-${Date.now()}`
-                        _this.setState({ ...newState }, () => {
+                        _this.setState({ ...newState
+                        }, () => {
                             _this.editorInModules(_this.state.Current_Data.Section_Content, _this.state.Current_Data.Rich_Id, formValue.Section_Name)
                         })
                     } else {
-                        _this.setState({ ...newState }, () => {
+                        _this.setState({ ...newState
+                        }, () => {
                             _this.editorUpdate(_this.state.Current_Data.Section_Content, _this.state.Current_Data.Rich_Id, formValue.Section_Name)
                         })
                     }
@@ -188,7 +226,9 @@ class CustomForm extends Component{
 
     render() {
         const _this = this
-        const { getFieldDecorator } = _this.props.form
+        const {
+            getFieldDecorator
+        } = _this.props.form
 
         return (
             <div className="Custom">
@@ -221,6 +261,8 @@ class CustomForm extends Component{
     }
 }
 
-const Custom = Form.create({ name: 'dynamic_rule' })(CustomForm)
+const Custom = Form.create({
+    name: 'dynamic_rule'
+})(CustomForm)
 
 export default Custom;
