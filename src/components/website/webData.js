@@ -55,7 +55,7 @@ const websiteData = {
             "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/11127.png",
             "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/11127.png",
             "Is_Checked": true,
-            "Dev_Url": "http://localhost:3000/tem7/index.html",
+            "Dev_Url": "http://localhost:3000/templates/tem7/index.html",
             "Prd_Url": "https://tonyjiafan-react-editer-app.netlify.com/template/tem7/index.html",
             "Click_Type": 1
         },
@@ -68,7 +68,7 @@ const websiteData = {
             "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/11128.png",
             "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/11128.png",
             "Is_Checked": false,
-            "Dev_Url": "http://localhost:3000/tem8/index.html",
+            "Dev_Url": "http://localhost:3000/templates/tem8/index.html",
             "Prd_Url": "https://tonyjiafan-react-editer-app.netlify.com/template/tem8/index.html",
             "Click_Type": 1
         },
@@ -81,7 +81,7 @@ const websiteData = {
             "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/21127.png",
             "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/21127.png",
             "Is_Checked": true,
-            "Dev_Url": "http://localhost:3000/m007/index.html",
+            "Dev_Url": "http://localhost:3000/templates/m007/index.html",
             "Prd_Url": "https://tonyjiafan-react-editer-app.netlify.com/template/m007/index.html",
             "Click_Type": 2
         },
@@ -94,7 +94,7 @@ const websiteData = {
             "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/21128.png",
             "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/21128.png",
             "Is_Checked": false,
-            "Dev_Url": "http://localhost:3000/m008/index.html",
+            "Dev_Url": "http://localhost:3000/templates/m008/index.html",
             "Prd_Url": "https://tonyjiafan-react-editer-app.netlify.com/template/m008/index.html",
             "Click_Type": 2
         },
@@ -107,7 +107,7 @@ const websiteData = {
             "Template_Thumbnail": "https://kxpic.cn/whale/comm/websiteTemplate/W1122.png",
             "Template_Material_Picture": "https://kxpic.cn/whale/comm/websiteTemplate/W1122.png",
             "Is_Checked": false,
-            "Dev_Url": "http://localhost:3000/grid2/index.html",
+            "Dev_Url": "http://localhost:3000/templates/grid2/index.html",
             "Prd_Url": "https://tonyjiafan-react-editer-app.netlify.com/template/grid2/index.html",
             "Click_Type": 2
         },

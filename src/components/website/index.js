@@ -43,8 +43,8 @@ class WebEditWarp extends Component {
 		super(props)
 		this.state = {
 			meetingId: `af026266-3d0d-c6e9-e0a7-08d6cc87db4f`,
-			tempSrcPc: `http://localhost:3000/tem7/index.html`,
-			tempSrcMobile: `http://localhost:3000/m007/index.html`,
+			tempSrcPc: `http://localhost:3000/templates/tem7/index.html`,
+			tempSrcMobile: `http://localhost:3000/templates/m007/index.html`,
 			// tempSrcPc: `https://tonyjiafan-react-editer-app.netlify.com/template/tem7/index.html`,
 			// tempSrcMobile: `https://tonyjiafan-react-editer-app.netlify.com/template/m007/index.html`,
 			Preview_show: false,
