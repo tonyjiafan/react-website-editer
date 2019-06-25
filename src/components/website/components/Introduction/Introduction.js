@@ -139,13 +139,13 @@ class IntroductionForm extends Component{
     // 取消编辑
     cancelForm = () => {
         const _this = this
-        const parentThis = window.A_vue
+        const parentThis = window.A_react
         const { Old_Modules_Data, Old_Rich_List } = _this.state
 
         // 更新 父组件的 整个 Section_Data 和 父组件的 Rich_List 
         _this.props.editModuleUpdate(Old_Modules_Data, false, false)
         _this.props.richListUpdate(Old_Rich_List)
-        parentThis.vueCancelForm()
+        parentThis.reactCancelForm()
     }
 
     submit = () => {

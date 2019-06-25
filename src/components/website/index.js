@@ -74,14 +74,14 @@ class WebEditWarp extends Component {
 			WebData: websiteData,
 		}
 
-		this.vueOpenModalFn = this.vueOpenModalFn.bind(this) // 模块切换时 的操作界面切换
+		this.reactOpenModalFn = this.reactOpenModalFn.bind(this) // 模块切换时 的操作界面切换
 		this.goBackList = this.goBackList.bind(this) // 返回
 		this.currentSortFn = this.currentSortFn.bind(this) // 菜单排序
 		this.reload = this.reload.bind(this) // 重新加载
 		this.saveDataToLocalStorage = this.saveDataToLocalStorage.bind(this) // 存储数据到本地
-		this.vueEnabledFn = this.vueEnabledFn.bind(this) // 是否开启模块
-		this.vueDeleteFn = this.vueDeleteFn.bind(this) // 删除模块
-		this.vueEditFn = this.vueEditFn.bind(this) // 编辑模块
+		this.reactEnabledFn = this.reactEnabledFn.bind(this) // 是否开启模块
+		this.reactDeleteFn = this.reactDeleteFn.bind(this) // 删除模块
+		this.reactEditFn = this.reactEditFn.bind(this) // 编辑模块
 		this.updateTemplate = this.updateTemplate.bind(this) // 更新模板
     	this.editModuleUpdate = this.editModuleUpdate.bind(this) // Modules 所有编辑后 回传的整个 数据模型
     	this.richListUpdate = this.richListUpdate.bind(this) // 富文本编辑后 更新
@@ -147,13 +147,13 @@ class WebEditWarp extends Component {
 
 	/*****************  唤醒菜单栏方法  ***************************/
 	// 菜单拖拽排序
-	vueSort(params) {
+	reactSort(params) {
 		const _this = this
 		_this.Preview_show = false
-		_this.vueOpenModalFn('Show_Moda_Sort')
+		_this.reactOpenModalFn('Show_Moda_Sort')
 	}
 	// 关闭 [模块编辑] 弹出层
-	vueCancelForm() {
+	reactCancelForm() {
 		const _this = this
 		_this.setState({
 			Show_Modal_Edit: false,
@@ -161,7 +161,7 @@ class WebEditWarp extends Component {
 		})
 	}
 	// 切换菜单显示
-	vueOpenModalFn(strName) {
+	reactOpenModalFn(strName) {
 		const _this = this
 		const newState = _this.state
 		const str = ['Show_Modal_Template', 'Show_Modal_Edit', 'Show_Moda_Module', 'Show_Moda_Sort']
@@ -184,7 +184,7 @@ class WebEditWarp extends Component {
 	 * 彻底删除 自定义 模块
 	 * Moudels 已经删除后的完整的 Section_Data
 	 * */ 
-	vueDeleteFn(Moudels) {
+	reactDeleteFn(Moudels) {
 		const _this = this
 		const newState = _this.state
 		newState.WebData.Section_Data = Moudels
@@ -201,7 +201,7 @@ class WebEditWarp extends Component {
 	 * 传递过来index 查找数据后修改
 	 * 该方法用于【iframe内】【排序菜单】【模块添加菜单】使用
 	 * */ 
-	vueEnabledFn(params) {
+	reactEnabledFn(params) {
 		const _this = this
 		const { typeName, index } = params
 		const newState = _this.state
@@ -252,7 +252,7 @@ class WebEditWarp extends Component {
 	 * Current_Component 当前需要渲染的组件名称
 	 * Current_RichId 富文本的Id 当组件是富文本组件时 才需要这个字段
 	 * */ 
-	vueEditFn(params) {
+	reactEditFn(params) {
 		const _this = this
 		// console.log(params)
 		const { Current_Component, Current_RichId } = params
@@ -279,7 +279,7 @@ class WebEditWarp extends Component {
 		}
 
 		if (!newState.Show_Modal_Edit) {
-			_this.vueOpenModalFn('Show_Modal_Edit')
+			_this.reactOpenModalFn('Show_Modal_Edit')
 		}
 	}
 	// Modules 所有编辑后 回传的整个 数据模型
@@ -300,7 +300,7 @@ class WebEditWarp extends Component {
 			_this.saveDataToLocalStorage()
 			_this.reload()
 			// isOpen 更新模板列表中的 官网上展示报名人数 swith 时，不需要清除当前模态框
-			if (!isOpen) _this.vueOpenModalFn('')
+			if (!isOpen) _this.reactOpenModalFn('')
 		})
 	}
 	/**
@@ -352,7 +352,7 @@ class WebEditWarp extends Component {
 			// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
 			// localStorage.setItem('jy-web-flag', '0')
 			_this.saveDataToLocalStorage()
-			_this.vueOpenModalFn('')
+			_this.reactOpenModalFn('')
 			_this.reload()
 		})
 	}
@@ -387,7 +387,7 @@ class WebEditWarp extends Component {
 					tempSrcPc: `https://tonyjiafan-react-editer-app.netlify.com/template/tem7/index.html`,
 					tempSrcMobile: `https://tonyjiafan-react-editer-app.netlify.com/template/m007/index.html`,
 			}, () => {
-					window.A_vue = _this
+					window.A_react = _this
 					window.A_WebData = _this.state.WebData
 					localStorage.setItem('jy-web-richList', JSON.stringify(_this.state.Rich_List))
 					localStorage.setItem(`jy-web-data-${_this.state.meetingId}`, JSON.stringify(_this.state.WebData))
@@ -395,7 +395,7 @@ class WebEditWarp extends Component {
 			)
 		} else {
 			_this.setState({ meetingId: 'af026266-3d0d-c6e9-e0a7-08d6cc87db4f' }, () => {
-					window.A_vue = _this
+					window.A_react = _this
 					window.A_WebData = _this.state.WebData
 					localStorage.setItem('jy-web-richList', JSON.stringify(_this.state.Rich_List))
 					localStorage.setItem(`jy-web-data-${_this.state.meetingId}`, JSON.stringify(_this.state.WebData))
@@ -468,17 +468,17 @@ class WebEditWarp extends Component {
 				</div>
 				<div className="web_main_content">
 					<div className="left_menu">
-						<div className="left_item" onClick={ () => _this.vueOpenModalFn('Show_Modal_Template') } style={{ background: Show_Modal_Template ? '#ff5200' : '' }}>
+						<div className="left_item" onClick={ () => _this.reactOpenModalFn('Show_Modal_Template') } style={{ background: Show_Modal_Template ? '#ff5200' : '' }}>
 							<MyIcon style={{fontSize: '34px', color: Show_Modal_Template ? '#fff' : '' , marginTop: '10px'}} type="icon-layout-line" />
 							<br/>
 							<span style={{ color: Show_Modal_Template ? '#fff' : '' }}>网站模板</span>
 						</div>
-						<div className="left_item" onClick={ () => _this.vueOpenModalFn('Show_Moda_Module') } style={{ background: Show_Moda_Module ? '#ff5200' : '' }}>
+						<div className="left_item" onClick={ () => _this.reactOpenModalFn('Show_Moda_Module') } style={{ background: Show_Moda_Module ? '#ff5200' : '' }}>
 							<MyIcon style={{ fontSize: '36px', color: Show_Moda_Module ? '#fff' : '' , marginTop: '10px'}} type="icon-apps" />
 							<br/>
 							<span style={{ color: Show_Moda_Module ? '#fff' : '' }}>模块添加</span>
 						</div>
-						<div className="left_item" onClick={ () => _this.vueOpenModalFn('Show_Moda_Sort') } style={{ background: Show_Moda_Sort ? '#ff5200' : '' }}>
+						<div className="left_item" onClick={ () => _this.reactOpenModalFn('Show_Moda_Sort') } style={{ background: Show_Moda_Sort ? '#ff5200' : '' }}>
 							<MyIcon style={{ fontSize: '34px', color: Show_Moda_Sort ? '#fff' : '' , marginTop: '10px'}} type="icon-menu" />
 							<br/>
 							<span style={{ color: Show_Moda_Sort ? '#fff' : '' }}>菜单管理</span>
@@ -586,7 +586,7 @@ class WebEditWarp extends Component {
 										}
 									</Suspense>
 
-									<Button onClick={ () => _this.vueCancelForm() }> 退出编辑 </Button>
+									<Button onClick={ () => _this.reactCancelForm() }> 退出编辑 </Button>
 								</div>
 							</div>
 						) : 
@@ -598,8 +598,8 @@ class WebEditWarp extends Component {
 									<Suspense fallback={<LazySpin />}>
 										<ModuleList 
 										Module_List={ WebData.Section_Data}
-										vueEnabled={ _this.vueEnabledFn }
-										vueDelete={ _this.vueDeleteFn } />
+										reactEnabled={ _this.reactEnabledFn }
+										reactDelete={ _this.reactDeleteFn } />
 									</Suspense>
 								</div>
 							</div>
@@ -611,7 +611,7 @@ class WebEditWarp extends Component {
 								<div className="modal-content">
 									<Suspense fallback={<LazySpin />}>
 										<SortMenu 
-										vueEnabled={ _this.vueEnabledFn }
+										reactEnabled={ _this.reactEnabledFn }
 										currentSort={ _this.currentSortFn } 
 										Section_Data={ WebData.Section_Data } />
 									</Suspense>

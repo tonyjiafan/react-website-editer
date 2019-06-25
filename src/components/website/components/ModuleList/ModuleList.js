@@ -36,7 +36,7 @@ class ModuleList extends Component {
 	}
 	// 关闭菜单
     closeModuleWarp() {
-        const parentThis = window.A_vue
+        const parentThis = window.A_react
         parentThis.setState({
             Show_Moda_Module: false
         })
@@ -46,11 +46,11 @@ class ModuleList extends Component {
 		const _this = this
 		// 模块没有开启才能添加
 		if (!Enabled) { 
-			_this.props.vueEnabled({ index: index, typeName: 'module' })
+			_this.props.reactEnabled({ index: index, typeName: 'module' })
 		}
 	}
 	// 彻底删除 自定义 模块
-	vueDeleteModule(index, Rich_Id) {
+	reactDeleteModule(index, Rich_Id) {
 		const _this = this
 		const confirm = Modal.confirm
 		const moudels = _this.state.moudels.map(e => e)
@@ -66,7 +66,7 @@ class ModuleList extends Component {
 					moudels.splice(index, 1)
 					message.success('删除成功！', 1)
 					setTimeout(() => {
-						_this.props.vueDelete(moudels)
+						_this.props.reactDelete(moudels)
 					}, 500)
 				})
 			},
@@ -78,14 +78,14 @@ class ModuleList extends Component {
 
 	// 唤醒菜单
 	changeCurrentView() {
-		const parentThis = window.A_vue
+		const parentThis = window.A_react
 		let params = {
 			Current_Type: 8,
 			Current_Component: 'Custom',
 			Current_RichId: 'NewRich',
 		}
 
-		parentThis.vueEditFn(params)
+		parentThis.reactEditFn(params)
 	}
 
 	componentWillMount() {
@@ -178,7 +178,7 @@ class ModuleList extends Component {
 										background: item.Enabled ? "" : "#fff" ,
 									}}>
 									<div className="ti">{ item.Section_Name }</div>
-									{ item.Enabled ? <div className="hover_block">该模块已存在</div> : <div className="del-btn" onClick={ () => _this.vueDeleteModule(index, item.Rich_Id) }>删除</div> }
+									{ item.Enabled ? <div className="hover_block">该模块已存在</div> : <div className="del-btn" onClick={ () => _this.reactDeleteModule(index, item.Rich_Id) }>删除</div> }
 									{ !item.Enabled ? <div className="just-btn" onClick={ () => _this.changeEnabled(item.Enabled, index) }>使用模块</div> : null }
 								</li>
 								) : null

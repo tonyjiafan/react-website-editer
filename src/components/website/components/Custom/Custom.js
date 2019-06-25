@@ -6,11 +6,10 @@ import {
     Button
 } from 'antd';
 import LazySpin from '../../../common/lazySpin';
-import { cloneObj, replaceEditorContent} from '../../../../libs/filters';
+import { cloneObj, replaceEditorContent } from '../../../../libs/filters';
 import './Custom.less';
 
-const Editer = React.lazy(() =>
-    import ('../../../common/editer'));
+const Editer = React.lazy(() => import ('../../../common/editer'));
 
 const formItemLayout = {
     labelCol: {
@@ -69,8 +68,7 @@ class CustomForm extends Component {
         newCloneObj.Current_Rich_List = cloneObj(Rich_List)
         newCloneObj.Old_Rich_List = cloneObj(Rich_List)
 
-        _this.setState({ ...newCloneObj
-        }, () => {
+        _this.setState({ ...newCloneObj }, () => {
             const newState = _this.state
             // 新增自定义
             if (Current_RichId === 'NewRich') {
@@ -92,8 +90,7 @@ class CustomForm extends Component {
                     }
                 })
             }
-            _this.setState({ ...newState
-            }, () => {
+            _this.setState({ ...newState }, () => {
                 // 获取当前的富文本内容
                 _this.getContent()
             })
@@ -110,30 +107,21 @@ class CustomForm extends Component {
                 }
             })
         }
-        _this.setState({ ...newState
-        })
+        _this.setState({ ...newState })
     }
     // 往当前的 Modules_Data 中插入新增的 富文本
     editorInModules(Rich_Content, Rich_Id, Section_Name) {
         const _this = this
         const newState = _this.state
-        const {
-            Current_Data
-        } = newState
 
         newState.Current_Data.Enabled = true
         newState.Current_Data.Section_Name = Section_Name
+        console.log(newState.Current_Data)
         // 将当前编辑模块 插入整体列表中
-        newState.Modules_Data.concat([Current_Data])
+        newState.Modules_Data.push(newState.Current_Data)
         // 将编辑的富文本 整理好
-        newState.Current_Rich_List.concat(
-            [{
-                Rich_Content,
-                Rich_Id
-            }]
-        )
-        _this.setState({ ...newState
-        }, () => {
+        newState.Current_Rich_List.push({ Rich_Content, Rich_Id })
+        _this.setState({ ...newState }, () => {
             // 更新 父组件的 整个 Section_Data 和 父组件的 Rich_List 
             _this.props.editModuleUpdate(_this.state.Modules_Data)
             _this.props.richListUpdate(_this.state.Current_Rich_List)
@@ -154,23 +142,24 @@ class CustomForm extends Component {
                 e.Section_Name = Section_Name
             }
         })
-        _this.setState({ ...newState
-        }, () => {
+        _this.setState({ ...newState }, () => {
             // 更新 父组件的 整个 Section_Data 和 父组件的 Rich_List 
             _this.props.editModuleUpdate(_this.state.Modules_Data)
             _this.props.richListUpdate(_this.state.Current_Rich_List)
         })
     }
     updateContent(Content) {
-        const newState = this.state
+        const _this = this
+        const newState = _this.state
         newState.Current_Data.Section_Content = Content
-        this.setState({ ...newState
+        _this.setState({ ...newState }, () => {
+            console.log(_this.state)
         })
     }
     // 取消编辑
     cancelForm = () => {
         const _this = this
-        const parentThis = window.A_vue
+        const parentThis = window.A_react
         const {
             Old_Modules_Data,
             Old_Rich_List
@@ -179,7 +168,7 @@ class CustomForm extends Component {
         // 更新 父组件的 整个 Section_Data 和 父组件的 Rich_List 
         _this.props.editModuleUpdate(Old_Modules_Data, false, false)
         _this.props.richListUpdate(Old_Rich_List)
-        parentThis.vueCancelForm()
+        parentThis.reactCancelForm()
     }
 
     submit = () => {
@@ -190,11 +179,12 @@ class CustomForm extends Component {
             if (!err) {
                 const _this = this
                 const newState = _this.state
-                // 处理富文本内容 （replaceEditorContent 处理富文本json的放方法）
+                console.log(newState)
+                // 处理富文本内容 （replaceEditorContent 处理富文本json的方法）
                 let editorStr = replaceEditorContent(newState.Current_Data.Section_Content)
 
                 // 验证截取后的富文本是不是空内容
-                if (editorStr === '' || editorStr == null) {
+                if (editorStr === '' || editorStr == null || editorStr.length === 0) {
                     message.info('请先编辑点什么吧!')
                 } else {
                     const {

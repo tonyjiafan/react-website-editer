@@ -65,8 +65,8 @@ class SortMenu extends Component {
 
         this.settingData = this.settingData.bind(this)
         this.onDragEnd = this.onDragEnd.bind(this)
-        // this.vueEnabled = this.vueEnabled.bind(this)
-        // this.vueEdit = this.vueEdit.bind(this)
+        // this.reactEnabled = this.reactEnabled.bind(this)
+        // this.reactEdit = this.reactEdit.bind(this)
     }
     // 拖拽
     onDragEnd(result) {
@@ -83,27 +83,27 @@ class SortMenu extends Component {
     }
     // 关闭菜单
     closeModuleWarp() {
-        const parentThis = window.A_vue
+        const parentThis = window.A_react
         parentThis.setState({
             Show_Moda_Sort: false
         })
     }
     // 编辑当前模块
-    vueEdit(item) {
-        const parentThis = window.A_vue
+    reactEdit(item) {
+        const parentThis = window.A_react
         const { Section_Code, Rich_Id, Section_Type } = item
         let params = {
                 Current_Type: Section_Type,
                 Current_Component: Section_Code, 
                 Current_RichId: Rich_Id + '',
             }
-        parentThis.vueEditFn(params)
+        parentThis.reactEditFn(params)
     }
     // 移除模块
-    vueEnabled(index) {
+    reactEnabled(index) {
         const _this = this
         // 调用父组件的 排序方法
-        _this.props.vueEnabled({ index: index, typeName: '' })
+        _this.props.reactEnabled({ index: index, typeName: '' })
     }
     // 设置初始数据
     settingData(data) {
@@ -173,12 +173,12 @@ class SortMenu extends Component {
                                                 <span className="tuo-zhuai-text">{ item.Section_Name }</span>
 
                                                 <span className="edit-box seeting-box">
-                                                    <label onClick={ () => _this.vueEdit(item) }>
+                                                    <label onClick={ () => _this.reactEdit(item) }>
                                                         <MyIcon className="hover-icon" style={{ fontSize: '19px'}} type="icon-tianxie" />
                                                     </label>
                                                 </span>
                                                 <span className="delete-box seeting-box">
-                                                    <label onClick={ () => _this.vueEnabled(index) }>
+                                                    <label onClick={ () => _this.reactEnabled(index) }>
                                                         <MyIcon className="hover-icon" style={{ fontSize: '21px', marginTop: '5px'}} type="icon-trash-alt" />
                                                     </label>
                                                 </span>

@@ -78,7 +78,7 @@ class TemplateList extends Component{
     }
     // 关闭菜单
     closeModuleWarp() {
-        const parentThis = window.A_vue
+        const parentThis = window.A_react
         parentThis.setState({
             Show_Modal_Template: false
         })
