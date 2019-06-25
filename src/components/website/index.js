@@ -24,19 +24,16 @@ import MyIcon from '../common/myIcon';
 import { isArrayFn } from '../../libs/filters';
 import phoneImg from '../../images/tem_phone_bg.png';
 
-// 组件
+// 常用组件
 import SpinComponent from '../common/spin';
 import LazySpin from '../common/lazySpin';
 
+// 业务组件
 const SortMenu = React.lazy(() => import('./components/SortMenu/SortMenu')); //排序菜单
 const ModuleList = React.lazy(() => import('./components/ModuleList/ModuleList')); //排序菜单
 const TemplateList = React.lazy(() => import('./components/TemplateList/TemplateList')); //排序菜单
 const Custom = React.lazy(() => import('./components/Custom/Custom')); //自定模块
 const Introduction = React.lazy(() => import('./components/Introduction/Introduction')); //活动介绍
-
-// import SortMenu from './components/SortMenu/SortMenu'; //排序菜单
-// import ModuleList from './components/ModuleList/ModuleList'; //模块管理
-// import TemplateList from './components/TemplateList/TemplateList'; //模板选择
 
 class WebEditWarp extends Component {
 	constructor(props) {
@@ -97,13 +94,11 @@ class WebEditWarp extends Component {
 			_this.props.history.push('/')
 		}, 500);
 	}
-	// 存储数据变化 到本地
 	saveDataToLocalStorage() {
 		const _this = this
 		const { WebData } = _this.state
 		window.localStorage.setItem(`jy-web-data-${_this.state.meetingId}`, JSON.stringify(WebData))
 	}
-	// 刷新数据
 	reload() {
 		const _this = this
 		// 默认 结束 loading
@@ -111,14 +106,12 @@ class WebEditWarp extends Component {
 			Loading: false 
 		}, () => {
 			let Child_Window = window.frames['prewWebsite'] //获得对应iframe的window对象
-			// console.log(Child_Window)
 			if (Child_Window.B_vue) {
 				const { WebData } = _this.state
 				Child_Window.B_vue.updatedPageData(WebData)
 			}
 		})
 	}
-	// pc 移动 切换
 	changeWarp(str) {
 		const _this = this
 		const newState = _this.state
@@ -134,7 +127,6 @@ class WebEditWarp extends Component {
 			}, 2000)
 		}
 	}
-	// 富文本 编辑后 更新整个富文本列表
 	richListUpdate(Rich_List) {
 		const _this = this
 		_this.setState({
@@ -146,7 +138,6 @@ class WebEditWarp extends Component {
 	}
 
 	/*****************  唤醒菜单栏方法  ***************************/
-	// 菜单拖拽排序
 	reactSort(params) {
 		const _this = this
 		_this.Preview_show = false
@@ -208,20 +199,16 @@ class WebEditWarp extends Component {
 
 		// 如果当前的编辑状态属于打开状态  移除不可操作
 		if (newState.Show_Modal_Edit) return message.warning('当前处于编辑状态，不能执行此操作！');
-
 		if (typeName === 'module') {
 			// 模块添加菜单
 			newState.WebData.Section_Data[index].Enabled = true
-
 		} else if (typeName === '') {
 			// 菜单管理
 			newState.WebData.Section_Data[index].Enabled = false
-
 		} else if (typeName === 'Iframe' && index === null) {
 			// Iframe子页面
 			let { Current_Component, Current_RichId } = params
 			let params_Id = Current_Component + Current_RichId + ''
-
 			newState.WebData.Section_Data.forEach((e, i) => {
 				let module_Id = e.Section_Code + e.Rich_Id + ''
 				if (module_Id === params_Id) {
@@ -229,7 +216,6 @@ class WebEditWarp extends Component {
 				}
 			})
 		}
-
 		// 触发loading
 		_this.setState({ 
 			Loading: true 
@@ -239,11 +225,11 @@ class WebEditWarp extends Component {
 					...newState
 				}, () => {
 					// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
-					// localStorage.setItem('jy-web-flag', '0')
+					localStorage.setItem('jy-web-flag', '0')
 					_this.saveDataToLocalStorage()
 					_this.reload()
 				})
-			}, 1500)
+			}, 500)
 		})
 	}
 	/** 
@@ -254,10 +240,8 @@ class WebEditWarp extends Component {
 	 * */ 
 	reactEditFn(params) {
 		const _this = this
-		// console.log(params)
 		const { Current_Component, Current_RichId } = params
 		const newState = _this.state
-
 		// 自定义模块的 视图组件 是复用的，存在多个自定义 在移动端编辑时 可以无缝唤醒 当前的自定义组件
 		// 如果 组件名字是同一个 就判断 Current_RichId 是否是同一个
 		if (newState.Current_Component === Current_Component && newState.Current_RichId !== Current_RichId) {
@@ -323,12 +307,7 @@ class WebEditWarp extends Component {
 		})
 	}
 	/**
-	 * 更新选中模板
-	 * Temp_Path
-	 * Temp_Code
-	 * App_Temp_Path
-	 * App_Temp_Code
-	 * Tem_List 传递过来的参数 已经是处理好的 直接赋值
+	 * 更新选中模板【传递过来的参数 已经是处理好的 直接赋值】
 	 */ 
 	updateTemplate(Tem_List, Click_Type = 1, tempSrcPc, tempSrcMobile) {
 		const _this = this
@@ -350,7 +329,7 @@ class WebEditWarp extends Component {
 		newState.LoadingContent = false
 		_this.setState({ ...newState }, () => {
 			// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
-			// localStorage.setItem('jy-web-flag', '0')
+			localStorage.setItem('jy-web-flag', '0')
 			_this.saveDataToLocalStorage()
 			_this.reactOpenModalFn('')
 			_this.reload()
@@ -369,9 +348,7 @@ class WebEditWarp extends Component {
 			})
 		})
 
-		_this.setState({
-			...newState
-		}, () => {
+		_this.setState({ ...newState }, () => {
 			// 富文本内容赋值后
 			_this.saveDataToLocalStorage()
 		})
@@ -414,8 +391,8 @@ class WebEditWarp extends Component {
 		
 	}
 	componentWillReceiveProps(preProps, nextProps) {
-		console.log('prePropsprePropspreProps')
 		console.log(preProps)
+		console.log('prePropsprePropspreProps')
 		console.log(nextProps)
 		console.log('nextPropsnextPropsnextProps')
 	}
