@@ -446,22 +446,22 @@ class WebEditWarp extends Component {
 				<div className="web_main_content">
 					<div className="left_menu">
 						<div className="left_item" onClick={ () => _this.reactOpenModalFn('Show_Modal_Template') } style={{ background: Show_Modal_Template ? '#ff5200' : '' }}>
-							<MyIcon style={{fontSize: '34px', color: Show_Modal_Template ? '#fff' : '' , marginTop: '10px'}} type="icon-layout-line" />
+							<MyIcon style={{fontSize: '30px', color: Show_Modal_Template ? '#fff' : '' , marginTop: '10px'}} type="icon-layout-line" />
 							<br/>
 							<span style={{ color: Show_Modal_Template ? '#fff' : '' }}>网站模板</span>
 						</div>
 						<div className="left_item" onClick={ () => _this.reactOpenModalFn('Show_Moda_Module') } style={{ background: Show_Moda_Module ? '#ff5200' : '' }}>
-							<MyIcon style={{ fontSize: '36px', color: Show_Moda_Module ? '#fff' : '' , marginTop: '10px'}} type="icon-apps" />
+							<MyIcon style={{ fontSize: '30px', color: Show_Moda_Module ? '#fff' : '' , marginTop: '10px'}} type="icon-apps" />
 							<br/>
 							<span style={{ color: Show_Moda_Module ? '#fff' : '' }}>模块添加</span>
 						</div>
 						<div className="left_item" onClick={ () => _this.reactOpenModalFn('Show_Moda_Sort') } style={{ background: Show_Moda_Sort ? '#ff5200' : '' }}>
-							<MyIcon style={{ fontSize: '34px', color: Show_Moda_Sort ? '#fff' : '' , marginTop: '10px'}} type="icon-menu" />
+							<MyIcon style={{ fontSize: '30px', color: Show_Moda_Sort ? '#fff' : '' , marginTop: '10px'}} type="icon-menu" />
 							<br/>
 							<span style={{ color: Show_Moda_Sort ? '#fff' : '' }}>菜单管理</span>
 						</div>
 						<div className="left_item" onClick={ () => _this.goBackList() }>
-							<MyIcon style={{ fontSize: '34px', marginTop: '10px' }} type="icon-rollback" />
+							<MyIcon style={{ fontSize: '30px', marginTop: '10px' }} type="icon-rollback" />
 							<br/>
 							<span>返回管理</span>
 						</div>
