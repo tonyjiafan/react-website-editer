@@ -14,7 +14,7 @@ import {
     applyMiddleware
 } from 'redux';
 //react-redux相关引入
-import rootReducers from '../reducers';
+import rootReducers from './reducers';
 
 const configStore = preloadedState => {
     const store = createStore(
@@ -32,7 +32,7 @@ const configStore = preloadedState => {
     // 热加载
     if (process.env.NODE_ENV !== 'production') {
         if (module.hot) {
-            module.hot.accept('../reducers', () => {
+            module.hot.accept('./reducers', () => {
                 store.replaceReducer(rootReducers)
             })
         }

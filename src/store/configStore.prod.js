@@ -10,7 +10,7 @@ import {
 } from 'redux';
 
 //react-redux相关引入
-import rootReducers from '../reducers';
+import rootReducers from './reducers';
 
 const configStore = preloadedState => {
     const store = createStore(

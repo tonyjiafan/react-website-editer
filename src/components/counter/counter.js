@@ -4,7 +4,7 @@ import React, {
 import { Button } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addNumber, cutNumber } from '../../actions/counterActions';
+import { addNumber, cutNumber } from '../../store/actions/counterActions';
 
 class NumberInput extends Component {
 	static propTypes = {
