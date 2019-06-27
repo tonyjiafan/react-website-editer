@@ -86,75 +86,67 @@ class WebEditWarp extends Component {
 	}
 
 	goBackList() {
-		const _this = this
 		window.localStorage.removeItem('jy-web-flag')
-		window.localStorage.removeItem(`jy-web-data-${_this.state.meetingId}`)
+		window.localStorage.removeItem(`jy-web-data-${this.state.meetingId}`)
 		window.localStorage.removeItem('jy-web-richList')
 		setTimeout(() => {
-			_this.props.history.push('/')
+			this.props.history.push('/')
 		}, 500);
 	}
 	saveDataToLocalStorage() {
-		const _this = this
-		const { WebData } = _this.state
-		window.localStorage.setItem(`jy-web-data-${_this.state.meetingId}`, JSON.stringify(WebData))
+		const { WebData } = this.state
+		window.localStorage.setItem(`jy-web-data-${this.state.meetingId}`, JSON.stringify(WebData))
 	}
 	reload() {
-		const _this = this
 		// 默认 结束 loading
-		_this.setState({ 
+		this.setState({ 
 			Loading: false 
 		}, () => {
 			let Child_Window = window.frames['prewWebsite'] //获得对应iframe的window对象
 			if (Child_Window.B_vue) {
-				const { WebData } = _this.state
+				const { WebData } = this.state
 				Child_Window.B_vue.updatedPageData(WebData)
 			}
 		})
 	}
 	changeWarp(str) {
-		const _this = this
-		const newState = _this.state
+		const newState = this.state
 		let Str_State = str === 'PC' ? true : false
 
 		if (Str_State !== newState.Is_Pc_Warp) {
 			newState.Is_Pc_Warp = Str_State
-			_this.setState({ LoadingContent: true })
+			this.setState({ LoadingContent: true })
 			setTimeout(() => {
-				_this.setState({
+				this.setState({
 					...newState
 				})
 			}, 2000)
 		}
 	}
 	richListUpdate(Rich_List) {
-		const _this = this
-		_this.setState({
+		this.setState({
 			Rich_List
 		}, () => {
-			localStorage.setItem('jy-web-richList', JSON.stringify(_this.state.Rich_List))
-			_this.reload()
+			localStorage.setItem('jy-web-richList', JSON.stringify(this.state.Rich_List))
+			this.reload()
 		})
 	}
 
 	/*****************  唤醒菜单栏方法  ***************************/
 	reactSort(params) {
-		const _this = this
-		_this.Preview_show = false
-		_this.reactOpenModalFn('Show_Moda_Sort')
+		this.Preview_show = false
+		this.reactOpenModalFn('Show_Moda_Sort')
 	}
 	// 关闭 [模块编辑] 弹出层
 	reactCancelForm() {
-		const _this = this
-		_this.setState({
+		this.setState({
 			Show_Modal_Edit: false,
 			Mask_Edit_View_Change: true
 		})
 	}
 	// 切换菜单显示
 	reactOpenModalFn(strName) {
-		const _this = this
-		const newState = _this.state
+		const newState = this.state
 		const str = ['Show_Modal_Template', 'Show_Modal_Edit', 'Show_Moda_Module', 'Show_Moda_Sort']
 
 		newState.Preview_show = false
@@ -167,7 +159,7 @@ class WebEditWarp extends Component {
 		} else if (strName === '' || strName === 'Show_Moda_Sort') {
 			newState.Mask_Edit_View_Change = true
 		}
-		_this.setState({ ...newState })
+		this.setState({ ...newState })
 	}
 
 	//**************** 实际执行方法 *************************/ 
@@ -176,15 +168,14 @@ class WebEditWarp extends Component {
 	 * Moudels 已经删除后的完整的 Section_Data
 	 * */ 
 	reactDeleteFn(Moudels) {
-		const _this = this
-		const newState = _this.state
+		const newState = this.state
 		newState.WebData.Section_Data = Moudels
-		_this.setState({
+		this.setState({
 			...newState
 		}, () => {
 			// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
 			localStorage.setItem('jy-web-flag', '0')
-			_this.saveDataToLocalStorage()
+			this.saveDataToLocalStorage()
 		})
 	}
 	/** 
@@ -193,9 +184,8 @@ class WebEditWarp extends Component {
 	 * 该方法用于【iframe内】【排序菜单】【模块添加菜单】使用
 	 * */ 
 	reactEnabledFn(params) {
-		const _this = this
 		const { typeName, index } = params
-		const newState = _this.state
+		const newState = this.state
 
 		// 如果当前的编辑状态属于打开状态  移除不可操作
 		if (newState.Show_Modal_Edit) return message.warning('当前处于编辑状态，不能执行此操作！');
@@ -217,17 +207,17 @@ class WebEditWarp extends Component {
 			})
 		}
 		// 触发loading
-		_this.setState({ 
+		this.setState({ 
 			Loading: true 
 		}, () => {
 			setTimeout(() => {
-				_this.setState({
+				this.setState({
 					...newState
 				}, () => {
 					// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
 					localStorage.setItem('jy-web-flag', '0')
-					_this.saveDataToLocalStorage()
-					_this.reload()
+					this.saveDataToLocalStorage()
+					this.reload()
 				})
 			}, 500)
 		})
@@ -239,23 +229,20 @@ class WebEditWarp extends Component {
 	 * Current_RichId 富文本的Id 当组件是富文本组件时 才需要这个字段
 	 * */ 
 	reactEditFn(params) {
-		const _this = this
 		const { Current_Component, Current_RichId } = params
-		const newState = _this.state
-		// 自定义模块的 视图组件 是复用的，存在多个自定义 在移动端编辑时 可以无缝唤醒 当前的自定义组件
-		// 如果 组件名字是同一个 就判断 Current_RichId 是否是同一个
+		const newState = this.state
 		if (newState.Current_Component === Current_Component && newState.Current_RichId !== Current_RichId) {
 			// 先把组件置空 重新加载组件
 			newState.Current_Component = ''
 			setTimeout(() => {
-				_this.setState({
+				this.setState({
 					Current_Component: Current_Component,
 					Current_RichId: Current_RichId,
 				})
 			}, 0)
 		} else {
 			setTimeout(() => {
-				_this.setState({
+				this.setState({
 					Current_Component: Current_Component,
 					Current_RichId: Current_RichId,
 				})
@@ -263,17 +250,16 @@ class WebEditWarp extends Component {
 		}
 
 		if (!newState.Show_Modal_Edit) {
-			_this.reactOpenModalFn('Show_Modal_Edit')
+			this.reactOpenModalFn('Show_Modal_Edit')
 		}
 	}
 	// Modules 所有编辑后 回传的整个 数据模型
 	editModuleUpdate(Modules, isOpen = false, isChange = true) {
 		console.log(Modules)
-		const _this = this
-		const newState = _this.state
+		const newState = this.state
 		let flag = isArrayFn(Modules)
 		flag ? newState.WebData.Section_Data = Modules : newState.WebData.Basic = Modules
-		_this.setState({
+		this.setState({
 			...newState
 		}, () => {
 			// isChange 为false 组件编辑后 如果是点击的 取消按钮 则不改变
@@ -281,10 +267,10 @@ class WebEditWarp extends Component {
 				// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
 				localStorage.setItem('jy-web-flag', '0')
 			}
-			_this.saveDataToLocalStorage()
-			_this.reload()
+			this.saveDataToLocalStorage()
+			this.reload()
 			// isOpen 更新模板列表中的 官网上展示报名人数 swith 时，不需要清除当前模态框
-			if (!isOpen) _this.reactOpenModalFn('')
+			if (!isOpen) this.reactOpenModalFn('')
 		})
 	}
 	/**
@@ -292,26 +278,24 @@ class WebEditWarp extends Component {
 	 * Section_Data 传递过来的参数 已经是处理好的 直接赋值
 	 */ 
 	currentSortFn(Back_Section_Data) {
-		const _this = this
-		const newState = _this.state
+		const newState = this.state
 		const Section_Data = Back_Section_Data.map(e => e)
 
 		newState.WebData.Section_Data = Section_Data
-		_this.setState({
+		this.setState({
 			...newState
 		}, () => {
 			// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
 			// localStorage.setItem('jy-web-flag', '0')
-			_this.saveDataToLocalStorage()
-			_this.reload()
+			this.saveDataToLocalStorage()
+			this.reload()
 		})
 	}
 	/**
 	 * 更新选中模板【传递过来的参数 已经是处理好的 直接赋值】
 	 */ 
 	updateTemplate(Tem_List, Click_Type = 1, tempSrcPc, tempSrcMobile) {
-		const _this = this
-		const newState = _this.state
+		const newState = this.state
 		Tem_List.forEach(e => {
 			if (e.Is_Checked && e.Template_Type === 1) {
 				newState.WebData.Temp_Path = e.Template_Path
@@ -327,19 +311,18 @@ class WebEditWarp extends Component {
 		newState.Is_Pc_Warp = Click_Type === 1 ? true : false
 		newState.WebData.Template_List = Tem_List
 		newState.LoadingContent = false
-		_this.setState({ ...newState }, () => {
+		this.setState({ ...newState }, () => {
 			// 状态为 0 代表当前有东西被修改了 而且没有被提交服务器
 			localStorage.setItem('jy-web-flag', '0')
-			_this.saveDataToLocalStorage()
-			_this.reactOpenModalFn('')
-			_this.reload()
+			this.saveDataToLocalStorage()
+			this.reactOpenModalFn('')
+			this.reload()
 		})
 	}
 
 	// 装载富文本内容
 	inSertEdit() {
-		const _this = this
-		const newState = _this.state
+		const newState = this.state
 		newState.Rich_List.forEach(item1 => {
 			newState.WebData.Section_Data.forEach(item2 => {
 				if (item1.Rich_Id === item2.Rich_Id) {
@@ -348,34 +331,33 @@ class WebEditWarp extends Component {
 			})
 		})
 
-		_this.setState({ ...newState }, () => {
+		this.setState({ ...newState }, () => {
 			// 富文本内容赋值后
-			_this.saveDataToLocalStorage()
+			this.saveDataToLocalStorage()
 		})
 	}
 
 	// 在渲染前调用,在客户端也在服务端
 	componentWillMount() {
 		console.log('Component WILL MOUNT!')
-		const _this = this
 		if (process.env.NODE_ENV === 'production') {
-			_this.setState({
+			this.setState({
 					meetingId: 'af026266-3d0d-c6e9-e0a7-08d6cc87db4f',
 					tempSrcPc: `https://tonyjiafan-react-editer-app.netlify.com/template/tem7/index.html`,
 					tempSrcMobile: `https://tonyjiafan-react-editer-app.netlify.com/template/m007/index.html`,
 			}, () => {
-					window.A_react = _this
-					window.A_WebData = _this.state.WebData
-					localStorage.setItem('jy-web-richList', JSON.stringify(_this.state.Rich_List))
-					localStorage.setItem(`jy-web-data-${_this.state.meetingId}`, JSON.stringify(_this.state.WebData))
+					window.A_react = this
+					window.A_WebData = this.state.WebData
+					localStorage.setItem('jy-web-richList', JSON.stringify(this.state.Rich_List))
+					localStorage.setItem(`jy-web-data-${this.state.meetingId}`, JSON.stringify(this.state.WebData))
 				}
 			)
 		} else {
-			_this.setState({ meetingId: 'af026266-3d0d-c6e9-e0a7-08d6cc87db4f' }, () => {
-					window.A_react = _this
-					window.A_WebData = _this.state.WebData
-					localStorage.setItem('jy-web-richList', JSON.stringify(_this.state.Rich_List))
-					localStorage.setItem(`jy-web-data-${_this.state.meetingId}`, JSON.stringify(_this.state.WebData))
+			this.setState({ meetingId: 'af026266-3d0d-c6e9-e0a7-08d6cc87db4f' }, () => {
+					window.A_react = this
+					window.A_WebData = this.state.WebData
+					localStorage.setItem('jy-web-richList', JSON.stringify(this.state.Rich_List))
+					localStorage.setItem(`jy-web-data-${this.state.meetingId}`, JSON.stringify(this.state.WebData))
 				}
 			)
 		}		
@@ -383,8 +365,7 @@ class WebEditWarp extends Component {
 		// console.log(window)
 	}
 	componentDidMount() {
-		const _this = this
-		_this.setState({
+		this.setState({
 			localStorageHasWebData: true,
 			LoadingContent: false
 		}, () => {console.log('Component WILL MOUNT!')})
@@ -398,7 +379,6 @@ class WebEditWarp extends Component {
 	}
 
 	render() {
-		const _this = this
 		const {
 			tempSrcPc,
 			tempSrcMobile,
@@ -415,7 +395,7 @@ class WebEditWarp extends Component {
 			Current_Component,
 			Rich_List,
 			WebData,
-		} = _this.state
+		} = this.state
 		
 
 		return (
@@ -429,12 +409,12 @@ class WebEditWarp extends Component {
 						(
 							<div className="icon-coat">
 								<Tooltip placement="bottom" title={`PC端`}>
-									<span style={{ opacity: Is_Pc_Warp ? 1 : '.5', color: Is_Pc_Warp ? '#202020' : '' }} className="back-btn btn-2" onClick={ () => _this.changeWarp('PC') }>
+									<span style={{ opacity: Is_Pc_Warp ? 1 : '.5', color: Is_Pc_Warp ? '#202020' : '' }} className="back-btn btn-2" onClick={ () => this.changeWarp('PC') }>
 										<MyIcon style={{ marginTop: '10px', fontSize: '22px' }} type="icon-cl-icon-Computer" />
 									</span>
 								</Tooltip>
 								<Tooltip placement="bottom" title={`移动端`}>
-									<span style={{ opacity: !Is_Pc_Warp ? 1 : '.5', color: !Is_Pc_Warp ? '#202020' : '' }} className="back-btn btn-3" onClick={ () => _this.changeWarp('Mobile') }>
+									<span style={{ opacity: !Is_Pc_Warp ? 1 : '.5', color: !Is_Pc_Warp ? '#202020' : '' }} className="back-btn btn-3" onClick={ () => this.changeWarp('Mobile') }>
 										<MyIcon style={{ marginTop: '10px', fontSize: '22px' }} type="icon-cl-icon-Mobile" />
 									</span>
 								</Tooltip>
@@ -445,22 +425,22 @@ class WebEditWarp extends Component {
 				</div>
 				<div className="web_main_content">
 					<div className="left_menu">
-						<div className="left_item" onClick={ () => _this.reactOpenModalFn('Show_Modal_Template') } style={{ background: Show_Modal_Template ? '#ff5200' : '' }}>
+						<div className="left_item" onClick={ () => this.reactOpenModalFn('Show_Modal_Template') } style={{ background: Show_Modal_Template ? '#ff5200' : '' }}>
 							<MyIcon style={{fontSize: '30px', color: Show_Modal_Template ? '#fff' : '' , marginTop: '10px'}} type="icon-layout-line" />
 							<br/>
 							<span style={{ color: Show_Modal_Template ? '#fff' : '' }}>网站模板</span>
 						</div>
-						<div className="left_item" onClick={ () => _this.reactOpenModalFn('Show_Moda_Module') } style={{ background: Show_Moda_Module ? '#ff5200' : '' }}>
+						<div className="left_item" onClick={ () => this.reactOpenModalFn('Show_Moda_Module') } style={{ background: Show_Moda_Module ? '#ff5200' : '' }}>
 							<MyIcon style={{ fontSize: '30px', color: Show_Moda_Module ? '#fff' : '' , marginTop: '10px'}} type="icon-apps" />
 							<br/>
 							<span style={{ color: Show_Moda_Module ? '#fff' : '' }}>模块添加</span>
 						</div>
-						<div className="left_item" onClick={ () => _this.reactOpenModalFn('Show_Moda_Sort') } style={{ background: Show_Moda_Sort ? '#ff5200' : '' }}>
+						<div className="left_item" onClick={ () => this.reactOpenModalFn('Show_Moda_Sort') } style={{ background: Show_Moda_Sort ? '#ff5200' : '' }}>
 							<MyIcon style={{ fontSize: '30px', color: Show_Moda_Sort ? '#fff' : '' , marginTop: '10px'}} type="icon-menu" />
 							<br/>
 							<span style={{ color: Show_Moda_Sort ? '#fff' : '' }}>菜单管理</span>
 						</div>
-						<div className="left_item" onClick={ () => _this.goBackList() }>
+						<div className="left_item" onClick={ () => this.goBackList() }>
 							<MyIcon style={{ fontSize: '30px', marginTop: '10px' }} type="icon-rollback" />
 							<br/>
 							<span>返回管理</span>
@@ -475,7 +455,7 @@ class WebEditWarp extends Component {
 							<iframe
 								title="pc"
 								className="web_pc_iframe"
-								src={ `${tempSrcPc}?${_this.state.meetingId}` }
+								src={ `${tempSrcPc}?${this.state.meetingId}` }
 								name="prewWebsite"
 								id="prewWebsite"
 								frameBorder="0"
@@ -488,7 +468,7 @@ class WebEditWarp extends Component {
 										<div className="conten-box">
 											<iframe
 												title="mobile"
-												src={ `${tempSrcMobile}?${_this.state.meetingId}` }
+												src={ `${tempSrcMobile}?${this.state.meetingId}` }
 												name="prewWebsite" 
 												id="prewWebsite"
 												frameBorder="0" 
@@ -500,13 +480,13 @@ class WebEditWarp extends Component {
 								</div>
 							) : null)
 						}
-						{_this.state.LoadingContent ? (
+						{this.state.LoadingContent ? (
 							<div className="noneContent">
 								<SpinComponent 
 									color={ `#0d6cff` } 
 									iconType={ `ellipsis` } 
 									wrapperClassName={ `noneContent` } 
-									spinning={ _this.state.LoadingContent } />
+									spinning={ this.state.LoadingContent } />
 							</div>
 						) : null}
 					</div>
@@ -518,8 +498,8 @@ class WebEditWarp extends Component {
 										<TemplateList
 										Template_List={ WebData.Template_List }
 										Basic={ WebData.Basic }
-										updateTemplate={ _this.updateTemplate }
-										editModuleUpdate={ _this.editModuleUpdate } />
+										updateTemplate={ this.updateTemplate }
+										editModuleUpdate={ this.editModuleUpdate } />
 									</Suspense>
 								</div>
 							</div>
@@ -529,7 +509,7 @@ class WebEditWarp extends Component {
 					{Show_Modal_Edit ? (
 							<div className="modal-mask-edit" style={ !Mask_Edit_View_Change ? View_Change_Style : null }>
 								<div className="modal-content" style={{ width: Mask_Edit_View_Change ? '900px' : '100%' }}>
-									<label className="change-icon" onClick={ () => _this.setState({ Mask_Edit_View_Change: !Mask_Edit_View_Change }) }>
+									<label className="change-icon" onClick={ () => this.setState({ Mask_Edit_View_Change: !Mask_Edit_View_Change }) }>
 										切换视图
 									</label>
 									<h1>  编辑 {Current_Component} 业务组件   </h1>
@@ -544,8 +524,8 @@ class WebEditWarp extends Component {
 												Current_RichId={ Current_RichId }
 												Current_Component={ Current_Component }
 												Rich_List={ Rich_List }
-												editModuleUpdate={ _this.editModuleUpdate }
-												richListUpdate={ _this.richListUpdate } />
+												editModuleUpdate={ this.editModuleUpdate }
+												richListUpdate={ this.richListUpdate } />
 											) : null
 										}
 										{/* 活动介绍 */}
@@ -557,13 +537,13 @@ class WebEditWarp extends Component {
 												Current_RichId={ Current_RichId }
 												Current_Component={ Current_Component }
 												Rich_List={ Rich_List }
-												editModuleUpdate={ _this.editModuleUpdate }
-												richListUpdate={ _this.richListUpdate } />
+												editModuleUpdate={ this.editModuleUpdate }
+												richListUpdate={ this.richListUpdate } />
 											) : null
 										}
 									</Suspense>
 
-									<Button onClick={ () => _this.reactCancelForm() }> 退出编辑 </Button>
+									<Button onClick={ () => this.reactCancelForm() }> 退出编辑 </Button>
 								</div>
 							</div>
 						) : 
@@ -575,8 +555,8 @@ class WebEditWarp extends Component {
 									<Suspense fallback={<LazySpin />}>
 										<ModuleList 
 										Module_List={ WebData.Section_Data}
-										reactEnabled={ _this.reactEnabledFn }
-										reactDelete={ _this.reactDeleteFn } />
+										reactEnabled={ this.reactEnabledFn }
+										reactDelete={ this.reactDeleteFn } />
 									</Suspense>
 								</div>
 							</div>
@@ -588,8 +568,8 @@ class WebEditWarp extends Component {
 								<div className="modal-content">
 									<Suspense fallback={<LazySpin />}>
 										<SortMenu 
-										reactEnabled={ _this.reactEnabledFn }
-										currentSort={ _this.currentSortFn } 
+										reactEnabled={ this.reactEnabledFn }
+										currentSort={ this.currentSortFn } 
 										Section_Data={ WebData.Section_Data } />
 									</Suspense>
 								</div>
@@ -598,13 +578,13 @@ class WebEditWarp extends Component {
 						null
 					}
 				</div>
-				{_this.state.Loading ? (
+				{this.state.Loading ? (
 					<div className="spinWarp">
 						<SpinComponent 
 							color={ `#0d6cff` } 
 							iconType={ `more` } 
 							wrapperClassName={ `spinWarp` } 
-							spinning={ _this.state.Loading } />
+							spinning={ this.state.Loading } />
 					</div>
 				) : null}
 			</div>

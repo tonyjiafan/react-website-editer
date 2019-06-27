@@ -20,23 +20,21 @@ class TemplateList extends Component{
     }
 
     settingData(data) {
-        const _this = this
-        const newState = _this.state
-        const { Template_List, Basic } = data || _this.props
+        const newState = this.state
+        const { Template_List, Basic } = data || this.props
         newState.Tem_List = Template_List.map(e => Object.assign(e, {Click_Type: e.Template_Type}))
         newState.Current_Data = cloneObj(Basic)
         newState.Old_Data = cloneObj(Basic)
 
-        _this.setState({
+        this.setState({
             ...newState
         }, () => {
-            console.log(_this.state)
+            console.log(this.state)
         })
     }
     // 更新模板选择
     changeTemp(item) {
-        const _this = this
-        const Tem_List = _this.state.Tem_List.map(e => e)
+        const Tem_List = this.state.Tem_List.map(e => e)
         const { Template_Type, Template_Code, Is_Checked } = item
 
         if (Is_Checked) {
@@ -57,13 +55,12 @@ class TemplateList extends Component{
                     e.Is_Checked = false
                 }
             })
-            _this.props.updateTemplate(Tem_List, item.Click_Type, tempSrcPc, tempSrcMobile)
+            this.props.updateTemplate(Tem_List, item.Click_Type, tempSrcPc, tempSrcMobile)
         }
     }
     // PC 移动端  模板容器切换
     tempChange(params, num) {
-        const _this = this
-        const newState = _this.state
+        const newState = this.state
         let str = num === 1 ? ['TemplateWeb', 'TemplateMobile'] : ['TemplateModern', 'TemplateTraditional']
         str.forEach((e) => {
             if (e === params) {
@@ -72,7 +69,7 @@ class TemplateList extends Component{
                 newState[e] = false
             }
         })
-        _this.setState({
+        this.setState({
             ...newState
         })
     }
@@ -84,47 +81,43 @@ class TemplateList extends Component{
         })
     }
     change(name, checked) {
-        const _this = this
-        const newState = _this.state
+        const newState = this.state
         newState.Current_Data[name] = !checked
-        _this.setState({
+        this.setState({
             ...newState
         }, () => {
             // 更新 父组件的 整个 Basic
-            _this.props.editModuleUpdate(_this.state.Current_Data, true)
+            this.props.editModuleUpdate(this.state.Current_Data, true)
         })
     }
 
 
     componentWillMount() {
-        const _this = this
-        _this.settingData()
+        this.settingData()
     }
     componentDidMount(nextProps) {
-        const _this = this
-        _this.settingData(nextProps)
+        this.settingData(nextProps)
     }
 
     render() {
-        const _this = this
         const { 
             TemplateWeb,
             TemplateTraditional,
             TemplateMobile,
             TemplateModern,
-        } = _this.state
+        } = this.state
 
         return (
             <div className="web_module_warp">
                 <div className="template-settings">
                     <div className="web_module_title">
                         模板适用范围
-                        <label onClick={ () => _this.closeModuleWarp() }>
+                        <label onClick={ () => this.closeModuleWarp() }>
                             <Icon className="close" type="close" style={{fontSize: '20px'}} />
                         </label>
                     </div>
                     <div className="item_list">
-                        <div onClick={ () => _this.tempChange('TemplateWeb', 1) } 
+                        <div onClick={ () => this.tempChange('TemplateWeb', 1) } 
                             className={ TemplateWeb ? 'li active' : 'li' } 
                             style={{
                                 borderColor: TemplateWeb ? '#2d8cf0' : '',
@@ -133,7 +126,7 @@ class TemplateList extends Component{
                             <MyIcon style={{ verticalAlign: '-2px', size: '16px' }} type="icon-monitor" />
                             <span>网页端</span>
                         </div>
-                        <div onClick={ () => _this.tempChange('TemplateMobile', 1) } 
+                        <div onClick={ () => this.tempChange('TemplateMobile', 1) } 
                             className={ TemplateMobile ? 'li active' : 'li' } 
                             style={{
                                 borderColor: TemplateMobile ? '#2d8cf0' : '',
@@ -152,7 +145,7 @@ class TemplateList extends Component{
                                     网站风格
                                 </div>
                                 <div className="item_list">
-                                    <div onClick={ () => _this.tempChange('TemplateTraditional', 2) } 
+                                    <div onClick={ () => this.tempChange('TemplateTraditional', 2) } 
                                         className={ TemplateTraditional ? 'li active' : 'li' } 
                                         style={{
                                             height: '30px',
@@ -164,7 +157,7 @@ class TemplateList extends Component{
                                         <span>传统</span>
                                     </div>
 
-                                    <div onClick={ () => _this.tempChange('TemplateModern', 2) } 
+                                    <div onClick={ () => this.tempChange('TemplateModern', 2) } 
                                         className={ TemplateModern ? 'li active' : 'li' } 
                                         style={{ 
                                             height: '30px',
@@ -191,8 +184,8 @@ class TemplateList extends Component{
                             className="swith_ls"
                             checkedChildren="开" 
                             unCheckedChildren="关" 
-                            checked={ _this.state.Current_Data.Show_Enroll_Count }
-                            onChange={ () => _this.change('Show_Enroll_Count', _this.state.Current_Data.Show_Enroll_Count) }
+                            checked={ this.state.Current_Data.Show_Enroll_Count }
+                            onChange={ () => this.change('Show_Enroll_Count', this.state.Current_Data.Show_Enroll_Count) }
                             />
                         </div>
                         <div style={{ paddingTop: '14px' }}>
@@ -202,8 +195,8 @@ class TemplateList extends Component{
                             className="swith_ls"
                             checkedChildren="开" 
                             unCheckedChildren="关" 
-                            checked={ _this.state.Current_Data.Whether_To_Display_Basic }
-                            onChange={ () => _this.change('Whether_To_Display_Basic', _this.state.Current_Data.Whether_To_Display_Basic) }
+                            checked={ this.state.Current_Data.Whether_To_Display_Basic }
+                            onChange={ () => this.change('Whether_To_Display_Basic', this.state.Current_Data.Whether_To_Display_Basic) }
                             />
                         </div>
                         <div style={{ paddingTop: '14px' }}>
@@ -214,8 +207,8 @@ class TemplateList extends Component{
                             checkedChildren="开" 
                             unCheckedChildren="关" 
                             disabled={true}
-                            checked={ _this.state.Current_Data.Show_Ticket_Copyright }
-                            onChange={ () => _this.change('Show_Ticket_Copyright', _this.state.Current_Data.Show_Ticket_Copyright) }
+                            checked={ this.state.Current_Data.Show_Ticket_Copyright }
+                            onChange={ () => this.change('Show_Ticket_Copyright', this.state.Current_Data.Show_Ticket_Copyright) }
                             />
                         </div>
                     </div>
@@ -225,12 +218,12 @@ class TemplateList extends Component{
                         TemplateWeb ? (
                             <div className="tem_li_pc">
                                 <div style={{ margin: 'auto' }}>
-                                    {_this.state.Tem_List.map(item => 
+                                    {this.state.Tem_List.map(item => 
                                         item.Template_Type === 1 ? (
                                             <div 
                                                 key={ item.Template_Code }
                                                 className={ item.Is_Checked ? 'li active' : 'li' }
-                                                onClick={ () => _this.changeTemp(item) }>
+                                                onClick={ () => this.changeTemp(item) }>
                                                 <div className="tem_w">
                                                     <img className="view" src={ item.Template_Thumbnail } alt="" />
                                                     {item.Is_Checked ? 
@@ -260,12 +253,12 @@ class TemplateList extends Component{
                             <div className="tem_li_phone">
                                 <div style={{ margin: 'auto' }}>
                                     {
-                                        _this.state.Tem_List.map(item => 
+                                        this.state.Tem_List.map(item => 
                                             item.Template_Type === 2 && item.App_Temp_Type === 1 ? (
                                                 <div 
                                                     key={ item.Template_Code }
                                                     className={ item.Is_Checked ? 'li active' : 'li' }
-                                                    onClick={ () => _this.changeTemp(item) }>
+                                                    onClick={ () => this.changeTemp(item) }>
                                                     <div className="tem_p">
                                                         <img className="view" src={item.Template_Thumbnail} alt="" />
                                                         {
@@ -297,12 +290,12 @@ class TemplateList extends Component{
                             <div className="tem_li_phone">
                                 <div style={{ margin: 'auto' }}>
                                     {
-                                        _this.state.Tem_List.map(item => 
+                                        this.state.Tem_List.map(item => 
                                             item.Template_Type === 2 && item.App_Temp_Type === 2 ? (
                                                 <div 
                                                     key={ item.Template_Code }
                                                     className={ item.Is_Checked ? 'li active' : 'li' }
-                                                    onClick={ () => _this.changeTemp(item) }>
+                                                    onClick={ () => this.changeTemp(item) }>
                                                     <div className="tem_p">
                                                         <img className="view" src={item.Template_Thumbnail} alt="" />
                                                         {

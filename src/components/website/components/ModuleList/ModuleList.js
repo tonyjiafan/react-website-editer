@@ -23,15 +23,14 @@ class ModuleList extends Component {
 
 	// 设置初始数据
 	settingData(data) {
-		const _this = this
-		const newState = _this.state
+		const newState = this.state
 
-		newState.moudels = data || _this.props.Module_List.map(e => e)
-		_this.setState({
+		newState.moudels = data || this.props.Module_List.map(e => e)
+		this.setState({
 			...newState
 		}, () => {
 			// console.dir('传递进来的菜单顺序 :')
-			// console.dir(_this.state.menus)
+			// console.dir(this.state.menus)
 		})
 	}
 	// 关闭菜单
@@ -43,17 +42,15 @@ class ModuleList extends Component {
     }
 	// 开启模块使用  module参数代表 来自哪个菜单的操作
 	changeEnabled(Enabled, index) {
-		const _this = this
 		// 模块没有开启才能添加
 		if (!Enabled) { 
-			_this.props.reactEnabled({ index: index, typeName: 'module' })
+			this.props.reactEnabled({ index: index, typeName: 'module' })
 		}
 	}
 	// 彻底删除 自定义 模块
 	reactDeleteModule(index, Rich_Id) {
-		const _this = this
 		const confirm = Modal.confirm
-		const moudels = _this.state.moudels.map(e => e)
+		const moudels = this.state.moudels.map(e => e)
 		confirm({
 			title: '删除',
 			content: '模块删除后无法恢复，确定要删除吗？',
@@ -66,7 +63,7 @@ class ModuleList extends Component {
 					moudels.splice(index, 1)
 					message.success('删除成功！', 1)
 					setTimeout(() => {
-						_this.props.reactDelete(moudels)
+						this.props.reactDelete(moudels)
 					}, 500)
 				})
 			},
@@ -89,32 +86,28 @@ class ModuleList extends Component {
 	}
 
 	componentWillMount() {
-		const _this = this
-		console.log(_this.props)
-		_this.settingData()
+		console.log(this.props)
+		this.settingData()
 	}
     componentWillReceiveProps(nextProps) {
-        const _this = this
-        _this.settingData(nextProps.Module_List)
+        this.settingData(nextProps.Module_List)
     }
 
 	render() {
-		const _this = this
-
 		return (
 			<div className="web_module_warp">
 				<div className="web_module_title">
 					系统模块
-					<label onClick={ () => _this.closeModuleWarp() }>
+					<label onClick={ () => this.closeModuleWarp() }>
 						<Icon className="close" style={{ fontSize: '20px'}} type="close" />
 					</label>
 				</div>
 				<ul className="padd" style={{ padding: "10px" }}>
-					{_this.state.moudels.map((item, index) => 
+					{this.state.moudels.map((item, index) => 
 						item && item.Section_Type !== 8 ? 
 						(<li 
 							key={ index }
-							onClick={ () => _this.changeEnabled(item.Enabled, index) }
+							onClick={ () => this.changeEnabled(item.Enabled, index) }
 							className={ item.Enabled ? 'li disabled hover' : 'li li-nomar-hover' }>
 							{
 								item.Section_Code === 'Guest' ? 
@@ -155,7 +148,7 @@ class ModuleList extends Component {
 					添加自定义模块
 				</div>
 				<ul className="padd" style={{ padding: "10px" }}>
-					<li className="li li-nomar-hover" onClick={ _this.changeCurrentView }>
+					<li className="li li-nomar-hover" onClick={ this.changeCurrentView }>
 						<Icon className="li-icon" type="container" style={{ fontSize: "32px" }} />
 						<div className="ti">文本编辑</div>
 					</li>
@@ -167,7 +160,7 @@ class ModuleList extends Component {
 				</div>
 
 				<ul className="customize_modules" style={{ padding: "10px" }}>
-					{_this.state.moudels.map((item, index) => {
+					{this.state.moudels.map((item, index) => {
 						return (
 								item.Section_Type === 8 ? 
 								(<li 
@@ -178,8 +171,8 @@ class ModuleList extends Component {
 										background: item.Enabled ? "" : "#fff" ,
 									}}>
 									<div className="ti">{ item.Section_Name }</div>
-									{ item.Enabled ? <div className="hover_block">该模块已存在</div> : <div className="del-btn" onClick={ () => _this.reactDeleteModule(index, item.Rich_Id) }>删除</div> }
-									{ !item.Enabled ? <div className="just-btn" onClick={ () => _this.changeEnabled(item.Enabled, index) }>使用模块</div> : null }
+									{ item.Enabled ? <div className="hover_block">该模块已存在</div> : <div className="del-btn" onClick={ () => this.reactDeleteModule(index, item.Rich_Id) }>删除</div> }
+									{ !item.Enabled ? <div className="just-btn" onClick={ () => this.changeEnabled(item.Enabled, index) }>使用模块</div> : null }
 								</li>
 								) : null
 							)

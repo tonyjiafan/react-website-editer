@@ -22,8 +22,6 @@ import './SortMenu.less';
 import { Icon } from 'antd';
 import MyIcon from '../../../common/myIcon';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-// import { cloneObj } from '../../../libs/filters.js';
-
 
 // 重新排序结果
 const reorder = (list, startIndex, endIndex) => {
@@ -70,16 +68,15 @@ class SortMenu extends Component {
     }
     // 拖拽
     onDragEnd(result) {
-        const _this = this
         // 掉到了名单之外
         if (!result.destination) return
         const menus = reorder(
-            _this.state.menus,
+            this.state.menus,
             result.source.index,
             result.destination.index
         )
         // 传递最新的列队 到父组件
-        _this.props.currentSort(menus)
+        this.props.currentSort(menus)
     }
     // 关闭菜单
     closeModuleWarp() {
@@ -101,49 +98,45 @@ class SortMenu extends Component {
     }
     // 移除模块
     reactEnabled(index) {
-        const _this = this
         // 调用父组件的 排序方法
-        _this.props.reactEnabled({ index: index, typeName: '' })
+        this.props.reactEnabled({ index: index, typeName: '' })
     }
     // 设置初始数据
     settingData(data) {
-        const _this = this
-        const newState = _this.state
+        const newState = this.state
 
-        newState.menus = data || _this.props.Section_Data
-        _this.setState({
+        newState.menus = data || this.props.Section_Data
+        this.setState({
             ...newState
         }, function() {
             // console.dir('传递进来的菜单顺序 :')
-            // console.dir(_this.state.menus)
+            // console.dir(this.state.menus)
         })
     }
     
     // 在渲染前调用,在客户端也在服务端
 	componentWillMount() {
-        const _this = this
-        _this.settingData()   
+        this.settingData()   
     }
     componentDidMount() {
         // 处理默认事件
         document.body.ondrop = event => {
-            event.preventDefault();
-            event.stopPropagation();
+            event.preventDefault()
+            event.stopPropagation()
         };
     }
     // 在组件接收到一个新的 prop (更新后)时被调用。这个方法在初始化render时不会被调用。
     componentWillReceiveProps(nextProps) {
         // console.log(nextProps)
-        const _this = this
-        _this.settingData(nextProps.Section_Data)
+        this.settingData(nextProps.Section_Data)
     }
 
 	render() {
-        const _this = this
+        const { menus } = this.state
 
-        function DragDropItems () {
+        let DragDropItems = () => {
             return (
-                <DragDropContext onDragEnd={ _this.onDragEnd }>
+                <DragDropContext onDragEnd={ this.onDragEnd }>
                     <Droppable droppableId="droppable">
                     {(provided, snapshot) => (
                         <div
@@ -151,7 +144,7 @@ class SortMenu extends Component {
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}>
 
-                            {_this.state.menus.map((item, index) => ( 
+                            {menus.map((item, index) => ( 
                                 item.Enabled ? 
                                 (
                                     <Draggable 
@@ -173,12 +166,12 @@ class SortMenu extends Component {
                                                 <span className="tuo-zhuai-text">{ item.Section_Name }</span>
 
                                                 <span className="edit-box seeting-box">
-                                                    <label onClick={ () => _this.reactEdit(item) }>
+                                                    <label onClick={ () => this.reactEdit(item) }>
                                                         <MyIcon className="hover-icon" style={{ fontSize: '19px'}} type="icon-tianxie" />
                                                     </label>
                                                 </span>
                                                 <span className="delete-box seeting-box">
-                                                    <label onClick={ () => _this.reactEnabled(index) }>
+                                                    <label onClick={ () => this.reactEnabled(index) }>
                                                         <MyIcon className="hover-icon" style={{ fontSize: '21px', marginTop: '5px'}} type="icon-trash-alt" />
                                                     </label>
                                                 </span>
@@ -194,16 +187,17 @@ class SortMenu extends Component {
                     )}
                     </Droppable>
                 </DragDropContext>
-
             )
         }
+        // 绑定运行环境
+        DragDropItems.bind(this)
 
 		return (
 			<div className="SortMenu">
                 <div className="web_module_warp">
                     <div className="web_module_title">
                         菜单管理
-                        <label onClick={ () => _this.closeModuleWarp() } >
+                        <label onClick={ () => this.closeModuleWarp() } >
                             <Icon className="close" style={{ fontSize: '20px'}} type="close" />
                         </label>
                     </div>
